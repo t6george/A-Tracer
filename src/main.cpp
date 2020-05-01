@@ -3,9 +3,11 @@
 
 #include <Vec3.hpp>
 #include <Ray.hpp>
+#include <Sphere.hpp>
 
 const Vec3 WHITE(1., 1., 1.);
-const Vec3 BLUE(.5, .7, 1.);
+const Vec3 SKY_BLUE(.5, .7, 1.);
+const Vec3 RED(1., 0., 0.);
 
 void outputPPMGradient(const uint16_t width, const uint16_t height)
 {
@@ -37,6 +39,7 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
     Vec3 camera{0., 0., 0.};
     Ray ray{camera};
     double t;
+    Sphere sphere(Vec3{0., 0., -1.}, .5);
 
     for (int32_t i = height - 1; i >= 0; --i)
     {
@@ -44,14 +47,21 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
         for (int32_t j = 0; j < width; ++j)
         {
             ray.resetDirection(origin + static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
-            t = (ray.direction().getUnitVector().y() + 1.) / 2.;
-            (BLUE * t + WHITE * (1. - t)).formatColor(std::cout);
+            if (sphere.reflectsRay(ray))
+            {
+                RED.formatColor(std::cout);
+            }
+            else
+            {
+                t = (ray.direction().getUnitVector().y() + 1.) / 2.;
+                (SKY_BLUE * t + WHITE * (1. - t)).formatColor(std::cout);
+            }
         }
     }
+    std::cerr << std::endl;
 }
 
 int main()
 {
-    // outputPPMGradient(200, 100);
     outputSkyGradient(200, 100);
 }

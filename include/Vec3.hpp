@@ -8,7 +8,7 @@ class Vec3
 public:
     Vec3();
     Vec3(double c1, double c2, double c3);
-    ~Vec3() = default;
+    ~Vec3() noexcept = default;
 
     double x() const;
     double y() const;

@@ -9,7 +9,7 @@ public:
     Ray();
     Ray(const Vec3 &origin);
     Ray(const Vec3 &origin, const Vec3 &direction);
-    ~Ray() = default;
+    ~Ray() noexcept = default;
 
     const Vec3 &origin() const;
     const Vec3 &direction() const;
