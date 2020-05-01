@@ -45,6 +45,13 @@ Vec3 Vec3::operator-() const { return Vec3(-c[0], -c[1], -c[2]); }
 
 double Vec3::len() const { return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]); }
 
+void Vec3::formatRaw(std::ostream &out) const
+{
+    out << c[0] << ' '
+        << c[1] << ' '
+        << c[2] << '\n';
+}
+
 void Vec3::formatColor(std::ostream &out) const
 {
     out << static_cast<int>(255.999 * c[0]) << ' '
@@ -52,51 +59,41 @@ void Vec3::formatColor(std::ostream &out) const
         << static_cast<int>(255.999 * c[2]) << '\n';
 }
 
-inline Vec3 Vec3::operator+(const Vec3 &otherV) const
+Vec3 Vec3::operator+(const Vec3 &otherV) const
 {
     return Vec3(c[0] + otherV.x(), c[1] + otherV.y(), c[2] + otherV.z());
 }
 
-inline Vec3 Vec3::operator-(const Vec3 &otherV) const
+Vec3 Vec3::operator-(const Vec3 &otherV) const
 {
     return Vec3(c[0] - otherV.x(), c[1] - otherV.y(), c[2] - otherV.z());
 }
 
-inline Vec3 Vec3::operator*(const Vec3 &otherV) const
+Vec3 Vec3::operator*(const Vec3 &otherV) const
 {
     return Vec3(c[0] * otherV.x(), c[1] * otherV.y(), c[2] * otherV.z());
 }
 
-inline Vec3 Vec3::operator*(double s) const
+Vec3 Vec3::operator*(double s) const
 {
     return Vec3(c[0] * s, c[1] * s, c[2] * s);
 }
 
-inline Vec3 Vec3::operator/(double s) const
+Vec3 Vec3::operator/(double s) const
 {
     return Vec3(c[0] / s, c[1] / s, c[2] / s);
 }
 
-inline Vec3 Vec3::getUnitVector() const { return *this / len(); }
+Vec3 Vec3::getUnitVector() const { return *this / len(); }
 
-inline double Vec3::o(const Vec3 &otherV) const
+double Vec3::o(const Vec3 &otherV) const
 {
     return c[0] * otherV.x() + c[1] * otherV.y() + c[2] * otherV.z();
 }
 
-inline Vec3 Vec3::x(const Vec3 &otherV) const
+Vec3 Vec3::x(const Vec3 &otherV) const
 {
     return Vec3(c[1] * otherV.z() - c[2] * otherV.y(),
                 c[2] * otherV.x() - c[0] * otherV.z(),
                 c[0] * otherV.y() - c[1] * otherV.x());
-}
-
-inline std::ostream &operator<<(std::ostream &out, const Vec3 &v)
-{
-    return out << v.x() << ' ' << v.y() << ' ' << v.z();
-}
-
-inline Vec3 operator*(double s, const Vec3 &v)
-{
-    return v * s;
 }

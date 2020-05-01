@@ -23,18 +23,20 @@ public:
     Vec3 operator-() const;
 
     double len() const;
+
+    void formatRaw(std::ostream &out) const;
     void formatColor(std::ostream &out) const;
 
-    inline Vec3 operator+(const Vec3 &otherV) const;
-    inline Vec3 operator-(const Vec3 &otherV) const;
-    inline Vec3 operator*(const Vec3 &otherV) const;
-    inline Vec3 operator*(double s) const;
-    inline Vec3 operator/(double s) const;
-    inline Vec3 getUnitVector() const;
+    Vec3 operator+(const Vec3 &otherV) const;
+    Vec3 operator-(const Vec3 &otherV) const;
+    Vec3 operator*(const Vec3 &otherV) const;
+    Vec3 operator*(double s) const;
+    Vec3 operator/(double s) const;
 
-    inline double o(const Vec3 &otherV) const;
-    inline Vec3 x(const Vec3 &otherV) const;
+    Vec3 getUnitVector() const;
+
+    double o(const Vec3 &otherV) const;
+    Vec3 x(const Vec3 &otherV) const;
 };
 
-inline std::ostream &operator<<(std::ostream &out, const Vec3 &v);
-inline Vec3 operator*(double s, const Vec3 &v);
+inline Vec3 operator*(double s, const Vec3 &v) { return v * s; }

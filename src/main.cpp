@@ -43,14 +43,15 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
         std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
         for (int32_t j = 0; j < width; ++j)
         {
-            ray.resetDirection(static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
+            ray.resetDirection(origin + static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
             t = (ray.direction().getUnitVector().y() + 1.) / 2.;
-            (WHITE * t + BLUE * (1. - t)).formatColor(std::cout);
+            (BLUE * t + WHITE * (1. - t)).formatColor(std::cout);
         }
     }
 }
 
 int main()
 {
-    outputPPMGradient(200, 100);
+    // outputPPMGradient(200, 100);
+    outputSkyGradient(200, 100);
 }
