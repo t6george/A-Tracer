@@ -43,7 +43,9 @@ Vec3 &Vec3::operator/=(double s)
 
 Vec3 Vec3::operator-() const { return Vec3(-c[0], -c[1], -c[2]); }
 
-double Vec3::len() const { return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]); }
+double Vec3::len() const { return sqrt(sqLen()); }
+
+double Vec3::sqLen() const { return c[0] * c[0] + c[1] * c[1] + c[2] * c[2]; }
 
 void Vec3::formatRaw(std::ostream &out) const
 {

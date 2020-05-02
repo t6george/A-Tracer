@@ -23,6 +23,7 @@ public:
     Vec3 operator-() const;
 
     double len() const;
+    double sqLen() const;
 
     void formatRaw(std::ostream &out) const;
     void formatColor(std::ostream &out) const;

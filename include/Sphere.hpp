@@ -12,4 +12,6 @@ public:
     Sphere(const Vec3 &center, double R);
     ~Sphere() noexcept = default;
     bool reflectsRay(const Ray &ray) const;
+    double pointOfIncidence(const Ray &ray) const;
+    const Vec3 &getCenter() const;
 };

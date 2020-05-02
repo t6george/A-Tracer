@@ -40,6 +40,7 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
     Ray ray{camera};
     double t;
     Sphere sphere(Vec3{0., 0., -1.}, .5);
+    Vec3 N;
 
     for (int32_t i = height - 1; i >= 0; --i)
     {
@@ -47,9 +48,11 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
         for (int32_t j = 0; j < width; ++j)
         {
             ray.resetDirection(origin + static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
-            if (sphere.reflectsRay(ray))
+            t = sphere.pointOfIncidence(ray);
+            if (t > 0.)
             {
-                RED.formatColor(std::cout);
+                N = (ray.eval(t) - sphere.getCenter()).getUnitVector();
+                ((N + Vec3(1., 1., 1.)) / 2.).formatColor(std::cout);
             }
             else
             {
