@@ -1,7 +1,7 @@
 #pragma once
-#include <Surface.hpp>
+#include <Hittable.hpp>
 
-class Sphere : public Surface
+class Sphere : public Hittable
 {
     Vec3 center;
     double R;
@@ -11,8 +11,8 @@ public:
     ~Sphere() noexcept = default;
 
     bool getCollisionData(const Ray &ray, HitRecord &record,
-                          double tMin = -std::numeric_limits<double>::max(),
-                          double tMax = std::numeric_limits<double>::max()) const override;
+                          double tMin = -infinity,
+                          double tMax = infinity) const override;
 
     const Vec3 &getCenter() const;
 };

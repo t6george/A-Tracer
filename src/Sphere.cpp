@@ -42,6 +42,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.t = t;
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
+            record.setLightPosition(ray);
             return true;
         }
         t = (-half_b + disc_root) / a;
@@ -50,6 +51,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.t = t;
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
+            record.setLightPosition(ray);
             return true;
         }
     }
