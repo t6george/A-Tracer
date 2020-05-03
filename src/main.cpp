@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdint>
 #include <memory>
 
 #include <Utils.hpp>
@@ -7,12 +6,13 @@
 #include <Ray.hpp>
 #include <HittableList.hpp>
 #include <Sphere.hpp>
+#include <Camera.hpp>
 
 const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
 const Vec3 RED(1., 0., 0.);
 
-void outputPPMGradient(const uint16_t width, const uint16_t height)
+void outputPPMGradient(const int width, const int height)
 {
     Vec3 colorV;
     std::cout << "P3\n"
@@ -32,36 +32,38 @@ void outputPPMGradient(const uint16_t width, const uint16_t height)
     std::cerr << std::endl;
 }
 
-void outputSkyGradient(const uint16_t width, const uint16_t height)
+void outputSkyGradient(const int width, const int height, const int samplesPerPixel)
 {
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
-    Vec3 origin{-2., -1., -1.};
-    Vec3 planeWidth{4., 0., 0.};
-    Vec3 planeHeight{0., 2., 0.};
-    Vec3 camera{0., 0., 0.};
-    Ray ray{camera};
+
+    Camera camera{Vec3{-2., -1., -1.}, Vec3{4., 0., 0.}, Vec3{0., 2., 0.}, Vec3{0., 0., 0.}};
     Hittable::HitRecord record;
 
     HittableList world;
     world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5));
     world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100.));
+    Vec3 pixelColor;
 
-    for (int32_t i = height - 1; i >= 0; --i)
+    for (int i = height - 1; i >= 0; --i)
     {
         std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
-        for (int32_t j = 0; j < width; ++j)
+        for (int j = 0; j < width; ++j)
         {
-            ray.resetDirection(origin + static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
-            if (world.getCollisionData(ray, record, 0.))
+            pixelColor.zero();
+            for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
-                ((record.normal + Vec3(1., 1., 1.)) / 2.).formatColor(std::cout);
+                if (world.getCollisionData(camera.updateLineOfSight((j + random_double()) / width, (i + random_double()) / height), record, 0.))
+                {
+                    pixelColor += (record.normal + Vec3(1., 1., 1.)) / 2.;
+                }
+                else
+                {
+                    record.t = (camera.getLineOfSight().direction().getUnitVector().y() + 1.) / 2.;
+                    pixelColor += (SKY_BLUE * record.t + WHITE * (1. - record.t));
+                }
             }
-            else
-            {
-                record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
-                (SKY_BLUE * record.t + WHITE * (1. - record.t)).formatColor(std::cout);
-            }
+            pixelColor.formatColor(std::cout, samplesPerPixel);
         }
     }
     std::cerr << std::endl;
@@ -69,5 +71,5 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
 
 int main()
 {
-    outputSkyGradient(200, 100);
+    outputSkyGradient(200, 100, 100);
 }

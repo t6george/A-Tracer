@@ -2,8 +2,6 @@
 
 Ray::Ray() : orig{Vec3{}}, dir{Vec3{}} {}
 
-Ray::Ray(const Vec3 &origin) : orig{origin}, dir{Vec3{}} {}
-
 Ray::Ray(const Vec3 &origin, const Vec3 &direction) : orig{origin}, dir{direction} {}
 
 const Vec3 &Ray::origin() const { return orig; }

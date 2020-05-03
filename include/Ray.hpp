@@ -7,8 +7,7 @@ class Ray
 
 public:
     Ray();
-    Ray(const Vec3 &origin);
-    Ray(const Vec3 &origin, const Vec3 &direction);
+    Ray(const Vec3 &origin, const Vec3 &direction = Vec3{});
     ~Ray() noexcept = default;
 
     const Vec3 &origin() const;

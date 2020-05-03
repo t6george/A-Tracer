@@ -1,7 +1,8 @@
 #include <Vec3.hpp>
 
-#include <math.h>
+#include <cmath>
 #include <iostream>
+#include <Utils.hpp>
 
 Vec3::Vec3() : c{0.0, 0.0, 0.0} {}
 
@@ -54,11 +55,11 @@ void Vec3::formatRaw(std::ostream &out) const
         << c[2] << '\n';
 }
 
-void Vec3::formatColor(std::ostream &out) const
+void Vec3::formatColor(std::ostream &out, int samplesPerPixel) const
 {
-    out << static_cast<int>(255.999 * c[0]) << ' '
-        << static_cast<int>(255.999 * c[1]) << ' '
-        << static_cast<int>(255.999 * c[2]) << '\n';
+    out << static_cast<int>(256 * clamp(c[0] / samplesPerPixel, 0., .999)) << ' '
+        << static_cast<int>(256 * clamp(c[1] / samplesPerPixel, 0., .999)) << ' '
+        << static_cast<int>(256 * clamp(c[2] / samplesPerPixel, 0., .999)) << '\n';
 }
 
 Vec3 Vec3::operator+(const Vec3 &otherV) const
@@ -99,3 +100,5 @@ Vec3 Vec3::x(const Vec3 &otherV) const
                 c[2] * otherV.x() - c[0] * otherV.z(),
                 c[0] * otherV.y() - c[1] * otherV.x());
 }
+
+void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }

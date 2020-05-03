@@ -26,7 +26,7 @@ public:
     double sqLen() const;
 
     void formatRaw(std::ostream &out) const;
-    void formatColor(std::ostream &out) const;
+    void formatColor(std::ostream &out, int samplesPerPixel = 1) const;
 
     Vec3 operator+(const Vec3 &otherV) const;
     Vec3 operator-(const Vec3 &otherV) const;
@@ -38,6 +38,7 @@ public:
 
     double o(const Vec3 &otherV) const;
     Vec3 x(const Vec3 &otherV) const;
+    void zero();
 };
 
 inline Vec3 operator*(double s, const Vec3 &v) { return v * s; }
