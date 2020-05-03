@@ -3,6 +3,7 @@
 
 #include <Vec3.hpp>
 #include <Ray.hpp>
+#include <Surface.hpp>
 #include <Sphere.hpp>
 
 const Vec3 WHITE(1., 1., 1.);
@@ -38,9 +39,8 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
     Vec3 planeHeight{0., 2., 0.};
     Vec3 camera{0., 0., 0.};
     Ray ray{camera};
-    double t;
     Sphere sphere(Vec3{0., 0., -1.}, .5);
-    Vec3 N;
+    Surface::HitRecord record;
 
     for (int32_t i = height - 1; i >= 0; --i)
     {
@@ -48,16 +48,14 @@ void outputSkyGradient(const uint16_t width, const uint16_t height)
         for (int32_t j = 0; j < width; ++j)
         {
             ray.resetDirection(origin + static_cast<double>(j) / width * planeWidth + static_cast<double>(i) / height * planeHeight);
-            t = sphere.pointOfIncidence(ray);
-            if (t > 0.)
+            if (sphere.getCollisionData(ray, record))
             {
-                N = (ray.eval(t) - sphere.getCenter()).getUnitVector();
-                ((N + Vec3(1., 1., 1.)) / 2.).formatColor(std::cout);
+                ((record.normal + Vec3(1., 1., 1.)) / 2.).formatColor(std::cout);
             }
             else
             {
-                t = (ray.direction().getUnitVector().y() + 1.) / 2.;
-                (SKY_BLUE * t + WHITE * (1. - t)).formatColor(std::cout);
+                record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
+                (SKY_BLUE * record.t + WHITE * (1. - record.t)).formatColor(std::cout);
             }
         }
     }

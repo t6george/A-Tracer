@@ -1,9 +1,7 @@
 #pragma once
-#include <Vec3.hpp>
+#include <Surface.hpp>
 
-class Ray;
-
-class Sphere
+class Sphere : public Surface
 {
     Vec3 center;
     double R;
@@ -11,7 +9,10 @@ class Sphere
 public:
     Sphere(const Vec3 &center, double R);
     ~Sphere() noexcept = default;
-    bool reflectsRay(const Ray &ray) const;
-    double pointOfIncidence(const Ray &ray) const;
+
+    bool getCollisionData(const Ray &ray, HitRecord &record,
+                          double tMin = -std::numeric_limits<double>::max(),
+                          double tMax = std::numeric_limits<double>::max()) const override;
+
     const Vec3 &getCenter() const;
 };
