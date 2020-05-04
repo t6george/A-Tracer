@@ -12,27 +12,27 @@ const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
 const Vec3 RED(1., 0., 0.);
 
-void outputPPMGradient(const int width, const int height)
+// absorbtion should be a material property
+Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth, double absorbtion)
 {
-    Vec3 colorV;
-    std::cout << "P3\n"
-              << width << ' ' << height << "\n255\n";
-    for (int32_t i = height - 1; i >= 0; --i)
+    if (depth <= 0)
     {
-        std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
-        for (int32_t j = 0; j < width; ++j)
-        {
-            colorV[0] = static_cast<double>(j) / width;
-            colorV[1] = static_cast<double>(i) / height;
-            colorV[2] = .2;
-
-            colorV.formatColor(std::cout);
-        }
+        return Vec3{0., 0., 0.};
     }
-    std::cerr << std::endl;
+
+    Hittable::HitRecord record;
+    if (world.getCollisionData(ray, record, 0.))
+    {
+        return computeRayColor(Ray{record.point, record.normal + random_unit_vec()},
+                               world, depth - 1, absorbtion) *
+               absorbtion;
+    }
+
+    record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
+    return (SKY_BLUE * record.t + WHITE * (1. - record.t));
 }
 
-void outputSkyGradient(const int width, const int height, const int samplesPerPixel)
+void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections)
 {
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
@@ -53,15 +53,8 @@ void outputSkyGradient(const int width, const int height, const int samplesPerPi
             pixelColor.zero();
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
-                if (world.getCollisionData(camera.updateLineOfSight((j + random_double()) / width, (i + random_double()) / height), record, 0.))
-                {
-                    pixelColor += (record.normal + Vec3(1., 1., 1.)) / 2.;
-                }
-                else
-                {
-                    record.t = (camera.getLineOfSight().direction().getUnitVector().y() + 1.) / 2.;
-                    pixelColor += (SKY_BLUE * record.t + WHITE * (1. - record.t));
-                }
+                pixelColor += computeRayColor(camera.updateLineOfSight((j + random_double()) / width, (i + random_double()) / height),
+                                              world, maxReflections, .5);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);
         }
@@ -71,5 +64,5 @@ void outputSkyGradient(const int width, const int height, const int samplesPerPi
 
 int main()
 {
-    outputSkyGradient(200, 100, 100);
+    outputSphereScene(200, 100, 100, 50);
 }

@@ -2,6 +2,7 @@
 #include <limits>
 #include <cstdlib>
 #include <cmath>
+#include <Vec3.hpp>
 
 const double infinity = std::numeric_limits<double>::infinity();
 const double pi = 3.1415926535897932385;
@@ -24,4 +25,17 @@ inline double random_double(double min, double max)
 inline double clamp(double x, double min, double max)
 {
     return fmin(max, fmax(min, x));
+}
+
+inline Vec3 random_unit_vec()
+{
+    double x, y, z;
+    do
+    {
+        x = random_double(-1., 1.);
+        y = random_double(-1., 1.);
+        z = random_double(-1., 1.);
+    } while (x * x + y * y + z * z > 1.);
+
+    return Vec3{x, y, z};
 }
