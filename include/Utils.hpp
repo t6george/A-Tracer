@@ -29,13 +29,8 @@ inline double clamp(double x, double min, double max)
 
 inline Vec3 random_unit_vec()
 {
-    double x, y, z;
-    do
-    {
-        x = random_double(-1., 1.);
-        y = random_double(-1., 1.);
-        z = random_double(-1., 1.);
-    } while (x * x + y * y + z * z > 1.);
-
-    return Vec3{x, y, z};
+    double a = random_double(0, 2 * pi);
+    double z = random_double(-1., 1.);
+    double r = sqrt(1. - z * z);
+    return Vec3{r * cos(a), r * sin(a), z};
 }

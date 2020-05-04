@@ -21,7 +21,7 @@ Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth, doubl
     }
 
     Hittable::HitRecord record;
-    if (world.getCollisionData(ray, record, 0.))
+    if (world.getCollisionData(ray, record, .001))
     {
         return computeRayColor(Ray{record.point, record.normal + random_unit_vec()},
                                world, depth - 1, absorbtion) *
