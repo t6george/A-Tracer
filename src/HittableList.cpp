@@ -1,6 +1,6 @@
 #include <HittableList.hpp>
 
-bool HittableList::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax) const
+bool HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax) const
 {
     Hittable::HitRecord tmpRecord;
     bool isCollision = false;

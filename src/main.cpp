@@ -7,13 +7,13 @@
 #include <HittableList.hpp>
 #include <Sphere.hpp>
 #include <Camera.hpp>
+#include <LambertianDiffuse.hpp>
 
 const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
 const Vec3 RED(1., 0., 0.);
 
-// absorbtion should be a material property
-Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth, double absorbtion)
+Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth)
 {
     if (depth <= 0)
     {
@@ -23,9 +23,9 @@ Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth, doubl
     Hittable::HitRecord record;
     if (world.getCollisionData(ray, record, .001))
     {
-        return computeRayColor(Ray{record.point, record.normal + random_unit_vec()},
-                               world, depth - 1, absorbtion) *
-               absorbtion;
+        // ray.resetOrigin(record.point);
+        // ray.resetDirection(record.normal + random_unit_vec());
+        return computeRayColor(ray, world, depth - 1) * .5;
     }
 
     record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
@@ -41,8 +41,9 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Hittable::HitRecord record;
 
     HittableList world;
-    world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5));
-    world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100.));
+    const Material &diffMat = LambertianDiffuse{Vec3{255., 0., 0.}};
+    world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5, diffMat));
+    world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100., diffMat));
     Vec3 pixelColor;
 
     for (int i = height - 1; i >= 0; --i)
@@ -54,7 +55,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
                 pixelColor += computeRayColor(camera.updateLineOfSight((j + random_double()) / width, (i + random_double()) / height),
-                                              world, maxReflections, .5);
+                                              world, maxReflections);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);
         }

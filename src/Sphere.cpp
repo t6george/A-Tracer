@@ -1,27 +1,10 @@
-#include <Sphere.hpp>
-#include <Ray.hpp>
 #include <math.h>
 
-Sphere::Sphere(const Vec3 &center, double R) : center{center}, R{R} {}
+#include <Sphere.hpp>
+#include <Ray.hpp>
 
-// double Sphere::pointOfIncidence(const Ray &ray) const
-// {
-//     Vec3 los = ray.origin() - center;
-
-//     double a = ray.direction().o(ray.direction());
-//     double half_b = ray.direction().o(los);
-//     double c = los.o(los) - R * R;
-//     double disc = half_b * half_b - a * c;
-
-//     if (disc < 0.0)
-//     {
-//         return -1.;
-//     }
-//     else
-//     {
-//         return (-half_b - sqrt(disc)) / a;
-//     }
-// }
+Sphere::Sphere(const Vec3 &center, double R, const Material &material)
+    : Hittable::Hittable{material}, center{center}, R{R} {}
 
 bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax) const
 {

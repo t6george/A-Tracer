@@ -7,7 +7,7 @@ class Sphere : public Hittable
     double R;
 
 public:
-    Sphere(const Vec3 &center, double R);
+    Sphere(const Vec3 &center, double R, const Material &material);
     ~Sphere() noexcept = default;
 
     bool getCollisionData(const Ray &ray, HitRecord &record,

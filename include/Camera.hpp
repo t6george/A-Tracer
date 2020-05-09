@@ -12,7 +12,6 @@ class Camera
 public:
     Camera(const Vec3 &corner, const Vec3 &dimX, const Vec3 &dimY, const Vec3 &origin);
     ~Camera() noexcept = default;
-
     const Ray &updateLineOfSight(double u, double v);
     const Ray &getLineOfSight() const;
     void moveCamera(const Vec3 &displacement);

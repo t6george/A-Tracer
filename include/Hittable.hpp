@@ -1,12 +1,21 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
+
 #include <Vec3.hpp>
 #include <Ray.hpp>
 #include <Utils.hpp>
 
+class Material;
+
 class Hittable
 {
+protected:
+    const Material &material;
+
+    Hittable(const Material &material);
+
 public:
     struct HitRecord
     {
@@ -14,15 +23,9 @@ public:
         Vec3 point;
         Vec3 normal;
         bool isInFront;
+        Ray reflectedRay;
 
-        inline void setLightPosition(const Ray &ray)
-        {
-            isInFront = ray.direction().o(normal) < 0.;
-            if (!isInFront)
-            {
-                normal = -normal;
-            }
-        }
+        void setLightPosition(const Ray &ray);
     };
 
     virtual ~Hittable() noexcept = default;
