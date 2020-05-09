@@ -43,8 +43,8 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
     world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5, LambertianDiffuse{Vec3{179.2, 76.8, 76.8}}));
     world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100., LambertianDiffuse{Vec3{204.8, 204.8, 0.}}));
-    world.add(std::make_shared<Sphere>(Vec3(1, 0, -1), 0.5, Metal{Vec3{204.8, 153.6, 51.2}}));
-    world.add(std::make_shared<Sphere>(Vec3(-1, 0, -1), 0.5, Metal{Vec3{204.8, 204.8, 204.8}}));
+    world.add(std::make_shared<Sphere>(Vec3(1, 0, -1), 0.5, Metal{Vec3{204.8, 153.6, 51.2}, .3}));
+    world.add(std::make_shared<Sphere>(Vec3(-1, 0, -1), 0.5, Metal{Vec3{204.8, 204.8, 204.8}, .7}));
 
     for (int i = height - 1; i >= 0; --i)
     {
