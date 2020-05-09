@@ -2,6 +2,7 @@
 
 #include <Sphere.hpp>
 #include <Ray.hpp>
+#include <Material.hpp>
 
 Sphere::Sphere(const Vec3 &center, double R, const Material &material)
     : Hittable::Hittable{material}, center{center}, R{R} {}
@@ -26,7 +27,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
             record.setLightPosition(ray);
-            return true;
+            return material.scatterRay(ray, record);
         }
         t = (-half_b + disc_root) / a;
         if (t > tMin && t < tMax)
@@ -35,7 +36,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
             record.setLightPosition(ray);
-            return true;
+            return material.scatterRay(ray, record);
         }
     }
     return false;

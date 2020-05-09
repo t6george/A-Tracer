@@ -39,6 +39,8 @@ public:
     double o(const Vec3 &otherV) const;
     Vec3 x(const Vec3 &otherV) const;
     void zero();
+
+    Vec3 reflect(const Vec3 &normal) const;
 };
 
 inline Vec3 operator*(double s, const Vec3 &v) { return v * s; }

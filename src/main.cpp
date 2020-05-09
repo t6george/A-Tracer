@@ -8,6 +8,7 @@
 #include <Sphere.hpp>
 #include <Camera.hpp>
 #include <LambertianDiffuse.hpp>
+#include <Metal.hpp>
 
 const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
@@ -23,9 +24,7 @@ Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth)
     Hittable::HitRecord record;
     if (world.getCollisionData(ray, record, .001))
     {
-        // ray.resetOrigin(record.point);
-        // ray.resetDirection(record.normal + random_unit_vec());
-        return computeRayColor(ray, world, depth - 1) * .5;
+        return computeRayColor(record.reflectedRay, world, depth - 1) * record.attenuation;
     }
 
     record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
@@ -39,12 +38,13 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
     Camera camera{Vec3{-2., -1., -1.}, Vec3{4., 0., 0.}, Vec3{0., 2., 0.}, Vec3{0., 0., 0.}};
     Hittable::HitRecord record;
-
-    HittableList world;
-    const Material &diffMat = LambertianDiffuse{Vec3{255., 0., 0.}};
-    world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5, diffMat));
-    world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100., diffMat));
     Vec3 pixelColor;
+    HittableList world;
+
+    world.add(std::make_shared<Sphere>(Vec3{0., 0., -1.}, .5, LambertianDiffuse{Vec3{179.2, 76.8, 76.8}}));
+    world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100., LambertianDiffuse{Vec3{204.8, 204.8, 0.}}));
+    world.add(std::make_shared<Sphere>(Vec3(1, 0, -1), 0.5, Metal{Vec3{204.8, 153.6, 51.2}}));
+    world.add(std::make_shared<Sphere>(Vec3(-1, 0, -1), 0.5, Metal{Vec3{204.8, 204.8, 204.8}}));
 
     for (int i = height - 1; i >= 0; --i)
     {
@@ -65,5 +65,5 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
 int main()
 {
-    outputSphereScene(200, 100, 100, 50);
+    outputSphereScene(384, 216, 100, 50);
 }

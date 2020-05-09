@@ -1,7 +1,11 @@
 #include <LambertianDiffuse.hpp>
 
-LambertianDiffuse::LambertianDiffuse(Vec3 albedo) : albedo{albedo} {}
+LambertianDiffuse::LambertianDiffuse(Vec3 color) : albedo{color / 255.999} {}
 
-void LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
+bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
+    record.reflectedRay.resetOrigin(record.point);
+    record.reflectedRay.resetDirection(record.normal + random_unit_vec());
+    record.attenuation = albedo;
+    return true;
 }

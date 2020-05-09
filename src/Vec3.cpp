@@ -102,3 +102,5 @@ Vec3 Vec3::x(const Vec3 &otherV) const
 }
 
 void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }
+
+Vec3 Vec3::reflect(const Vec3 &normal) const { return *this - 2 * o(normal) * normal; }

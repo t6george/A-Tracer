@@ -5,5 +5,6 @@
 class Material
 {
 public:
-    virtual void scatterRay(const Ray &ray, Hittable::HitRecord &record) const = 0;
+    virtual ~Material() noexcept = default;
+    virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const = 0;
 };
