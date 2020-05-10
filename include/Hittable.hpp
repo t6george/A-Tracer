@@ -24,7 +24,7 @@ public:
         Vec3 normal;
         Vec3 attenuation;
         bool isInFront;
-        Ray reflectedRay;
+        Ray scatteredRay;
 
         void setLightPosition(const Ray &ray);
     };
