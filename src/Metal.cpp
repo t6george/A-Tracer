@@ -7,7 +7,7 @@ bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
     record.scatteredRay.resetOrigin(record.point);
     record.scatteredRay.resetDirection(ray.direction().getUnitVector().reflect(record.normal) +
-                                       random_unit_vec() * fuzz);
+                                       random_unit_sphere_vec() * fuzz);
     record.attenuation = albedo;
     return record.scatteredRay.direction().o(record.normal) > 0.;
 }

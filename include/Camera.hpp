@@ -20,6 +20,7 @@ class Camera
     Ray lineOfSight;
 
     const double halfHeight, halfWidth;
+    double lensRadius, focusDist;
 
     Vec3 eyes;
 
@@ -28,7 +29,7 @@ class Camera
     Vec3 corner, dimX, dimY;
 
 public:
-    Camera(const double aspR, double fov,
+    Camera(const double aspR, double fov, const double aperture,
            const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.});
 
     ~Camera() noexcept = default;

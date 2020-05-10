@@ -37,7 +37,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
 
-    Camera camera{static_cast<double>(width) / height, 90., Vec3{-2, 2, 1}, Vec3{0, 0, -1}};
+    Camera camera{static_cast<double>(width) / height, 20., 2., Vec3{3., 3., 2.}, Vec3{0., 0., -1}};
 
     Hittable::HitRecord record;
     Vec3 pixelColor;

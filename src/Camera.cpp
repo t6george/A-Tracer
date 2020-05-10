@@ -10,15 +10,19 @@ const Vec3 &Camera::OrthoNormalBasis::getY() const { return y; }
 
 const Vec3 &Camera::OrthoNormalBasis::getZ() const { return z; }
 
-Camera::Camera(const double aspR, double fov, const Vec3 &lookfrom, const Vec3 &lookat)
-    : lineOfSight{Ray{lookfrom}}, halfHeight{tan(deg_to_rad(fov / 2.))},
-      halfWidth{aspR * halfHeight}, eyes{lookfrom}, basis{Camera::OrthoNormalBasis{eyes, lookat}},
-      corner{eyes - basis.getX() * halfWidth - basis.getY() * halfHeight - basis.getZ()},
-      dimX{2. * halfWidth * basis.getX()}, dimY{2. * halfHeight * basis.getY()} {}
+Camera::Camera(const double aspR, double fov, const double aperture,
+               const Vec3 &lookfrom, const Vec3 &lookat)
+    : lineOfSight{Ray{lookfrom}}, halfHeight{tan(deg_to_rad(fov / 2.))}, halfWidth{aspR * halfHeight},
+      lensRadius{aperture / 2.}, focusDist{(lookat - lookfrom).len()}, eyes{lookfrom}, basis{Camera::OrthoNormalBasis{eyes, lookat}},
+      corner{eyes - basis.getX() * halfWidth * focusDist - basis.getY() * halfHeight * focusDist - basis.getZ() * focusDist},
+      dimX{2. * halfWidth * focusDist * basis.getX()}, dimY{2. * halfHeight * focusDist * basis.getY()} {}
 
 const Ray &Camera::updateLineOfSight(double u, double v)
 {
-    lineOfSight.resetDirection(corner + dimX * u + dimY * v - eyes);
+    Vec3 rd = random_unit_circle_vec() * lensRadius;
+    Vec3 offset = basis.getX() * rd.x() + basis.getY() * rd.y();
+    lineOfSight.resetOrigin(eyes + offset);
+    lineOfSight.resetDirection(corner + dimX * u + dimY * v - eyes - offset);
     return lineOfSight;
 }
 
@@ -30,5 +34,5 @@ const Ray &Camera::getLineOfSight() const
 void Camera::moveCamera(const Vec3 &displacement)
 {
     eyes += displacement;
-    lineOfSight = eyes;
+    lineOfSight.resetOrigin(eyes);
 }

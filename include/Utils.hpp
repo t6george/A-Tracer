@@ -27,12 +27,20 @@ inline double clamp(double x, double min, double max)
     return fmin(max, fmax(min, x));
 }
 
-inline Vec3 random_unit_vec()
+inline Vec3 random_unit_sphere_vec()
 {
     double a = random_double(0, 2 * pi);
     double z = random_double(-1., 1.);
     double r = sqrt(1. - z * z);
     return Vec3{r * cos(a), r * sin(a), z};
+}
+
+inline Vec3 random_unit_circle_vec()
+{
+    Vec3 vec;
+    vec[0] = random_double();
+    vec[1] = random_double(0., sqrt(1. - vec[0] * vec[0]));
+    return vec;
 }
 
 inline double schlick(double cos, double relfectiveIndex)
