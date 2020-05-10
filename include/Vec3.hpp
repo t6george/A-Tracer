@@ -41,6 +41,7 @@ public:
     void zero();
 
     Vec3 reflect(const Vec3 &normal) const;
+    Vec3 refract(const Vec3 &normal, double n_over_nprime) const;
 };
 
 inline Vec3 operator*(double s, const Vec3 &v) { return v * s; }

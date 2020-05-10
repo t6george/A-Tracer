@@ -34,3 +34,10 @@ inline Vec3 random_unit_vec()
     double r = sqrt(1. - z * z);
     return Vec3{r * cos(a), r * sin(a), z};
 }
+
+inline double schlick(double cos, double relfectiveIndex)
+{
+    double r0 = (1 - relfectiveIndex) / (1 + relfectiveIndex);
+    r0 *= r0;
+    return r0 + (1. - r0) * pow(1 - cos, 5);
+}
