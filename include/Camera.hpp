@@ -29,7 +29,7 @@ class Camera
     Vec3 corner, dimX, dimY;
 
 public:
-    Camera(const double aspR, double fov, const double aperture,
+    Camera(const double aspR, double fov, const double aperture, const double focusD,
            const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.});
 
     ~Camera() noexcept = default;

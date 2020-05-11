@@ -12,14 +12,14 @@ inline double deg_to_rad(double degrees)
     return degrees * pi / 180.;
 }
 
-inline double random_double()
+inline double random_double(double min = 0., double max = 1.)
 {
-    return rand() / (RAND_MAX + 1.);
+    return min + (max - min) * (rand() / (RAND_MAX + 1.));
 }
 
-inline double random_double(double min, double max)
+inline Vec3 random_color(Vec3 min = Vec3{0., 0., 0.}, Vec3 max = Vec3{255., 255., 255.})
 {
-    return min + (max - min) * random_double();
+    return Vec3{random_double(min[0], max[0]), random_double(min[1], max[1]), random_double(min[2], max[2])};
 }
 
 inline double clamp(double x, double min, double max)
