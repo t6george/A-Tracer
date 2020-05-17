@@ -3,7 +3,6 @@
 
 class Metal : public Material
 {
-    const Vec3 albedo;
     double fuzz;
 
 public:

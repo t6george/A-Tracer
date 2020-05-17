@@ -12,9 +12,9 @@ class Material;
 class Hittable
 {
 protected:
-    const Material &material;
+    const std::shared_ptr<Material> material;
 
-    Hittable(const Material &material);
+    Hittable(const std::shared_ptr<Material> material);
 
 public:
     struct HitRecord

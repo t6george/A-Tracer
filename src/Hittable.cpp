@@ -9,4 +9,4 @@ void Hittable::HitRecord::setLightPosition(const Ray &ray)
     }
 }
 
-Hittable::Hittable(const Material &material) : material{material} {}
+Hittable::Hittable(const std::shared_ptr<Material> material) : material{material} {}

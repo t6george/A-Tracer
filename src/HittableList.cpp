@@ -1,4 +1,5 @@
 #include <HittableList.hpp>
+#include <iostream>
 
 bool HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax) const
 {

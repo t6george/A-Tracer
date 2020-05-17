@@ -5,8 +5,6 @@
 
 class LambertianDiffuse : public Material
 {
-    const Vec3 albedo;
-
 public:
     LambertianDiffuse(Vec3 color);
     ~LambertianDiffuse() noexcept = default;

@@ -1,6 +1,6 @@
 #include <Dielectric.hpp>
 
-Dielectric::Dielectric(const double reflectiveIndex) : reflectiveIndex{reflectiveIndex} {}
+Dielectric::Dielectric(const double reflectiveIndex) : Material::Material{Vec3{255., 255., 255.}}, reflectiveIndex{reflectiveIndex} {}
 
 bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
@@ -24,7 +24,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
             record.normal, n_over_nprime));
     }
 
-    record.attenuation = Vec3{1., 1., 1.};
+    record.attenuation = albedo;
     record.scatteredRay.resetOrigin(record.point);
 
     return true;

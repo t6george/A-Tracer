@@ -10,6 +10,7 @@
 #include <LambertianDiffuse.hpp>
 #include <Metal.hpp>
 #include <Dielectric.hpp>
+#include <vector>
 
 const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
@@ -45,37 +46,37 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter{0., .2, 0.};
     double chooseMaterial;
 
-    world.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., LambertianDiffuse{Vec3{127.5, 127.5, 127.5}}));
-
-    for (int a = -3; a < 3; ++a)
+    world.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., std::make_shared<LambertianDiffuse>(Vec3{0., 127.5, 0.})));
+    for (int a = -11; a < 11; ++a)
     {
-        for (int b = -3; b < 3; ++b)
+        for (int b = -11; b < 11; ++b)
         {
             randomCenter[0] = a + .9 * random_double();
             randomCenter[2] = b + .9 * random_double();
             chooseMaterial = random_double();
 
-            if ((randomCenter - Vec3{4., .2, 0.}).len() > .9)
+            if ((randomCenter - Vec3{4., .2, 0.}).sqLen() > .81)
             {
-                if (chooseMaterial < .8)
+                if (chooseMaterial < .7)
                 {
-                    world.add(std::make_shared<Sphere>(randomCenter, .2, LambertianDiffuse{random_color()}));
+                    world.add(std::make_shared<Sphere>(randomCenter, .2, std::make_shared<LambertianDiffuse>(random_color())));
                 }
-                else if (chooseMaterial < .95)
+                else if (chooseMaterial < .9)
                 {
-                    world.add(std::make_shared<Sphere>(randomCenter, .2, Metal{random_color(Vec3{127.5, 127.5, 127.5}), random_double(0., .5)}));
+                    world.add(std::make_shared<Sphere>(randomCenter, .2, std::make_shared<Metal>(random_color(Vec3{127.5, 127.5, 127.5}), random_double(0., .5))));
                 }
                 else
                 {
-                    world.add(std::make_shared<Sphere>(randomCenter, .2, Dielectric{1.5}));
+                    world.add(std::make_shared<Sphere>(randomCenter, .2, std::make_shared<Dielectric>(1.5)));
                 }
             }
         }
     }
 
-    world.add(std::make_shared<Sphere>(Vec3{0., 1., 0.}, 1., Dielectric{1.5}));
-    world.add(std::make_shared<Sphere>(Vec3{-4., 1., 0.}, 1., LambertianDiffuse{Vec3{102., 51., 25.5}}));
-    world.add(std::make_shared<Sphere>(Vec3{4., 1., 0.}, 1., Metal{Vec3{178.5, 153., 127.5}, 0.}));
+    // world.add(std::make_shared<Sphere>(Vec3{0., 1., 0.}, 1., Dielectric{1.5}));
+    // world.add(std::make_shared<Sphere>(Vec3{-4., .2, 0.}, .2, LambertianDiffuse{Vec3{102., 51., 25.5}}));
+    // world.add(std::make_shared<Sphere>(Vec3{4., 1., 0.}, 1., Metal{Vec3{178.5, 153., 127.5}, 0.}));
+
     // world.add(std::make_shared<Sphere>(Vec3{0., -100.5, -1.}, 100., LambertianDiffuse{Vec3{204.8, 204.8, 0.}}));
     // world.add(std::make_shared<Sphere>(Vec3{1, 0, -1}, .5, Metal{Vec3{204.8, 153.6, 51.2}, .3}));
     // world.add(std::make_shared<Sphere>(Vec3{-1, 0, -1}, .5, Metal{Vec3{204.8, 204.8, 204.8}, .7}));

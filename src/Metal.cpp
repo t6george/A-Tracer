@@ -1,7 +1,7 @@
 #include <Metal.hpp>
 #include <Utils.hpp>
 
-Metal::Metal(Vec3 color, double fuzz) : albedo{color / 255.}, fuzz{clamp(fuzz, 0., 1.)} {}
+Metal::Metal(Vec3 color, double fuzz) : Material::Material{color}, fuzz{clamp(fuzz, 0., 1.)} {}
 
 bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {

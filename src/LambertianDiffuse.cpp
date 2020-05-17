@@ -1,6 +1,6 @@
 #include <LambertianDiffuse.hpp>
 
-LambertianDiffuse::LambertianDiffuse(Vec3 color) : albedo{color / 255.} {}
+LambertianDiffuse::LambertianDiffuse(Vec3 color) : Material::Material{color} {}
 
 bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
