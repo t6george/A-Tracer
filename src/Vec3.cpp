@@ -87,6 +87,13 @@ Vec3 Vec3::operator/(double s) const
     return Vec3{c[0] / s, c[1] / s, c[2] / s};
 }
 
+bool Vec3::operator==(const Vec3 &otherV) const
+{
+    return c[0] == otherV.x() && c[1] == otherV.y() && c[2] == otherV.z();
+}
+
+bool Vec3::operator!=(const Vec3 &otherV) const { return !(*this == otherV); }
+
 Vec3 Vec3::getUnitVector() const { return *this / len(); }
 
 double Vec3::o(const Vec3 &otherV) const

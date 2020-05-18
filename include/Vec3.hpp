@@ -34,6 +34,9 @@ public:
     Vec3 operator*(double s) const;
     Vec3 operator/(double s) const;
 
+    bool operator==(const Vec3 &otherV) const;
+    bool operator!=(const Vec3 &otherV) const;
+
     Vec3 getUnitVector() const;
 
     double o(const Vec3 &otherV) const;

@@ -1,14 +1,23 @@
 #include <math.h>
+#include <cassert>
 
 #include <Sphere.hpp>
 #include <Ray.hpp>
 #include <Material.hpp>
 
-Sphere::Sphere(const Vec3 &center, double R, const std::shared_ptr<Material> material)
-    : Hittable::Hittable{material}, center{center}, R{R} {}
+Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
+               const double t0, const double t1)
+    : Hittable::Hittable{material, t0, t1}, center0{center0}, center1{center0 + Vec3{1., 0., 0.}},
+      center{center0}, R{R} { assert(center0 != center1); }
 
-bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax) const
+Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
+               const std::shared_ptr<Material> material, const double t0, const double t1)
+    : Hittable::Hittable{material, t0, t1}, center0{center0}, center1{center1},
+      center{center0}, R{R} { assert(center0 != center1); }
+
+bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
+    translate(ray.time());
     Vec3 los = ray.origin() - center;
 
     double a = ray.direction().o(ray.direction());
@@ -45,4 +54,9 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
 const Vec3 &Sphere::getCenter() const
 {
     return center;
+}
+
+void Sphere::translate(const double time)
+{
+    center = center0 + (center1 - center0) * (time - time0) / (time1 - time0);
 }

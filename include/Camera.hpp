@@ -27,10 +27,12 @@ class Camera
     OrthoNormalBasis basis;
 
     Vec3 corner, dimX, dimY;
+    double time1, time2;
 
 public:
     Camera(const double aspR, double fov, const double aperture, const double focusD,
-           const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.});
+           const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.},
+           double t0 = 0., double t1 = 0.);
 
     ~Camera() noexcept = default;
     const Ray &updateLineOfSight(double u, double v);

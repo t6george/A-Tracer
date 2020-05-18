@@ -26,6 +26,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 
     record.attenuation = albedo;
     record.scatteredRay.resetOrigin(record.point);
+    record.scatteredRay.setTime(ray.time());
 
     return true;
 }

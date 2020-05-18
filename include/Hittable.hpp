@@ -13,8 +13,10 @@ class Hittable
 {
 protected:
     const std::shared_ptr<Material> material;
+    const double time0, time1;
 
-    Hittable(const std::shared_ptr<Material> material);
+    Hittable(const std::shared_ptr<Material> material,
+             const double t0, const double t1);
 
 public:
     struct HitRecord
@@ -32,5 +34,6 @@ public:
     virtual ~Hittable() noexcept = default;
     virtual bool getCollisionData(const Ray &ray, HitRecord &record,
                                   double tMin = -infinity,
-                                  double tMax = infinity) const = 0;
+                                  double tMax = infinity) = 0;
+    virtual void translate(const double time) = 0;
 };

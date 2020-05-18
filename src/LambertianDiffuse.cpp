@@ -6,6 +6,7 @@ bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) 
 {
     record.scatteredRay.resetOrigin(record.point);
     record.scatteredRay.resetDirection(record.normal + random_unit_sphere_vec());
+    record.scatteredRay.setTime(ray.time());
     record.attenuation = albedo;
     return true;
 }
