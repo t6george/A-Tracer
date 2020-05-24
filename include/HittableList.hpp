@@ -6,7 +6,7 @@
 
 class Ray;
 
-class HittableList
+class HittableList : public Hittable
 {
     std::vector<std::shared_ptr<Hittable>> hittables;
 
@@ -16,7 +16,10 @@ public:
 
     bool getCollisionData(const Ray &ray, Hittable::HitRecord &record,
                           double tMin = -infinity,
-                          double tMax = infinity) const;
+                          double tMax = infinity) override;
+
+    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+
     void add(std::shared_ptr<Hittable> hittable);
     void clear();
 };

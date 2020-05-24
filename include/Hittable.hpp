@@ -13,11 +13,9 @@ class AABB;
 class Hittable
 {
 protected:
-    const std::shared_ptr<Material> material;
-    const double time0, time1;
+    Hittable() = default;
 
-    Hittable(const std::shared_ptr<Material> material,
-             const double t0, const double t1);
+    virtual ~Hittable() noexcept = default;
 
 public:
     struct HitRecord
@@ -29,15 +27,19 @@ public:
         bool isInFront;
         Ray scatteredRay;
 
-        void setLightPosition(const Ray &ray);
+        inline void setLightPosition(const Ray &ray)
+        {
+            isInFront = ray.direction().o(normal) < 0.;
+            if (!isInFront)
+            {
+                normal = -normal;
+            }
+        }
     };
 
-    virtual ~Hittable() noexcept = default;
     virtual bool getCollisionData(const Ray &ray, HitRecord &record,
                                   double tMin = -infinity,
                                   double tMax = infinity) = 0;
-
-    virtual void translate(const double time) = 0;
 
     virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 };

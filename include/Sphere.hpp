@@ -1,8 +1,8 @@
 #pragma once
-#include <Hittable.hpp>
+#include <Shape.hpp>
 #include <AABB.hpp>
 
-class Sphere : public Hittable
+class Sphere : public Shape
 {
     const Vec3 center0, center1;
     Vec3 center;

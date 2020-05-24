@@ -16,7 +16,7 @@ const Vec3 WHITE(1., 1., 1.);
 const Vec3 SKY_BLUE(.5, .7, 1.);
 const Vec3 RED(1., 0., 0.);
 
-Vec3 computeRayColor(const Ray &ray, const HittableList &world, int depth)
+Vec3 computeRayColor(const Ray &ray, HittableList &world, int depth)
 {
     if (depth <= 0)
     {

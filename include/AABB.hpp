@@ -9,7 +9,7 @@ class AABB
 
 public:
     static AABB combineAABBs(const AABB &b1, const AABB &b2);
-    AABB(const Vec3 &minPoint, const Vec3 &maxPoint);
+    AABB(const Vec3 &minPoint = Vec3{}, const Vec3 &maxPoint = Vec3{});
     ~AABB() noexcept = default;
 
     const Vec3 &getMinPoint() const;
