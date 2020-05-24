@@ -8,6 +8,7 @@
 #include <Utils.hpp>
 
 class Material;
+class AABB;
 
 class Hittable
 {
@@ -35,5 +36,8 @@ public:
     virtual bool getCollisionData(const Ray &ray, HitRecord &record,
                                   double tMin = -infinity,
                                   double tMax = infinity) = 0;
+
     virtual void translate(const double time) = 0;
+
+    virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 };

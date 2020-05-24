@@ -1,11 +1,13 @@
 #pragma once
 #include <Hittable.hpp>
+#include <AABB.hpp>
 
 class Sphere : public Hittable
 {
     const Vec3 center0, center1;
     Vec3 center;
     double R;
+    AABB boundingBox;
 
 public:
     Sphere(const Vec3 &center0, const double R,
@@ -23,4 +25,6 @@ public:
 
     const Vec3 &getCenter() const;
     void translate(const double time) override;
+
+    bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };
