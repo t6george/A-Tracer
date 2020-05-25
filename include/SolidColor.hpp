@@ -9,6 +9,7 @@ class SolidColor : public Texture
 public:
     SolidColor() = default;
     SolidColor(const Vec3 &color);
+    SolidColor(const double r, const double g, const double b);
 
     ~SolidColor() noexcept = default;
 

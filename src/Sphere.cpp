@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include <Sphere.hpp>
 #include <Ray.hpp>
 #include <Material.hpp>
@@ -15,20 +13,14 @@ void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 
 Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
                const double t0, const double t1)
-    : Shape::Shape{material, t0, t1}, center0{center0}, center1{center0 + Vec3{1., 0., 0.}},
-      center{center0}, R{R}, boundingBox{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}}
-{
-    assert(center0 != center1);
-}
+    : Shape::Shape{material, t0, t1}, center0{center0}, center1{center0},
+      center{center0}, R{R}, boundingBox{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}} {}
 
 Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
                const std::shared_ptr<Material> material, const double t0, const double t1)
     : Shape::Shape{material, t0, t1}, center0{center0}, center1{center1},
       center{center0}, R{R}, boundingBox{AABB::combineAABBs(AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}},
-                                                            AABB{center1 - Vec3{R, R, R}, center1 + Vec3{R, R, R}})}
-{
-    assert(center0 != center1);
-}
+                                                            AABB{center1 - Vec3{R, R, R}, center1 + Vec3{R, R, R}})} {}
 
 bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
