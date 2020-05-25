@@ -4,7 +4,7 @@
 
 class SolidColor : public Texture
 {
-    Vec3 color;
+    const Vec3 color;
 
 public:
     SolidColor() = default;

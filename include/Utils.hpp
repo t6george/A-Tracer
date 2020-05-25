@@ -27,9 +27,14 @@ inline Vec3 random_color(Vec3 min = Vec3{0., 0., 0.}, Vec3 max = Vec3{1., 1., 1.
     return Vec3{random_double(min[0], max[0]), random_double(min[1], max[1]), random_double(min[2], max[2])};
 }
 
-inline double clamp(double x, double min, double max)
+inline double clamp(const double x, const double min, const double max)
 {
     return fmin(max, fmax(min, x));
+}
+
+inline Vec3 clamp(const Vec3 &v, const double min, const double max)
+{
+    return Vec3{clamp(v[0], min, max), clamp(v[1], min, max), clamp(v[2], min, max)};
 }
 
 inline Vec3 random_unit_sphere_vec()

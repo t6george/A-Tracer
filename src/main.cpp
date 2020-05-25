@@ -4,6 +4,8 @@
 #include <Utils.hpp>
 #include <SolidColor.hpp>
 #include <CheckerTexture.hpp>
+#include <NoiseTexture.hpp>
+
 #include <Ray.hpp>
 #include <HittableList.hpp>
 #include <Sphere.hpp>
@@ -34,6 +36,17 @@ Vec3 computeRayColor(const Ray &ray, HittableList &world, int depth)
     return (SKY_BLUE * record.t + WHITE * (1. - record.t));
 }
 
+HittableList generatePerlinSpheres()
+{
+    HittableList objects;
+
+    auto pertext = std::make_shared<NoiseTexture>();
+    objects.add(std::make_shared<Sphere>(Vec3{0, -1000, 0}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
+    objects.add(std::make_shared<Sphere>(Vec3{0, 2, 0}, 2., std::make_shared<LambertianDiffuse>(pertext)));
+
+    return objects;
+}
+
 void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections)
 {
     std::cout << "P3\n"
@@ -46,14 +59,15 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     HittableList world;
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 randomCenter1;
+    world = generatePerlinSpheres();
     // double chooseMaterial;
 
-    auto checker = std::make_shared<CheckerTexture>(
-        std::make_shared<SolidColor>(0.2, 0.3, 0.1),
-        std::make_shared<SolidColor>(0.9, 0.9, 0.9), Vec3{10., 10., 10.});
+    // auto checker = std::make_shared<CheckerTexture>(
+    //     std::make_shared<SolidColor>(0.2, 0.3, 0.1),
+    //     std::make_shared<SolidColor>(0.9, 0.9, 0.9), Vec3{10., 10., 10.});
 
-    world.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000.,
-                                       std::make_shared<LambertianDiffuse>(checker)));
+    // world.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000.,
+    //                                    std::make_shared<LambertianDiffuse>(checker)));
 
     // for (int a = -11; a < 11; ++a)
     // {
@@ -89,7 +103,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
     // world.add(std::make_shared<Sphere>(Vec3{0., 1., 0.}, 1., std::make_shared<Dielectric>(1.5)));
     // world.add(std::make_shared<Sphere>(Vec3{-4., 1., 0.}, 1., std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.4, .2, .1))));
-    world.add(std::make_shared<Sphere>(Vec3{4., 1., 0.}, 1., std::make_shared<Metal>(std::make_shared<SolidColor>(.7, .6, .5), 0.)));
+    // world.add(std::make_shared<Sphere>(Vec3{4., 1., 0.}, 1., std::make_shared<Metal>(std::make_shared<SolidColor>(.7, .6, .5), 0.)));
 
     for (int i = height - 1; i >= 0; --i)
     {
