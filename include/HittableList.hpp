@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <Hittable.hpp>
+#include <AABB.hpp>
 
 class Ray;
 
@@ -22,4 +23,6 @@ public:
 
     void add(std::shared_ptr<Hittable> hittable);
     void clear();
+
+    friend class BVHNode;
 };
