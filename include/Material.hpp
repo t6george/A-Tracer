@@ -1,17 +1,16 @@
 #pragma once
 
 #include <Hittable.hpp>
-#include <Vec3.hpp>
 
-#include <iostream>
+class Texture;
 
 class Material
 {
 protected:
-    const Vec3 albedo;
+    const std::shared_ptr<Texture> albedo;
 
 public:
-    Material(const Vec3 &color) : albedo{color / 255.} {}
+    Material(const std::shared_ptr<Texture> albedo) : albedo{albedo} {}
     virtual ~Material() noexcept = default;
     virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const = 0;
 };

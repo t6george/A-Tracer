@@ -22,7 +22,7 @@ inline int random_int(int min = 0, int max = 2)
     return static_cast<int>(random_double(static_cast<double>(min), static_cast<double>(max)));
 }
 
-inline Vec3 random_color(Vec3 min = Vec3{0., 0., 0.}, Vec3 max = Vec3{255., 255., 255.})
+inline Vec3 random_color(Vec3 min = Vec3{0., 0., 0.}, Vec3 max = Vec3{1., 1., 1.})
 {
     return Vec3{random_double(min[0], max[0]), random_double(min[1], max[1]), random_double(min[2], max[2])};
 }

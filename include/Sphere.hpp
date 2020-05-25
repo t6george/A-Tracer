@@ -10,6 +10,8 @@ class Sphere : public Shape
     AABB boundingBox;
 
 public:
+    static void getSphereUV(const Vec3 &p, double &u, double &v);
+
     Sphere(const Vec3 &center0, const double R,
            const std::shared_ptr<Material> material,
            const double t0 = 0., const double t1 = 1.);

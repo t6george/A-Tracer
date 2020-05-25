@@ -1,6 +1,9 @@
 #include <Dielectric.hpp>
+#include <SolidColor.hpp>
 
-Dielectric::Dielectric(const double reflectiveIndex) : Material::Material{Vec3{255., 255., 255.}}, reflectiveIndex{reflectiveIndex} {}
+Dielectric::Dielectric(const double reflectiveIndex)
+    : Material::Material{std::make_shared<SolidColor>(Vec3{1., 1., 1.})},
+      reflectiveIndex{reflectiveIndex} {}
 
 bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
@@ -24,7 +27,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
             record.normal, n_over_nprime));
     }
 
-    record.attenuation = albedo;
+    record.attenuation = albedo->getValue(record.u, record.v, Vec3{});
     record.scatteredRay.resetOrigin(record.point);
     record.scatteredRay.setTime(ray.time());
 

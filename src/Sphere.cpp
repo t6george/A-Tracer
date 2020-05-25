@@ -1,9 +1,17 @@
-#include <math.h>
 #include <cassert>
 
 #include <Sphere.hpp>
 #include <Ray.hpp>
 #include <Material.hpp>
+#include <Utils.hpp>
+
+void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
+{
+    double phi = atan2(p.z(), p.x());
+    double theta = asin(p.y());
+    u = 1. - (phi + pi) / (2. * pi);
+    v = (theta + pi / 2.) / pi;
+}
 
 Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
                const double t0, const double t1)

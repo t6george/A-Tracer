@@ -20,7 +20,7 @@ protected:
 public:
     struct HitRecord
     {
-        double t;
+        double t, u, v;
         Vec3 point;
         Vec3 normal;
         Vec3 attenuation;
