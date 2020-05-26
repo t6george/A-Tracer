@@ -1,6 +1,34 @@
 #include <Perlin.hpp>
 #include <Utils.hpp>
 
+double Perlin::trilinearInterpolation(const double c[2][2][2],
+                                      const double u,
+                                      const double v,
+                                      const double w)
+{
+    double a = 0., di, dj, dk;
+
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            for (int k = 0; k < 2; ++k)
+            {
+                di = static_cast<double>(i);
+                dj = static_cast<double>(j);
+                dk = static_cast<double>(k);
+
+                a += c[i][j][k] *
+                     (di * u + (1. - di) * (1. - u)) *
+                     (dj * v + (1. - dj) * (1. - v)) *
+                     (dk * w + (1. - dk) * (1. - w));
+            }
+        }
+    }
+
+    return a;
+}
+
 template <typename T, size_t N>
 void Perlin::permuteArray(std::array<T, N> &arr)
 {
@@ -29,9 +57,32 @@ void Perlin::init()
 
 double Perlin::getNoise(const Vec3 &point) const
 {
-    int i = static_cast<int>(4 * point.x()) & 0xFF;
-    int j = static_cast<int>(4 * point.y()) & 0xFF;
-    int k = static_cast<int>(4 * point.z()) & 0xFF;
+    int i = static_cast<int>(floor(point.x()));
+    int j = static_cast<int>(floor(point.y()));
+    int k = static_cast<int>(floor(point.z()));
 
-    return randomDoubles[permX[i] ^ permY[j] ^ permZ[k]];
+    double u = point.x() - static_cast<double>(i);
+    double v = point.y() - static_cast<double>(j);
+    double w = point.z() - static_cast<double>(k);
+
+    u = u * u * (3. - 2. * u);
+    v = v * v * (3. - 2. * v);
+    w = w * w * (3. - 2. * w);
+
+    double c[2][2][2];
+
+    for (int di = 0; di < 2; ++di)
+    {
+        for (int dj = 0; dj < 2; ++dj)
+        {
+            for (int dk = 0; dk < 2; ++dk)
+            {
+                c[di][dj][dk] = randomDoubles[permX[(i + di) & 0xFF] ^
+                                              permY[(j + dj) & 0xFF] ^
+                                              permZ[(k + dk) & 0xFF]];
+            }
+        }
+    }
+
+    return trilinearInterpolation(c, u, v, w);
 }
