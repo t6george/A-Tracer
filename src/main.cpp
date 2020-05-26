@@ -4,7 +4,7 @@
 #include <Utils.hpp>
 #include <SolidColor.hpp>
 #include <CheckerTexture.hpp>
-#include <NoiseTexture.hpp>
+#include <TurbulentTexture.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -40,7 +40,7 @@ HittableList generatePerlinSpheres()
 {
     HittableList objects;
 
-    auto pertext = std::make_shared<NoiseTexture>();
+    auto pertext = std::make_shared<TurbulentTexture>();
     objects.add(std::make_shared<Sphere>(Vec3{0, -1000, 0}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
     objects.add(std::make_shared<Sphere>(Vec3{0, 2, 0}, 2., std::make_shared<LambertianDiffuse>(pertext)));
 

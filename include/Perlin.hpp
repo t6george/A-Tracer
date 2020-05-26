@@ -6,7 +6,7 @@ class Perlin
 {
     static constexpr int pointCount = 256;
 
-    // std::array<double, Perlin::pointCount> randomDoubles;
+    std::array<double, Perlin::pointCount> randomDoubles;
     std::array<Vec3, Perlin::pointCount> randomVectors;
     std::array<int, Perlin::pointCount> permX, permY, permZ;
 
@@ -29,6 +29,8 @@ public:
     Perlin();
     ~Perlin() noexcept = default;
 
-    double getNoise(const Vec3 &point) const;
-    double getTurbulence(const Vec3 &point, int depth = 7) const;
+    double getScalarNoise(const Vec3 &point) const;
+    double getLaticeVectorNoise(const Vec3 &point) const;
+
+    double getTurbulence(const Vec3 &point, int depth) const;
 };

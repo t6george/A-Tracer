@@ -90,7 +90,7 @@ void Perlin::init()
     Perlin::permuteArray(permZ);
 }
 
-double Perlin::getNoise(const Vec3 &point) const
+double Perlin::getScalarNoise(const Vec3 &point) const
 {
     int i = static_cast<int>(floor(point.x()));
     int j = static_cast<int>(floor(point.y()));
@@ -100,22 +100,33 @@ double Perlin::getNoise(const Vec3 &point) const
     double v = point.y() - static_cast<double>(j);
     double w = point.z() - static_cast<double>(k);
 
-    // double c[2][2][2];
+    double c[2][2][2];
 
-    // for (int di = 0; di < 2; ++di)
-    // {
-    //     for (int dj = 0; dj < 2; ++dj)
-    //     {
-    //         for (int dk = 0; dk < 2; ++dk)
-    //         {
-    //             c[di][dj][dk] = randomDoubles[permX[(i + di) & 0xFF] ^
-    //                                           permY[(j + dj) & 0xFF] ^
-    //                                           permZ[(k + dk) & 0xFF]];
-    //         }
-    //     }
-    // }
+    for (int di = 0; di < 2; ++di)
+    {
+        for (int dj = 0; dj < 2; ++dj)
+        {
+            for (int dk = 0; dk < 2; ++dk)
+            {
+                c[di][dj][dk] = randomDoubles[permX[(i + di) & 0xFF] ^
+                                              permY[(j + dj) & 0xFF] ^
+                                              permZ[(k + dk) & 0xFF]];
+            }
+        }
+    }
 
-    // return trilinearInterpolation(c, u, v, w);
+    return trilinearInterpolation(c, u, v, w);
+}
+
+double Perlin::getLaticeVectorNoise(const Vec3 &point) const
+{
+    int i = static_cast<int>(floor(point.x()));
+    int j = static_cast<int>(floor(point.y()));
+    int k = static_cast<int>(floor(point.z()));
+
+    double u = point.x() - static_cast<double>(i);
+    double v = point.y() - static_cast<double>(j);
+    double w = point.z() - static_cast<double>(k);
 
     Vec3 c[2][2][2];
 
@@ -142,7 +153,7 @@ double Perlin::getTurbulence(const Vec3 &point, int depth) const
 
     for (int i = 0; i < depth; ++i)
     {
-        a += weight * getNoise(point);
+        a += weight * getLaticeVectorNoise(point);
         weight /= 2.;
         tmp *= 2.;
     }
