@@ -2,11 +2,14 @@
 #include <Utils.hpp>
 
 double Perlin::trilinearInterpolation(const double c[2][2][2],
-                                      const double u,
-                                      const double v,
-                                      const double w)
+                                      double u,
+                                      double v,
+                                      double w) const
 {
     double a = 0., di, dj, dk;
+    u = u * u * (3. - 2. * u);
+    v = v * v * (3. - 2. * v);
+    w = w * w * (3. - 2. * w);
 
     for (int i = 0; i < 2; ++i)
     {
@@ -19,6 +22,37 @@ double Perlin::trilinearInterpolation(const double c[2][2][2],
                 dk = static_cast<double>(k);
 
                 a += c[i][j][k] *
+                     (di * u + (1. - di) * (1. - u)) *
+                     (dj * v + (1. - dj) * (1. - v)) *
+                     (dk * w + (1. - dk) * (1. - w));
+            }
+        }
+    }
+
+    return a;
+}
+
+double Perlin::perlinInterpolation(const Vec3 c[2][2][2],
+                                   double u,
+                                   double v,
+                                   double w) const
+{
+    double a = 0., di, dj, dk;
+    u = u * u * (3. - 2. * u);
+    v = v * v * (3. - 2. * v);
+    w = w * w * (3. - 2. * w);
+
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            for (int k = 0; k < 2; ++k)
+            {
+                di = static_cast<double>(i);
+                dj = static_cast<double>(j);
+                dk = static_cast<double>(k);
+
+                a += c[i][j][k].o(Vec3{u - di, v - dj, w - dk}) *
                      (di * u + (1. - di) * (1. - u)) *
                      (dj * v + (1. - dj) * (1. - v)) *
                      (dk * w + (1. - dk) * (1. - w));
@@ -46,7 +80,7 @@ void Perlin::init()
 {
     for (int i = 0; i < Perlin::pointCount; ++i)
     {
-        randomDoubles[i] = random_double();
+        randomVectors[i] = Vec3{random_double(-1., 1.), random_double(-1., 1.), random_double(-1., 1.)}.getUnitVector();
         permX[i] = permY[i] = permZ[i] = i;
     }
 
@@ -65,11 +99,24 @@ double Perlin::getNoise(const Vec3 &point) const
     double v = point.y() - static_cast<double>(j);
     double w = point.z() - static_cast<double>(k);
 
-    u = u * u * (3. - 2. * u);
-    v = v * v * (3. - 2. * v);
-    w = w * w * (3. - 2. * w);
+    // double c[2][2][2];
 
-    double c[2][2][2];
+    // for (int di = 0; di < 2; ++di)
+    // {
+    //     for (int dj = 0; dj < 2; ++dj)
+    //     {
+    //         for (int dk = 0; dk < 2; ++dk)
+    //         {
+    //             c[di][dj][dk] = randomDoubles[permX[(i + di) & 0xFF] ^
+    //                                           permY[(j + dj) & 0xFF] ^
+    //                                           permZ[(k + dk) & 0xFF]];
+    //         }
+    //     }
+    // }
+
+    // return trilinearInterpolation(c, u, v, w);
+
+    Vec3 c[2][2][2];
 
     for (int di = 0; di < 2; ++di)
     {
@@ -77,12 +124,27 @@ double Perlin::getNoise(const Vec3 &point) const
         {
             for (int dk = 0; dk < 2; ++dk)
             {
-                c[di][dj][dk] = randomDoubles[permX[(i + di) & 0xFF] ^
+                c[di][dj][dk] = randomVectors[permX[(i + di) & 0xFF] ^
                                               permY[(j + dj) & 0xFF] ^
                                               permZ[(k + dk) & 0xFF]];
             }
         }
     }
 
-    return trilinearInterpolation(c, u, v, w);
+    return perlinInterpolation(c, u, v, w);
+}
+
+double Perlin::getTurbulence(const Vec3 &point, int depth) const
+{
+    double a = 0., weight = 1.;
+    Vec3 tmp = point;
+
+    for (int i = 0; i < depth; ++i)
+    {
+        a += weight * getNoise(point);
+        weight /= 2.;
+        tmp *= 2.;
+    }
+
+    return fabs(a);
 }
