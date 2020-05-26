@@ -113,7 +113,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
             pixelColor.zero();
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
-                pixelColor += computeRayColor(camera.updateLineOfSight((j + random_double()) / width, (i + random_double()) / height),
+                pixelColor += computeRayColor(camera.updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
                                               world, maxReflections);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);

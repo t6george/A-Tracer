@@ -1,6 +1,5 @@
 #include <Vec3.hpp>
 
-#include <cmath>
 #include <iostream>
 #include <Utils.hpp>
 
@@ -57,9 +56,9 @@ void Vec3::formatRaw(std::ostream &out) const
 
 void Vec3::formatColor(std::ostream &out, int samplesPerPixel) const
 {
-    out << static_cast<int>(256 * clamp(sqrt(c[0] / samplesPerPixel), 0., .999)) << ' '
-        << static_cast<int>(256 * clamp(sqrt(c[1] / samplesPerPixel), 0., .999)) << ' '
-        << static_cast<int>(256 * clamp(sqrt(c[2] / samplesPerPixel), 0., .999)) << '\n';
+    out << static_cast<int>(256 * utils::clamp(sqrt(c[0] / samplesPerPixel), 0., .999)) << ' '
+        << static_cast<int>(256 * utils::clamp(sqrt(c[1] / samplesPerPixel), 0., .999)) << ' '
+        << static_cast<int>(256 * utils::clamp(sqrt(c[2] / samplesPerPixel), 0., .999)) << '\n';
 }
 
 Vec3 Vec3::operator+(const Vec3 &otherV) const
@@ -116,4 +115,30 @@ Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
 {
     Vec3 parallel = n_over_nprime * (*this + normal * normal.o(-*this));
     return parallel - normal * sqrt(1. - parallel.sqLen());
+}
+
+Vec3 Vec3::randomColor(const Vec3 &min, const Vec3 &max)
+{
+    return Vec3{utils::random_double(min[0], max[0]), utils::random_double(min[1], max[1]), utils::random_double(min[2], max[2])};
+}
+
+Vec3 Vec3::clamp(const Vec3 &v, const double min, const double max)
+{
+    return Vec3{utils::clamp(v[0], min, max), utils::clamp(v[1], min, max), utils::clamp(v[2], min, max)};
+}
+
+Vec3 Vec3::randomUnitSphereVec()
+{
+    double a = utils::random_double(0, 2 * utils::pi);
+    double z = utils::random_double(-1., 1.);
+    double r = sqrt(1. - z * z);
+    return Vec3{r * cos(a), r * sin(a), z};
+}
+
+Vec3 Vec3::randomUnitCircleVec()
+{
+    Vec3 vec;
+    vec[0] = utils::random_double();
+    vec[1] = utils::random_double(0., sqrt(1. - vec[0] * vec[0]));
+    return vec;
 }

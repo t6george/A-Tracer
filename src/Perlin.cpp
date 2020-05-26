@@ -69,7 +69,7 @@ void Perlin::permuteArray(std::array<T, N> &arr)
     int tgt;
     for (size_t i = N - 1; i > 0; --i)
     {
-        tgt = random_int(0, i + 1);
+        tgt = utils::random_int(0, i + 1);
         std::swap(arr[i], arr[tgt]);
     }
 }
@@ -80,7 +80,8 @@ void Perlin::init()
 {
     for (int i = 0; i < Perlin::pointCount; ++i)
     {
-        randomVectors[i] = Vec3{random_double(-1., 1.), random_double(-1., 1.), random_double(-1., 1.)}.getUnitVector();
+        randomVectors[i] = Vec3{utils::random_double(-1., 1.), utils::random_double(-1., 1.), utils::random_double(-1., 1.)}.getUnitVector();
+        // randomDoubles[i] = random_double();
         permX[i] = permY[i] = permZ[i] = i;
     }
 

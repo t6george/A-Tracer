@@ -8,7 +8,7 @@ BVHNode::BVHNode(HittableList &world, const size_t start, const size_t end, cons
 {
     size_t span = end - start;
 
-    int axis = random_int(0, 3);
+    int axis = utils::random_int(0, 3);
     auto cmp = axis == 0 ? xCompare : axis == 1 ? yCompare : zCompare;
 
     switch (span)

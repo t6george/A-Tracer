@@ -6,6 +6,11 @@ class Vec3
     std::array<double, 3> c;
 
 public:
+    static Vec3 randomColor(const Vec3 &min = Vec3{0., 0., 0.}, const Vec3 &max = Vec3{1., 1., 1.});
+    static Vec3 clamp(const Vec3 &v, const double min, const double max);
+    static Vec3 randomUnitSphereVec();
+    static Vec3 randomUnitCircleVec();
+
     Vec3();
     Vec3(double c1, double c2, double c3);
     ~Vec3() noexcept = default;

@@ -38,8 +38,8 @@ public:
     };
 
     virtual bool getCollisionData(const Ray &ray, HitRecord &record,
-                                  double tMin = -infinity,
-                                  double tMax = infinity) = 0;
+                                  double tMin = -utils::infinity,
+                                  double tMax = utils::infinity) = 0;
 
     virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 };

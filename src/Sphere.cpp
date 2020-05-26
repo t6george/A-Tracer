@@ -7,8 +7,8 @@ void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {
     double phi = atan2(p.z(), p.x());
     double theta = asin(p.y());
-    u = 1. - (phi + pi) / (2. * pi);
-    v = (theta + pi / 2.) / pi;
+    u = 1. - (phi + utils::pi) / (2. * utils::pi);
+    v = (theta + utils::pi / 2.) / utils::pi;
 }
 
 Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,

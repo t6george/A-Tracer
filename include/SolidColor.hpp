@@ -13,5 +13,5 @@ public:
 
     ~SolidColor() noexcept = default;
 
-    Vec3 getValue(const double u, const double v, const Vec3 &p) const override;
+    Vec3 getValue(const double u, const double v, const Vec3 &point) const override;
 };

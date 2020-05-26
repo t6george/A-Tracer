@@ -16,7 +16,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
     double cos = fmin(1., (-ray.direction().getUnitVector()).o(record.normal));
     double sin = sqrt(1.0 - cos * cos);
 
-    if (n_over_nprime * sin > 1. || random_double() < schlick(cos, n_over_nprime))
+    if (n_over_nprime * sin > 1. || utils::random_double() < utils::schlick(cos, n_over_nprime))
     {
         record.scatteredRay.resetDirection(ray.direction().getUnitVector().reflect(
             record.normal));

@@ -11,8 +11,8 @@ CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
                                const double x, const double y, const double z)
     : CheckerTexture::CheckerTexture{tex1, tex2, Vec3{x, y, z}} {}
 
-Vec3 CheckerTexture::getValue(const double u, const double v, const Vec3 &p) const
+Vec3 CheckerTexture::getValue(const double u, const double v, const Vec3 &point) const
 {
-    double sines = sin(scale.x() * p.x()) * sin(scale.y() * p.y()) * sin(scale.z() * p.z());
-    return sines >= 0. ? tex1->getValue(u, v, p) : tex2->getValue(u, v, p);
+    double sines = sin(scale.x() * point.x()) * sin(scale.y() * point.y()) * sin(scale.z() * point.z());
+    return sines >= 0. ? tex1->getValue(u, v, point) : tex2->getValue(u, v, point);
 }
