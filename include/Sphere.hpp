@@ -7,7 +7,6 @@ class Sphere : public Shape
     const Vec3 center0, center1;
     Vec3 center;
     double R;
-    AABB boundingBox;
 
 public:
     static void getSphereUV(const Vec3 &p, double &u, double &v);
@@ -27,6 +26,4 @@ public:
 
     const Vec3 &getCenter() const;
     void translate(const double time) override;
-
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

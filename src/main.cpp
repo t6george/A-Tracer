@@ -6,6 +6,9 @@
 #include <CheckerTexture.hpp>
 #include <TurbulentTexture.hpp>
 #include <ImageTexture.hpp>
+#include <DiffuseLight.hpp>
+#include <XYRect.hpp>
+#include <PerlinNoiseTexture.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -34,9 +37,9 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
         case Hittable::HitType::HIT_NO_SCATTER:
             color = record.emitted;
             break;
-        case Hittable::HitType::HIT_NO_SCATTER:
+        case Hittable::HitType::HIT_SCATTER:
             Ray scattered;
-            return emitted + record.attenuation * computeRayColor(scattered, background, world, depth - 1);
+            return record.emitted + record.attenuation * computeRayColor(scattered, background, world, depth - 1);
             break;
         }
     }
@@ -65,6 +68,21 @@ HittableList generateImageTextureScene()
     return objects;
 }
 
+HittableList simpleLightScene()
+{
+    HittableList objects;
+
+    auto pertext = std::make_shared<PerlinNoiseTexture>(4.);
+    objects.add(std::make_shared<Sphere>(Vec3(0., -1000., 0.), 1000., std::make_shared<LambertianDiffuse>(pertext)));
+    objects.add(std::make_shared<Sphere>(Vec3(0., 2., 0.), 2., std::make_shared<LambertianDiffuse>(pertext)));
+
+    auto difflight = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(4., 4., 4.));
+    objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
+    objects.add(std::make_shared<XYRect>(difflight, 3., 5., 1., 3., -2.));
+
+    return objects;
+}
+
 void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections)
 {
     std::cout << "P3\n"
@@ -78,7 +96,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 background;
     Vec3 randomCenter1;
-    world = generateImageTextureScene();
+    world = simpleLightScene();
     // double chooseMaterial;
 
     // auto checker = std::make_shared<CheckerTexture>(
@@ -133,7 +151,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
                 pixelColor += computeRayColor(camera.updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                              background, mworld, maxReflections);
+                                              background, world, maxReflections);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);
         }
