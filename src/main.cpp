@@ -20,23 +20,28 @@ const Vec3 WHITE{1., 1., 1.};
 const Vec3 SKY_BLUE{.5, .7, 1.};
 const Vec3 RED{1., 0., 0.};
 
-Vec3 computeRayColor(const Ray &ray, HittableList &world, int depth)
+Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, int depth)
 {
-    if (depth <= 0)
+    Vec3 color;
+    if (depth > 0)
     {
-        return Vec3{0., 0., 0.};
+        Hittable::HitRecord record;
+        switch (world.getCollisionData(ray, record, .001))
+        {
+        case Hittable::HitType::NO_HIT:
+            color = background;
+            break;
+        case Hittable::HitType::HIT_NO_SCATTER:
+            color = record.emitted;
+            break;
+        case Hittable::HitType::HIT_NO_SCATTER:
+            Ray scattered;
+            return emitted + record.attenuation * computeRayColor(scattered, background, world, depth - 1);
+            break;
+        }
     }
 
-    Hittable::HitRecord record;
-    if (world.getCollisionData(ray, record, .001))
-    {
-        return record.attenuation;
-
-        // return computeRayColor(record.scatteredRay, world, depth - 1) * record.attenuation;
-    }
-
-    record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
-    return (SKY_BLUE * record.t + WHITE * (1. - record.t));
+    return color;
 }
 
 HittableList generatePerlinSpheres()
@@ -71,6 +76,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 pixelColor;
     HittableList world;
     Vec3 randomCenter0{0., .2, 0.};
+    Vec3 background;
     Vec3 randomCenter1;
     world = generateImageTextureScene();
     // double chooseMaterial;
@@ -127,7 +133,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
                 pixelColor += computeRayColor(camera.updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                              world, maxReflections);
+                                              background, mworld, maxReflections);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);
         }

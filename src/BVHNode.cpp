@@ -41,17 +41,17 @@ BVHNode::BVHNode(HittableList &world, const size_t start, const size_t end, cons
     boundingBox = AABB::combineAABBs(leftBox, rightBox);
 }
 
-bool BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
+Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
     if (!boundingBox.passesThrough(ray, tMin, tMax))
     {
-        return false;
+        return Hittable::HitType::NO_HIT;
     }
 
-    bool hitLeft = left->getCollisionData(ray, record, tMin, tMax);
-    bool hitRight = right->getCollisionData(ray, record, tMin, hitLeft ? record.t : tMax);
+    Hittable::HitType hitLeft = left->getCollisionData(ray, record, tMin, tMax);
+    Hittable::HitType hitRight = right->getCollisionData(ray, record, tMin, static_cast<bool>(hitLeft) ? record.t : tMax);
 
-    return hitLeft || hitRight;
+    return static_cast<bool>(hitRight) ? hitRight : hitLeft;
 }
 
 bool BVHNode::getBoundingBox(double time0, double time1, AABB &box) const

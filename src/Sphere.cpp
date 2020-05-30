@@ -22,7 +22,7 @@ Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
       center{center0}, R{R}, boundingBox{AABB::combineAABBs(AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}},
                                                             AABB{center1 - Vec3{R, R, R}, center1 + Vec3{R, R, R}})} {}
 
-bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
+Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
     translate(ray.time());
     Vec3 los = ray.origin() - center;
@@ -44,7 +44,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
-            return material->scatterRay(ray, record);
+            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER : Hittable::HitType::HIT_NO_SCATTER;
         }
         t = (-half_b + disc_root) / a;
         if (t > tMin && t < tMax)
@@ -54,10 +54,10 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
-            return material->scatterRay(ray, record);
+            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER : Hittable::HitType::HIT_NO_SCATTER;
         }
     }
-    return false;
+    return Hittable::HitType::NO_HIT;
 }
 
 const Vec3 &Sphere::getCenter() const

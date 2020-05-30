@@ -21,9 +21,9 @@ public:
            const double t0 = 0., const double t1 = 1.);
 
     ~Sphere() noexcept = default;
-    bool getCollisionData(const Ray &ray, HitRecord &record,
-                          double tMin = -utils::infinity,
-                          double tMax = utils::infinity) override;
+    HitType getCollisionData(const Ray &ray, HitRecord &record,
+                             double tMin = -utils::infinity,
+                             double tMax = utils::infinity) override;
 
     const Vec3 &getCenter() const;
     void translate(const double time) override;

@@ -15,9 +15,9 @@ public:
     HittableList() = default;
     ~HittableList() noexcept = default;
 
-    bool getCollisionData(const Ray &ray, Hittable::HitRecord &record,
-                          double tMin = -utils::infinity,
-                          double tMax = utils::infinity) override;
+    HitType getCollisionData(const Ray &ray, Hittable::HitRecord &record,
+                             double tMin = -utils::infinity,
+                             double tMax = utils::infinity) override;
 
     bool getBoundingBox(double time0, double time1, AABB &box) const override;
 

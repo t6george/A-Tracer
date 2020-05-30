@@ -24,6 +24,7 @@ public:
         Vec3 point;
         Vec3 normal;
         Vec3 attenuation;
+        Vec3 emitted;
         bool isInFront;
         Ray scatteredRay;
 
@@ -37,9 +38,16 @@ public:
         }
     };
 
-    virtual bool getCollisionData(const Ray &ray, HitRecord &record,
-                                  double tMin = -utils::infinity,
-                                  double tMax = utils::infinity) = 0;
+    enum class HitType
+    {
+        NO_HIT,
+        HIT_NO_SCATTER,
+        HIT_SCATTER
+    };
+
+    virtual HitType getCollisionData(const Ray &ray, HitRecord &record,
+                                     double tMin = -utils::infinity,
+                                     double tMax = utils::infinity) = 0;
 
     virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 };

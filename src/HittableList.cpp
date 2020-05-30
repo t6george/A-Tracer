@@ -1,22 +1,21 @@
 #include <HittableList.hpp>
 #include <AABB.hpp>
 
-bool HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
+Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
 {
     Hittable::HitRecord tmpRecord;
-    bool isCollision = false;
+    Hittable::HitType collisionType = Hittable::HitType::NO_HIT;
 
     for (const auto &obj : hittables)
     {
-        if (obj->getCollisionData(ray, tmpRecord, tMin, tMax))
+        if (static_cast<bool>(collisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax)))
         {
-            isCollision = true;
             record = tmpRecord;
             tMax = record.t;
         }
     }
 
-    return isCollision;
+    return collisionType;
 }
 
 bool HittableList::getBoundingBox(double time0, double time1, AABB &box) const
