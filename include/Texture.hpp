@@ -7,5 +7,5 @@ public:
     Texture() = default;
     virtual ~Texture() noexcept = default;
 
-    virtual Vec3 getValue(const double u, const double v, const Vec3 &point) const = 0;
+    virtual Vec3 getValue(double u, double v, const Vec3 &point) const = 0;
 };

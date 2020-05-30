@@ -5,6 +5,7 @@
 #include <SolidColor.hpp>
 #include <CheckerTexture.hpp>
 #include <TurbulentTexture.hpp>
+#include <ImageTexture.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -15,9 +16,9 @@
 #include <Dielectric.hpp>
 #include <vector>
 
-const Vec3 WHITE(1., 1., 1.);
-const Vec3 SKY_BLUE(.5, .7, 1.);
-const Vec3 RED(1., 0., 0.);
+const Vec3 WHITE{1., 1., 1.};
+const Vec3 SKY_BLUE{.5, .7, 1.};
+const Vec3 RED{1., 0., 0.};
 
 Vec3 computeRayColor(const Ray &ray, HittableList &world, int depth)
 {
@@ -29,7 +30,9 @@ Vec3 computeRayColor(const Ray &ray, HittableList &world, int depth)
     Hittable::HitRecord record;
     if (world.getCollisionData(ray, record, .001))
     {
-        return computeRayColor(record.scatteredRay, world, depth - 1) * record.attenuation;
+        return record.attenuation;
+
+        // return computeRayColor(record.scatteredRay, world, depth - 1) * record.attenuation;
     }
 
     record.t = (ray.direction().getUnitVector().y() + 1.) / 2.;
@@ -41,8 +44,18 @@ HittableList generatePerlinSpheres()
     HittableList objects;
 
     auto pertext = std::make_shared<TurbulentTexture>();
-    objects.add(std::make_shared<Sphere>(Vec3{0, -1000, 0}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
-    objects.add(std::make_shared<Sphere>(Vec3{0, 2, 0}, 2., std::make_shared<LambertianDiffuse>(pertext)));
+    objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
+    objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., std::make_shared<LambertianDiffuse>(pertext)));
+
+    return objects;
+}
+
+HittableList generateImageTextureScene()
+{
+    HittableList objects;
+
+    auto imgtext = std::make_shared<ImageTexture>("world.jpg");
+    objects.add(std::make_shared<Sphere>(Vec3{0., 0., 0.}, 2., std::make_shared<LambertianDiffuse>(imgtext)));
 
     return objects;
 }
@@ -59,7 +72,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     HittableList world;
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 randomCenter1;
-    world = generatePerlinSpheres();
+    world = generateImageTextureScene();
     // double chooseMaterial;
 
     // auto checker = std::make_shared<CheckerTexture>(

@@ -12,5 +12,5 @@ public:
 
     ~MarbleTexture() noexcept = default;
 
-    Vec3 getValue(const double u, const double v, const Vec3 &point) const override;
+    Vec3 getValue(double u, double v, const Vec3 &point) const override;
 };

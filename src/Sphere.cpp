@@ -42,6 +42,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.t = t;
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
+            Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
             return material->scatterRay(ray, record);
         }
@@ -51,6 +52,7 @@ bool Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, do
             record.t = t;
             record.point = ray.eval(t);
             record.normal = (record.point - center) / R;
+            Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
             return material->scatterRay(ray, record);
         }
