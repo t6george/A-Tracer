@@ -3,6 +3,8 @@
 #include <Material.hpp>
 #include <Utils.hpp>
 
+#include <iostream>
+
 void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {
     double phi = atan2(p.z(), p.x());
@@ -49,7 +51,8 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
-            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER : Hittable::HitType::HIT_NO_SCATTER;
+            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+                                                     : Hittable::HitType::HIT_NO_SCATTER;
         }
         t = (-half_b + disc_root) / a;
         if (t > tMin && t < tMax)
@@ -59,7 +62,8 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
-            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER : Hittable::HitType::HIT_NO_SCATTER;
+            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+                                                     : Hittable::HitType::HIT_NO_SCATTER;
         }
     }
     return Hittable::HitType::NO_HIT;

@@ -25,7 +25,7 @@ const Vec3 RED{1., 0., 0.};
 
 Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, int depth)
 {
-    Vec3 color;
+    Vec3 color{0., 0., 0.};
     if (depth > 0)
     {
         Hittable::HitRecord record;
@@ -38,8 +38,7 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
-            Ray scattered;
-            return record.emitted + record.attenuation * computeRayColor(scattered, background, world, depth - 1);
+            color = record.emitted + record.attenuation * computeRayColor(record.scatteredRay, background, world, depth - 1);
             break;
         }
     }
@@ -71,14 +70,14 @@ HittableList generateImageTextureScene()
 HittableList simpleLightScene()
 {
     HittableList objects;
-
-    auto pertext = std::make_shared<PerlinNoiseTexture>(4.);
-    objects.add(std::make_shared<Sphere>(Vec3(0., -1000., 0.), 1000., std::make_shared<LambertianDiffuse>(pertext)));
-    objects.add(std::make_shared<Sphere>(Vec3(0., 2., 0.), 2., std::make_shared<LambertianDiffuse>(pertext)));
-
     auto difflight = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(4., 4., 4.));
-    objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
-    objects.add(std::make_shared<XYRect>(difflight, 3., 5., 1., 3., -2.));
+    auto mat = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(1., 0., 0.));
+
+    objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., mat));
+    objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., mat));
+
+    // objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
+    objects.add(std::make_shared<XYRect>(3., 5., 1., 3., -2., difflight));
 
     return objects;
 }
@@ -88,13 +87,13 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
 
-    Camera camera{static_cast<double>(width) / static_cast<double>(height), 20., 0., 10., Vec3{13., 2., 3.}, Vec3{0., 0., 0.}, 0., 1.};
+    Camera camera{static_cast<double>(width) / static_cast<double>(height), 20., 0., 10., Vec3{26., 3., 6.}, Vec3{0., 2., 0.}, 0., 1.};
 
     Hittable::HitRecord record;
     Vec3 pixelColor;
     HittableList world;
     Vec3 randomCenter0{0., .2, 0.};
-    Vec3 background;
+    Vec3 background{0., 0., 0.};
     Vec3 randomCenter1;
     world = simpleLightScene();
     // double chooseMaterial;
@@ -161,5 +160,5 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
 int main()
 {
-    outputSphereScene(384, 216, 100, 50);
+    outputSphereScene(600, 600, 100, 50);
 }

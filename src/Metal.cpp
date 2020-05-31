@@ -12,5 +12,7 @@ bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
                                        Vec3::randomUnitSphereVec() * fuzz);
     record.scatteredRay.setTime(ray.time());
     record.attenuation = albedo->getValue(record.u, record.v, record.point);
+    record.emitted = emitCol(record.u, record.v, record.point);
+
     return record.scatteredRay.direction().o(record.normal) > 0.;
 }

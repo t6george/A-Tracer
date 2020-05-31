@@ -1,8 +1,10 @@
 #include <XYRect.hpp>
+#include <Material.hpp>
 
-XYRect::XYRect(const std::shared_ptr<Material> material,
-               const double x0, const double x1, const double y0,
-               const double y1, const double z, const double t0, const double t1)
+XYRect::XYRect(const double x0, const double x1, const double y0,
+               const double y1, const double z,
+               const std::shared_ptr<Material> material,
+               const double t0, const double t1)
     : Shape::Shape{material, t0, t1, AABB{Vec3{x0, y0, z - .0001}, Vec3{x1, y1, z + .0001}}},
       x0{x0}, x1{x1}, y0{y0}, y1{y1}, z{z} {}
 
@@ -21,8 +23,11 @@ Hittable::HitType XYRect::getCollisionData(const Ray &ray, HitRecord &record, do
             record.u = (x - x0) / (x1 - x0);
             record.v = (y - y0) / (y1 - y0);
             record.normal = Vec3{0., 0., 1.};
-            record.setLightPosition(ray);
             record.point = Vec3{x, y, z};
+            record.setLightPosition(ray);
+
+            hit = material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+                                                    : Hittable::HitType::HIT_NO_SCATTER;
         }
     }
 

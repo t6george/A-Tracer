@@ -4,12 +4,13 @@
 Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
 {
     Hittable::HitRecord tmpRecord;
-    Hittable::HitType collisionType = Hittable::HitType::NO_HIT;
+    Hittable::HitType collisionType = Hittable::HitType::NO_HIT, tmpCollisionType;
 
     for (const auto &obj : hittables)
     {
-        if (static_cast<bool>(collisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax)))
+        if (static_cast<bool>(tmpCollisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax)))
         {
+            collisionType = tmpCollisionType;
             record = tmpRecord;
             tMax = record.t;
         }
