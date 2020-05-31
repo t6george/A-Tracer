@@ -7,7 +7,7 @@
 #include <TurbulentTexture.hpp>
 #include <ImageTexture.hpp>
 #include <DiffuseLight.hpp>
-#include <XYRect.hpp>
+#include <AARect.hpp>
 #include <PerlinNoiseTexture.hpp>
 
 #include <Ray.hpp>
@@ -76,8 +76,8 @@ HittableList simpleLightScene()
     objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., mat));
     objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., mat));
 
-    // objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
-    objects.add(std::make_shared<XYRect>(3., 5., 1., 3., -2., difflight));
+    objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
+    objects.add(std::make_shared<AARect<Axis::Z>>(3., 5., 1., 3., -2., difflight));
 
     return objects;
 }

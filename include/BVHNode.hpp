@@ -12,13 +12,6 @@ class BVHNode : public Hittable
     AABB boundingBox;
 
 public:
-    enum Dim3D
-    {
-        X,
-        Y,
-        Z
-    };
-
     BVHNode() = default;
     BVHNode(HittableList &world, const size_t start, const size_t end, const double time0, const double time1);
 
@@ -31,27 +24,29 @@ public:
     bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };
 
-template <BVHNode::Dim3D dim>
+#include <AARect.hpp>
+
+template <Axis dim>
 inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     AABB bbA, bbB;
     a->getBoundingBox(0., 0., bbA);
     b->getBoundingBox(0., 0., bbB);
 
-    return bbA.getMinPoint()[dim] < bbB.getMinPoint()[dim];
+    return bbA.getMinPoint()[static_cast<int>(dim)] < bbB.getMinPoint()[static_cast<int>(dim)];
 }
 
 inline bool xCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<BVHNode::Dim3D::X>(a, b);
+    return dimCompare<Axis::X>(a, b);
 }
 
 inline bool yCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<BVHNode::Dim3D::Y>(a, b);
+    return dimCompare<Axis::Y>(a, b);
 }
 
 inline bool zCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<BVHNode::Dim3D::Z>(a, b);
+    return dimCompare<Axis::Z>(a, b);
 }
