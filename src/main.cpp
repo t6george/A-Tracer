@@ -9,6 +9,7 @@
 #include <DiffuseLight.hpp>
 #include <AARect.hpp>
 #include <PerlinNoiseTexture.hpp>
+#include <FlipFace.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -82,12 +83,31 @@ HittableList simpleLightScene()
     return objects;
 }
 
+HittableList cornellBox()
+{
+    HittableList objects;
+
+    auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
+    auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
+    auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
+
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::X>>(0., 555., 0., 555., 555., green)));
+    objects.add(std::make_shared<AARect<Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<Axis::Y>>(213., 343., 227., 332., 554., light));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 0., white)));
+    objects.add(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Z>>(0., 555., 0., 555., 555., white)));
+
+    return objects;
+}
+
 void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections)
 {
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
 
-    Camera camera{static_cast<double>(width) / static_cast<double>(height), 20., 0., 10., Vec3{26., 3., 6.}, Vec3{0., 2., 0.}, 0., 1.};
+    Camera camera{static_cast<double>(width) / static_cast<double>(height), 40., 0., 10., Vec3{278., 278., -800.}, Vec3{278., 278., 0.}, 0., 1.};
 
     Hittable::HitRecord record;
     Vec3 pixelColor;
@@ -95,7 +115,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 background{0., 0., 0.};
     Vec3 randomCenter1;
-    world = simpleLightScene();
+    world = cornellBox();
     // double chooseMaterial;
 
     // auto checker = std::make_shared<CheckerTexture>(

@@ -20,6 +20,7 @@ public:
            const double t0 = 0., const double t1 = 1.);
 
     ~Sphere() noexcept = default;
+
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
                              double tMax = utils::infinity) override;
