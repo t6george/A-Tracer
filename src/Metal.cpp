@@ -7,12 +7,12 @@ Metal::Metal(const std::shared_ptr<Texture> albedo, const double fuzz)
 
 bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
-    record.scatteredRay.resetOrigin(record.point);
-    record.scatteredRay.resetDirection(ray.direction().getUnitVector().reflect(record.normal) +
-                                       Vec3::randomUnitSphereVec() * fuzz);
-    record.scatteredRay.setTime(ray.time());
+    record.scatteredRay.setOrigin(record.point);
+    record.scatteredRay.setDirection(ray.getDirection().getUnitVector().reflect(record.normal) +
+                                     Vec3::randomUnitSphereVec() * fuzz);
+    record.scatteredRay.setTime(ray.getTime());
     record.attenuation = albedo->getValue(record.u, record.v, record.point);
     record.emitted = emitCol(record.u, record.v, record.point);
 
-    return record.scatteredRay.direction().o(record.normal) > 0.;
+    return record.scatteredRay.getDirection().o(record.normal) > 0.;
 }

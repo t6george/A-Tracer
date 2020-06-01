@@ -13,23 +13,23 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
         n_over_nprime = 1. / n_over_nprime;
     }
 
-    double cos = fmin(1., (-ray.direction().getUnitVector()).o(record.normal));
+    double cos = fmin(1., (-ray.getDirection().getUnitVector()).o(record.normal));
     double sin = sqrt(1.0 - cos * cos);
 
     if (n_over_nprime * sin > 1. || utils::random_double() < utils::schlick(cos, n_over_nprime))
     {
-        record.scatteredRay.resetDirection(ray.direction().getUnitVector().reflect(
+        record.scatteredRay.setDirection(ray.getDirection().getUnitVector().reflect(
             record.normal));
     }
     else
     {
-        record.scatteredRay.resetDirection(ray.direction().getUnitVector().refract(
+        record.scatteredRay.setDirection(ray.getDirection().getUnitVector().refract(
             record.normal, n_over_nprime));
     }
 
     record.attenuation = albedo->getValue(record.u, record.v, Vec3{});
-    record.scatteredRay.resetOrigin(record.point);
-    record.scatteredRay.setTime(ray.time());
+    record.scatteredRay.setOrigin(record.point);
+    record.scatteredRay.setTime(ray.getTime());
     record.emitted = emitCol(record.u, record.v, Vec3{});
 
     return true;

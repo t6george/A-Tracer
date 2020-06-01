@@ -31,11 +31,11 @@ Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
 
 Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
-    blur(ray.time());
-    Vec3 los = ray.origin() - center;
+    blur(ray.getTime());
+    Vec3 los = ray.getOrigin() - center;
 
-    double a = ray.direction().o(ray.direction());
-    double half_b = ray.direction().o(los);
+    double a = ray.getDirection().o(ray.getDirection());
+    double half_b = ray.getDirection().o(los);
     double c = los.o(los) - R * R;
     double disc = half_b * half_b - a * c;
     double disc_root, t;

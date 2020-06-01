@@ -22,8 +22,8 @@ const Ray &Camera::updateLineOfSight(double u, double v)
 {
     Vec3 rd = Vec3::randomUnitCircleVec() * lensRadius;
     Vec3 offset = basis.getX() * rd.x() + basis.getY() * rd.y();
-    lineOfSight.resetOrigin(eyes + offset);
-    lineOfSight.resetDirection(corner + dimX * u + dimY * v - eyes - offset);
+    lineOfSight.setOrigin(eyes + offset);
+    lineOfSight.setDirection(corner + dimX * u + dimY * v - eyes - offset);
     lineOfSight.setTime(utils::random_double(time1, time2));
     return lineOfSight;
 }
@@ -36,5 +36,5 @@ const Ray &Camera::getLineOfSight() const
 void Camera::moveCamera(const Vec3 &displacement)
 {
     eyes += displacement;
-    lineOfSight.resetOrigin(eyes);
+    lineOfSight.setOrigin(eyes);
 }

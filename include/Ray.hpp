@@ -11,13 +11,13 @@ public:
     Ray(const Vec3 &origin, const Vec3 &direction = Vec3{}, double time = 0.);
     ~Ray() noexcept = default;
 
-    const Vec3 &origin() const;
-    const Vec3 &direction() const;
     double getTime() const;
     void setTime(double time);
 
-    void resetOrigin(const Vec3 &otherV);
-    void resetDirection(const Vec3 &otherV);
+    const Vec3 &getOrigin() const;
+    const Vec3 &getDirection() const;
+    void setOrigin(const Vec3 &otherV);
+    void setDirection(const Vec3 &otherV);
 
     Vec3 eval(double t) const;
 };

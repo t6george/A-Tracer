@@ -30,7 +30,7 @@ public:
 
         inline void setLightPosition(const Ray &ray)
         {
-            isInFront = ray.direction().o(normal) < 0.;
+            isInFront = ray.getDirection().o(normal) < 0.;
             if (!isInFront)
             {
                 normal = -normal;

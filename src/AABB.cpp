@@ -35,9 +35,9 @@ bool AABB::passesThrough(const Ray &ray, double tmin, double tmax) const
 
     for (int a = 0; a < 3; ++a)
     {
-        invD = 1. / ray.direction()[a];
-        t0 = (minPoint[a] - ray.origin()[a]) * invD;
-        t1 = (maxPoint[a] - ray.origin()[a]) * invD;
+        invD = 1. / ray.getDirection()[a];
+        t0 = (minPoint[a] - ray.getOrigin()[a]) * invD;
+        t1 = (maxPoint[a] - ray.getOrigin()[a]) * invD;
 
         if (invD < 0.)
         {

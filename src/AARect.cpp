@@ -39,40 +39,40 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
 template <>
 void AARect<Axis::X>::solveForTime(const Ray &ray, double &t) const
 {
-    t = (k - ray.origin().x()) / ray.direction().x();
+    t = (k - ray.getOrigin().x()) / ray.getDirection().x();
 }
 
 template <>
 void AARect<Axis::Y>::solveForTime(const Ray &ray, double &t) const
 {
-    t = (k - ray.origin().y()) / ray.direction().y();
+    t = (k - ray.getOrigin().y()) / ray.getDirection().y();
 }
 
 template <>
 void AARect<Axis::Z>::solveForTime(const Ray &ray, double &t) const
 {
-    t = (k - ray.origin().z()) / ray.direction().z();
+    t = (k - ray.getOrigin().z()) / ray.getDirection().z();
 }
 
 template <>
 void AARect<Axis::X>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
-    i = ray.origin().y() + ray.direction().y() * t;
-    j = ray.origin().z() + ray.direction().z() * t;
+    i = ray.getOrigin().y() + ray.getDirection().y() * t;
+    j = ray.getOrigin().z() + ray.getDirection().z() * t;
 }
 
 template <>
 void AARect<Axis::Y>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
-    i = ray.origin().x() + ray.direction().x() * t;
-    j = ray.origin().z() + ray.direction().z() * t;
+    i = ray.getOrigin().x() + ray.getDirection().x() * t;
+    j = ray.getOrigin().z() + ray.getDirection().z() * t;
 }
 
 template <>
 void AARect<Axis::Z>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
-    i = ray.origin().x() + ray.direction().x() * t;
-    j = ray.origin().y() + ray.direction().y() * t;
+    i = ray.getOrigin().x() + ray.getDirection().x() * t;
+    j = ray.getOrigin().y() + ray.getDirection().y() * t;
 }
 
 template <>

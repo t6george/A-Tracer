@@ -6,10 +6,12 @@ Translate::Translate(const std::shared_ptr<Shape> shape, const Vec3 &displacemen
 Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
     Hittable::HitType hit;
-    Ray moved{ray.origin() - displacement, ray.direction(), ray.getTime()};
+    Ray moved{ray.getOrigin() - displacement, ray.getDirection(), ray.getTime()};
 
     if (static_cast<bool>(hit = shape->getCollisionData(moved, record, tMin, tMax)))
     {
+        record.point += displacement;
+        record.setLightPosition(moved);
     }
 
     return hit;
