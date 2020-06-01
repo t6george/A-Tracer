@@ -9,7 +9,7 @@ const Vec3 &Ray::origin() const { return orig; }
 
 const Vec3 &Ray::direction() const { return dir; }
 
-double Ray::time() const { return tm; }
+double Ray::getTime() const { return tm; }
 
 void Ray::setTime(double time) { tm = time; }
 

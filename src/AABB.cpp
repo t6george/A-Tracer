@@ -25,6 +25,10 @@ const Vec3 &AABB::getMinPoint() const { return minPoint; }
 
 const Vec3 &AABB::getMaxPoint() const { return maxPoint; }
 
+void AABB::setMinPoint(const Vec3 &v) { minPoint = v; }
+
+void AABB::setMaxPoint(const Vec3 &v) { maxPoint = v; }
+
 bool AABB::passesThrough(const Ray &ray, double tmin, double tmax) const
 {
     double invD, t0, t1;

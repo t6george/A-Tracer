@@ -13,7 +13,7 @@ public:
 
     const Vec3 &origin() const;
     const Vec3 &direction() const;
-    double time() const;
+    double getTime() const;
     void setTime(double time);
 
     void resetOrigin(const Vec3 &otherV);

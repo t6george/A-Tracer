@@ -5,9 +5,8 @@
 template <enum Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
-                  const std::shared_ptr<Material> material,
-                  const double t0, const double t1)
-    : Shape::Shape{material, t0, t1, AABB{Vec3{i0, j0, k - .0001}, Vec3{i1, j1, k + .0001}}},
+                  const std::shared_ptr<Material> material)
+    : Shape::Shape{material, AABB{Vec3{i0, j0, k - .0001}, Vec3{i1, j1, k + .0001}}},
       i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k} {}
 
 template <enum Axis A>
@@ -36,9 +35,6 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
 
     return hit;
 }
-
-template <enum Axis A>
-void AARect<A>::translate(const double time) {}
 
 template <>
 void AARect<Axis::X>::solveForTime(const Ray &ray, double &t) const

@@ -6,7 +6,7 @@ class Sphere : public Shape
 {
     const Vec3 center0, center1;
     Vec3 center;
-    double R;
+    const double R, time0, time1;
 
 public:
     static void getSphereUV(const Vec3 &p, double &u, double &v);
@@ -26,5 +26,5 @@ public:
                              double tMax = utils::infinity) override;
 
     const Vec3 &getCenter() const;
-    void translate(const double time) override;
+    void blur(const double time);
 };

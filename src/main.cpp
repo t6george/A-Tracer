@@ -10,6 +10,7 @@
 #include <AARect.hpp>
 #include <PerlinNoiseTexture.hpp>
 #include <FlipFace.hpp>
+#include <Box.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -98,6 +99,9 @@ HittableList cornellBox()
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 0., white)));
     objects.add(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 555., white));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Z>>(0., 555., 0., 555., 555., white)));
+
+    objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));
+    objects.add(std::make_shared<Box>(Vec3{265., 0., 295.}, Vec3{430., 330., 460.}, white));
 
     return objects;
 }

@@ -15,23 +15,23 @@ void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 
 Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
                const double t0, const double t1)
-    : Shape::Shape{material, t0, t1, AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}}},
-      center0{center0}, center1{center0}, center{center0}, R{R} {}
+    : Shape::Shape{material, AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}}},
+      center0{center0}, center1{center0}, center{center0}, R{R}, time0{t0}, time1{t1} {}
 
 Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
                const std::shared_ptr<Material> material, const double t0, const double t1)
-    : Shape::Shape{material, t0, t1,
+    : Shape::Shape{material,
                    AABB::combineAABBs(
                        AABB{center0 - Vec3{R, R, R},
                             center0 + Vec3{R, R, R}},
                        AABB{center1 - Vec3{R, R, R},
                             center1 + Vec3{R, R, R}})},
       center0{center0}, center1{center1},
-      center{center0}, R{R} {}
+      center{center0}, R{R}, time0{t0}, time1{t1} {}
 
 Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
-    translate(ray.time());
+    blur(ray.time());
     Vec3 los = ray.origin() - center;
 
     double a = ray.direction().o(ray.direction());
@@ -74,7 +74,7 @@ const Vec3 &Sphere::getCenter() const
     return center;
 }
 
-void Sphere::translate(const double time)
+void Sphere::blur(const double time)
 {
     center = center0 + (center1 - center0) * (time - time0) / (time1 - time0);
 }

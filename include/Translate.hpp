@@ -1,18 +1,18 @@
 #pragma once
-#include <Hittable.hpp>
+#include <Shape.hpp>
 
-class AABB;
-
-class FlipFace : public Hittable
+class Translate : public Hittable
 {
-    const std::shared_ptr<Hittable> hittable;
+    const std::shared_ptr<Shape> shape;
+    Vec3 displacement;
 
 public:
-    FlipFace(const std::shared_ptr<Hittable> hittable);
-    ~FlipFace() noexcept = default;
+    Translate(const std::shared_ptr<Shape> shape, const Vec3 &displacement);
+    ~Translate() noexcept = default;
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
                              double tMax = utils::infinity) override;
+
     bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

@@ -15,5 +15,8 @@ public:
     const Vec3 &getMinPoint() const;
     const Vec3 &getMaxPoint() const;
 
+    void setMinPoint(const Vec3 &v);
+    void setMaxPoint(const Vec3 &v);
+
     bool passesThrough(const Ray &ray, double tmin, double tmax) const;
 };

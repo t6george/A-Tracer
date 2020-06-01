@@ -22,13 +22,10 @@ class AARect : public Shape
 public:
     AARect(const double i0, const double i1, const double j0,
            const double j1, const double k,
-           const std::shared_ptr<Material> material,
-           const double t0 = 0., const double t1 = 1.);
+           const std::shared_ptr<Material> material);
     ~AARect() noexcept = default;
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
                              double tMax = utils::infinity) override;
-
-    virtual void translate(const double time) override;
 };
