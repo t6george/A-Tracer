@@ -24,9 +24,7 @@ public:
     bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };
 
-#include <AARect.hpp>
-
-template <Axis dim>
+template <utils::Axis dim>
 inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     AABB bbA, bbB;
@@ -38,15 +36,15 @@ inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<
 
 inline bool xCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<Axis::X>(a, b);
+    return dimCompare<utils::Axis::X>(a, b);
 }
 
 inline bool yCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<Axis::Y>(a, b);
+    return dimCompare<utils::Axis::Y>(a, b);
 }
 
 inline bool zCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
-    return dimCompare<Axis::Z>(a, b);
+    return dimCompare<utils::Axis::Z>(a, b);
 }

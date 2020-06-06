@@ -23,8 +23,7 @@ bool Translate::getBoundingBox(double time0, double time1, AABB &box) const
     if (shape->getBoundingBox(time0, time1, box))
     {
         hasBox = true;
-        box.setMinPoint(box.getMinPoint() + displacement);
-        box.setMaxPoint(box.getMaxPoint() + displacement);
+        box = AABB{box.getMinPoint() + displacement, box.getMaxPoint() + displacement};
     }
     else
     {

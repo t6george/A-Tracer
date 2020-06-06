@@ -1,16 +1,7 @@
 #pragma once
 #include <Shape.hpp>
-// #include <AARect.hpp>
-// #include <Material.hpp>
-// #include <AABB.hpp>
-enum class Axis
-{
-    X,
-    Y,
-    Z
-};
 
-template <Axis A>
+template <utils::Axis A>
 class AARect : public Shape
 {
     double i0, i1, j0, j1, k;

@@ -35,4 +35,11 @@ namespace utils
         r0 *= r0;
         return r0 + (1. - r0) * pow(1 - cos, 5);
     }
+
+    enum class Axis
+    {
+        X,
+        Y,
+        Z
+    };
 } // namespace utils

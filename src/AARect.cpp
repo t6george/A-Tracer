@@ -2,14 +2,14 @@
 #include <Material.hpp>
 #include <AABB.hpp>
 
-template <enum Axis A>
+template <enum utils::Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
                   const std::shared_ptr<Material> material)
     : Shape::Shape{material, AABB{Vec3{i0, j0, k - .0001}, Vec3{i1, j1, k + .0001}}},
       i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k} {}
 
-template <enum Axis A>
+template <enum utils::Axis A>
 Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
 {
     double t;
@@ -37,65 +37,65 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
 }
 
 template <>
-void AARect<Axis::X>::solveForTime(const Ray &ray, double &t) const
+void AARect<utils::Axis::X>::solveForTime(const Ray &ray, double &t) const
 {
     t = (k - ray.getOrigin().x()) / ray.getDirection().x();
 }
 
 template <>
-void AARect<Axis::Y>::solveForTime(const Ray &ray, double &t) const
+void AARect<utils::Axis::Y>::solveForTime(const Ray &ray, double &t) const
 {
     t = (k - ray.getOrigin().y()) / ray.getDirection().y();
 }
 
 template <>
-void AARect<Axis::Z>::solveForTime(const Ray &ray, double &t) const
+void AARect<utils::Axis::Z>::solveForTime(const Ray &ray, double &t) const
 {
     t = (k - ray.getOrigin().z()) / ray.getDirection().z();
 }
 
 template <>
-void AARect<Axis::X>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
+void AARect<utils::Axis::X>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
     i = ray.getOrigin().y() + ray.getDirection().y() * t;
     j = ray.getOrigin().z() + ray.getDirection().z() * t;
 }
 
 template <>
-void AARect<Axis::Y>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
+void AARect<utils::Axis::Y>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
     i = ray.getOrigin().x() + ray.getDirection().x() * t;
     j = ray.getOrigin().z() + ray.getDirection().z() * t;
 }
 
 template <>
-void AARect<Axis::Z>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
+void AARect<utils::Axis::Z>::getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const
 {
     i = ray.getOrigin().x() + ray.getDirection().x() * t;
     j = ray.getOrigin().y() + ray.getDirection().y() * t;
 }
 
 template <>
-void AARect<Axis::X>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
+void AARect<utils::Axis::X>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
 {
     record.normal = Vec3{1., 0., 0.};
     record.point = Vec3{k, i, j};
 }
 
 template <>
-void AARect<Axis::Y>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
+void AARect<utils::Axis::Y>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
 {
     record.normal = Vec3{0., 1., 0.};
     record.point = Vec3{i, k, j};
 }
 
 template <>
-void AARect<Axis::Z>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
+void AARect<utils::Axis::Z>::setHitPoint(const double i, const double j, const double k, Hittable::HitRecord &record) const
 {
     record.normal = Vec3{0., 0., 1.};
     record.point = Vec3{i, j, k};
 }
 
-template class AARect<Axis::X>;
-template class AARect<Axis::Y>;
-template class AARect<Axis::Z>;
+template class AARect<utils::Axis::X>;
+template class AARect<utils::Axis::Y>;
+template class AARect<utils::Axis::Z>;

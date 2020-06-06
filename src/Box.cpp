@@ -9,17 +9,17 @@ Box::Box(const Vec3 &p0, const Vec3 &p1,
     : Shape::Shape{material, AABB{p0, p1}},
       minPoint{p0}, maxPoint{p1}
 {
-    sides.add(std::make_shared<AARect<Axis::Z>>(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), material));
+    sides.add(std::make_shared<AARect<utils::Axis::Z>>(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), material));
     sides.add(std::make_shared<FlipFace>(
-        std::make_shared<AARect<Axis::Z>>(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), material)));
+        std::make_shared<AARect<utils::Axis::Z>>(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), material)));
 
-    sides.add(std::make_shared<AARect<Axis::Y>>(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), material));
+    sides.add(std::make_shared<AARect<utils::Axis::Y>>(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), material));
     sides.add(std::make_shared<FlipFace>(
-        std::make_shared<AARect<Axis::Y>>(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), material)));
+        std::make_shared<AARect<utils::Axis::Y>>(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), material)));
 
-    sides.add(std::make_shared<AARect<Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), material));
+    sides.add(std::make_shared<AARect<utils::Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), material));
     sides.add(std::make_shared<FlipFace>(
-        std::make_shared<AARect<Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), material)));
+        std::make_shared<AARect<utils::Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), material)));
 }
 
 Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)

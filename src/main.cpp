@@ -79,7 +79,7 @@ HittableList simpleLightScene()
     objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., mat));
 
     objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
-    objects.add(std::make_shared<AARect<Axis::Z>>(3., 5., 1., 3., -2., difflight));
+    objects.add(std::make_shared<AARect<utils::Axis::Z>>(3., 5., 1., 3., -2., difflight));
 
     return objects;
 }
@@ -93,12 +93,12 @@ HittableList cornellBox()
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
     auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::X>>(0., 555., 0., 555., 555., green)));
-    objects.add(std::make_shared<AARect<Axis::X>>(0., 555., 0., 555., 0., red));
-    objects.add(std::make_shared<AARect<Axis::Y>>(213., 343., 227., 332., 554., light));
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 0., white)));
-    objects.add(std::make_shared<AARect<Axis::Y>>(0., 555., 0., 555., 555., white));
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<Axis::Z>>(0., 555., 0., 555., 555., white)));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
     objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));
     objects.add(std::make_shared<Box>(Vec3{265., 0., 295.}, Vec3{430., 330., 460.}, white));
