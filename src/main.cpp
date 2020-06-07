@@ -11,6 +11,8 @@
 #include <PerlinNoiseTexture.hpp>
 #include <FlipFace.hpp>
 #include <Box.hpp>
+#include <AARotate.hpp>
+#include <Translate.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -100,8 +102,16 @@ HittableList cornellBox()
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
-    objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));
-    objects.add(std::make_shared<Box>(Vec3{265., 0., 295.}, Vec3{430., 330., 460.}, white));
+    std::shared_ptr<Shape> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
+    box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
+    box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
+
+    std::shared_ptr<Shape> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
+    box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
+    box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
+
+    objects.add(box1);
+    objects.add(box2);
 
     return objects;
 }

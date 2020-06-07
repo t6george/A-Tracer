@@ -1,13 +1,13 @@
 #pragma once
-#include <Shape.hpp>
+#include <Hittable.hpp>
 
 class Translate : public Hittable
 {
-    const std::shared_ptr<Shape> shape;
+    const std::shared_ptr<Hittable> shape;
     Vec3 displacement;
 
 public:
-    Translate(const std::shared_ptr<Shape> shape, const Vec3 &displacement);
+    Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement);
     ~Translate() noexcept = default;
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,

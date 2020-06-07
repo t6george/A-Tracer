@@ -1,18 +1,20 @@
 #pragma once
-#include <Shape.hpp>
+#include <Hittable.hpp>
+#include <AABB.hpp>
 
 template <utils::Axis A>
 class AARotate : public Hittable
 {
-    const std::shared_ptr<Shape> shape;
-    const double sinTheta, cosTheta;
+    const std::shared_ptr<Hittable> shape;
+    double sinTheta, cosTheta;
     AABB bbox;
 
-    AABB computeBoundingBox(const std::shared_ptr<Shape> shape, double angle);
-    void setCandidateExtreme(double x, double y, double z, Vec3 &extreme) const;
+    AABB computeBoundingBox(double angle);
+    void rotateCoords(Vec3 &v) const;
+    void inverseRotateCoords(Vec3 &v);
 
 public:
-    AARotate(const std::shared_ptr<Shape> shape, double angle);
+    AARotate(const std::shared_ptr<Hittable> shape, double angle);
     ~AARotate() noexcept = default;
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
