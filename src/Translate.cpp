@@ -12,6 +12,7 @@ Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record,
     if (static_cast<bool>(hit = shape->getCollisionData(moved, record, tMin, tMax)))
     {
         record.point += displacement;
+        record.scatteredRay.setOrigin(record.scatteredRay.getOrigin() + displacement);
         record.setLightPosition(moved);
     }
 

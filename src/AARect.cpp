@@ -2,12 +2,35 @@
 #include <Material.hpp>
 #include <AABB.hpp>
 
+#include <iostream>
+
 template <enum utils::Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
                   const std::shared_ptr<Material> material)
-    : Shape::Shape{material, AABB{Vec3{i0, j0, k - .0001}, Vec3{i1, j1, k + .0001}}},
+    : Shape::Shape{material, AABB{computeBoundingBox(i0, i1, j0, j1, k)}},
       i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k} {}
+
+template <>
+AABB AARect<utils::Axis::X>::computeBoundingBox(const double i0, const double i1, const double j0,
+                                                const double j1, const double k) const
+{
+    return AABB{Vec3{k - .0001, i0, j0}, Vec3{k + .0001, i1, j1}};
+}
+
+template <>
+AABB AARect<utils::Axis::Y>::computeBoundingBox(const double i0, const double i1, const double j0,
+                                                const double j1, const double k) const
+{
+    return AABB{Vec3{i0, k - .0001, j0}, Vec3{i1, k + .0001, j1}};
+}
+
+template <>
+AABB AARect<utils::Axis::Z>::computeBoundingBox(const double i0, const double i1, const double j0,
+                                                const double j1, const double k) const
+{
+    return AABB{Vec3{i0, j0, k - .0001}, Vec3{i1, j1, k + .0001}};
+}
 
 template <enum utils::Axis A>
 Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
@@ -25,6 +48,7 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
             record.t = t;
             record.u = (i - i0) / (i1 - i0);
             record.v = (j - j0) / (j1 - j0);
+
             setHitPoint(i, j, k, record);
             record.setLightPosition(ray);
 

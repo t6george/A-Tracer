@@ -3,14 +3,14 @@
 template <enum utils::Axis A>
 AARotate<A>::AARotate(const std::shared_ptr<Hittable> shape, double angle)
     : shape{shape}, sinTheta{sin(utils::deg_to_rad(angle))}, cosTheta{cos(utils::deg_to_rad(angle))},
-      bbox{computeBoundingBox(angle)} {}
+      bbox{computeBoundingBox()} {}
 
 template <enum utils::Axis A>
-AABB AARotate<A>::computeBoundingBox(double angle)
+AABB AARotate<A>::computeBoundingBox()
 {
     AABB box;
-    Vec3 minPoint{-utils::infinity, -utils::infinity, -utils::infinity};
-    Vec3 maxPoint{utils::infinity, utils::infinity, utils::infinity};
+    Vec3 minPoint{utils::infinity, utils::infinity, utils::infinity};
+    Vec3 maxPoint{-utils::infinity, -utils::infinity, -utils::infinity};
 
     if (shape->getBoundingBox(0., 1., box))
     {
@@ -56,6 +56,7 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRec
     {
         rotateCoords(record.point);
         rotateCoords(record.normal);
+        record.setLightPosition(adjusted);
     }
 
     return hit;

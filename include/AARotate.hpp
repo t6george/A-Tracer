@@ -9,7 +9,7 @@ class AARotate : public Hittable
     double sinTheta, cosTheta;
     AABB bbox;
 
-    AABB computeBoundingBox(double angle);
+    AABB computeBoundingBox();
     void rotateCoords(Vec3 &v) const;
     void inverseRotateCoords(Vec3 &v);
 

@@ -32,7 +32,7 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
     Vec3 color{0., 0., 0.};
     if (depth > 0)
     {
-        Hittable::HitRecord record;
+        Hittable::HitRecord record = {0};
         switch (world.getCollisionData(ray, record, .001))
         {
         case Hittable::HitType::NO_HIT:
@@ -95,23 +95,32 @@ HittableList cornellBox()
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
     auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
-    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
+
+    // objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light));
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
-    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
-    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
-    std::shared_ptr<Shape> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
-    box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
+    // objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
+
+    // objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+
+    // objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
+
+    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
+
     box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
+    box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
 
-    std::shared_ptr<Shape> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
-    box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
+    std::shared_ptr<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
+
     box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
+    box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
-    objects.add(box1);
+    // objects.add(box1);
     objects.add(box2);
+
+    // objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));
+    // objects.add(std::make_shared<Box>(Vec3{265., 0., 295.}, Vec3{430., 330., 460.}, white));
 
     return objects;
 }
@@ -123,7 +132,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 
     Camera camera{static_cast<double>(width) / static_cast<double>(height), 40., 0., 10., Vec3{278., 278., -800.}, Vec3{278., 278., 0.}, 0., 1.};
 
-    Hittable::HitRecord record;
+    // Hittable::HitRecord record = {0};
     Vec3 pixelColor;
     HittableList world;
     Vec3 randomCenter0{0., .2, 0.};
