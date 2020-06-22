@@ -1,6 +1,8 @@
 #pragma once
 #include <Hittable.hpp>
 
+class Texture;
+
 class ConstantVolume : public Hittable
 {
     std::shared_ptr<Hittable> boundary;
@@ -9,7 +11,7 @@ class ConstantVolume : public Hittable
 
 public:
     ConstantVolume(const std::shared_ptr<Hittable> boundary,
-                   const std::shared_ptr<Material> phaseFunction,
+                   const std::shared_ptr<Texture> phaseFunction,
                    const double density);
     ~ConstantVolume() noexcept = default;
 

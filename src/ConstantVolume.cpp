@@ -1,10 +1,11 @@
 #include <ConstantVolume.hpp>
-#include <Material.hpp>
+#include <IsotropicMaterial.hpp>
+#include <Texture.hpp>
 
 ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
-                               const std::shared_ptr<Material> phaseFunction,
+                               const std::shared_ptr<Texture> phaseFunction,
                                const double density)
-    : boundary{boundary}, phaseFunction{phaseFunction}, densityReciprocal{-1. / density} {}
+    : boundary{boundary}, phaseFunction{std::make_shared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 
 Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
 {
@@ -25,7 +26,7 @@ Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &re
             const double innerDist = rayLen * (rec2.t - rec1.t);
             const double outerDist = log(utils::random_double()) * densityReciprocal;
 
-            if (outerDist > innerDist)
+            if (outerDist <= innerDist)
             {
                 record.t = rec1.t + outerDist / rayLen;
                 record.point = ray.eval(record.t);

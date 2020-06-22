@@ -13,6 +13,7 @@
 #include <Box.hpp>
 #include <AARotate.hpp>
 #include <Translate.hpp>
+#include <ConstantVolume.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -99,11 +100,8 @@ HittableList cornellBox()
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light));
-
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
-
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
-
     objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
 
     std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
@@ -119,8 +117,38 @@ HittableList cornellBox()
     objects.add(box1);
     objects.add(box2);
 
-    // objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));
-    // objects.add(std::make_shared<Box>(Vec3{265., 0., 295.}, Vec3{430., 330., 460.}, white));
+    return objects;
+}
+
+HittableList volumeCornellBox()
+{
+    HittableList objects;
+
+    auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
+    auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
+    auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
+
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
+
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(113., 443., 127., 432., 554., light));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
+
+    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
+
+    box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
+    box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
+
+    std::shared_ptr<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
+
+    box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
+    box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
+
+    objects.add(std::make_shared<ConstantVolume>(box1, std::make_shared<SolidColor>(0., 0., 0.), .01));
+    objects.add(std::make_shared<ConstantVolume>(box2, std::make_shared<SolidColor>(1., 1., 1.), .01));
 
     return objects;
 }
@@ -138,7 +166,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 background{0., 0., 0.};
     Vec3 randomCenter1;
-    world = cornellBox();
+    world = volumeCornellBox();
     // double chooseMaterial;
 
     // auto checker = std::make_shared<CheckerTexture>(
