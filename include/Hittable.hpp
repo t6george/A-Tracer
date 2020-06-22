@@ -14,7 +14,6 @@ class Hittable
 {
 protected:
     Hittable() = default;
-
     virtual ~Hittable() noexcept = default;
 
 public:

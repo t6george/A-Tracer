@@ -43,10 +43,6 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             break;
         case Hittable::HitType::HIT_SCATTER:
             color = record.emitted + record.attenuation * computeRayColor(record.scatteredRay, background, world, depth - 1);
-            // if (color.x() != 0. && color.x() != .73 && color.x() != .12)
-            // {
-            //     std::cerr << color.x() << ", " << color.y() << ", " << color.z() << std::endl;
-            // }
             break;
         }
     }
