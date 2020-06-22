@@ -29,10 +29,10 @@ const Vec3 RED{1., 0., 0.};
 
 Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, int depth)
 {
-    Vec3 color{0., 0., 0.};
+    Vec3 color;
     if (depth > 0)
     {
-        Hittable::HitRecord record = {0};
+        Hittable::HitRecord record;
         switch (world.getCollisionData(ray, record, .001))
         {
         case Hittable::HitType::NO_HIT:
@@ -43,6 +43,10 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             break;
         case Hittable::HitType::HIT_SCATTER:
             color = record.emitted + record.attenuation * computeRayColor(record.scatteredRay, background, world, depth - 1);
+            // if (color.x() != 0. && color.x() != .73 && color.x() != .12)
+            // {
+            //     std::cerr << color.x() << ", " << color.y() << ", " << color.z() << std::endl;
+            // }
             break;
         }
     }
@@ -97,14 +101,14 @@ HittableList cornellBox()
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
 
-    // objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light));
 
-    // objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
 
-    // objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
 
-    // objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
 
     std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
 
@@ -116,7 +120,7 @@ HittableList cornellBox()
     box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
     box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
-    // objects.add(box1);
+    objects.add(box1);
     objects.add(box2);
 
     // objects.add(std::make_shared<Box>(Vec3{130., 0., 65.}, Vec3{295., 165., 230.}, white));

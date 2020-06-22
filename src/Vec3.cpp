@@ -56,9 +56,18 @@ void Vec3::formatRaw(std::ostream &out) const
 
 void Vec3::formatColor(std::ostream &out, int samplesPerPixel) const
 {
+    // auto r = utils::clamp(sqrt(c[0] / samplesPerPixel), 0., .999);
     out << static_cast<int>(256 * utils::clamp(sqrt(c[0] / samplesPerPixel), 0., .999)) << ' '
         << static_cast<int>(256 * utils::clamp(sqrt(c[1] / samplesPerPixel), 0., .999)) << ' '
         << static_cast<int>(256 * utils::clamp(sqrt(c[2] / samplesPerPixel), 0., .999)) << '\n';
+    // if (r > .01 && r < .9)
+    // {
+    //     auto g = utils::clamp(sqrt(c[1] / samplesPerPixel), 0., .999);
+    //     auto b = utils::clamp(sqrt(c[2] / samplesPerPixel), 0., .999);
+    //     std::cerr << static_cast<int>(256. * r) << ' '
+    //               << static_cast<int>(256. * g) << ' '
+    //               << static_cast<int>(256. * b) << '\n';
+    // }
 }
 
 Vec3 Vec3::operator+(const Vec3 &otherV) const

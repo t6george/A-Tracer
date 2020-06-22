@@ -48,15 +48,20 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRec
     Vec3 origin = ray.getOrigin();
     Vec3 direction = ray.getDirection();
 
-    inverseRotateCoords(origin);
-    inverseRotateCoords(direction);
+    rotateCoords(origin);
+    rotateCoords(direction);
 
     Ray adjusted{origin, direction, ray.getTime()};
+
     if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, tMin, tMax)))
     {
-        rotateCoords(record.point);
-        rotateCoords(record.normal);
-        record.setLightPosition(adjusted);
+        Vec3 scatteredOrigin = record.scatteredRay.getOrigin();
+        Vec3 scatteredDirection = record.scatteredRay.getDirection();
+        inverseRotateCoords(scatteredOrigin);
+        inverseRotateCoords(scatteredDirection);
+
+        record.scatteredRay.setOrigin(scatteredOrigin);
+        record.scatteredRay.setDirection(scatteredDirection);
     }
 
     return hit;
@@ -89,9 +94,9 @@ template <>
 void AARotate<utils::Axis::Y>::rotateCoords(Vec3 &v) const
 {
     v = Vec3{
-        cosTheta * v.x() + sinTheta * v.z(),
+        cosTheta * v.x() - sinTheta * v.z(),
         v.y(),
-        cosTheta * v.z() - sinTheta * v.x()};
+        cosTheta * v.z() + sinTheta * v.x()};
 }
 
 template <>

@@ -26,7 +26,6 @@ public:
         Vec3 attenuation;
         Vec3 emitted;
         bool isInFront;
-        bool flip;
         Ray scatteredRay;
 
         inline void setLightPosition(const Ray &ray)
@@ -36,10 +35,6 @@ public:
             {
                 normal = -normal;
             }
-            // if (flip)
-            // {
-            //     normal = -normal;
-            // }
         }
     };
 
