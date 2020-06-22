@@ -14,6 +14,7 @@
 #include <AARotate.hpp>
 #include <Translate.hpp>
 #include <ConstantVolume.hpp>
+#include <BVHNode.hpp>
 
 #include <Ray.hpp>
 #include <HittableList.hpp>
@@ -127,7 +128,7 @@ HittableList volumeCornellBox()
     auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
     auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
-    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
 
@@ -153,12 +154,79 @@ HittableList volumeCornellBox()
     return objects;
 }
 
+HittableList theNextWeekSummaryScene()
+{
+    HittableList boxes1;
+    auto ground = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.48, .83, .53));
+
+    const int boxes_per_side = 20;
+    for (int i = 0; i < boxes_per_side; ++i)
+    {
+        for (int j = 0; j < boxes_per_side; ++j)
+        {
+            auto w = 100.;
+            auto x0 = -1000. + i * w;
+            auto z0 = -1000. + j * w;
+            auto y0 = 0.;
+            auto x1 = x0 + w;
+            auto y1 = utils::random_double(1., 101.);
+            auto z1 = z0 + w;
+
+            boxes1.add(std::make_shared<Box>(Vec3{x0, y0, z0}, Vec3{x1, y1, z1}, ground));
+        }
+    }
+
+    HittableList objects;
+
+    objects.add(std::make_shared<BVHNode>(boxes1, 0., 1.));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
+    objects.add(std::make_shared<AARect<utils::Axis::Y>>(123., 423., 147., 412., 554., light));
+
+    auto center1 = Vec3{400., 400., 200.};
+    auto center2 = center1 + Vec3{30., 0., 0.};
+    auto moving_sphere_material =
+        std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.7, .3, .1));
+    objects.add(std::make_shared<Sphere>(center1, center2, 50., moving_sphere_material));
+
+    objects.add(std::make_shared<Sphere>(Vec3{260., 150., 45.}, 50., std::make_shared<Dielectric>(1.5)));
+    objects.add(std::make_shared<Sphere>(
+        Vec3{0., 150., 145.}, 50., std::make_shared<Metal>(std::make_shared<SolidColor>(Vec3{.8, .8, .9}), 10.)));
+
+    auto boundary = std::make_shared<Sphere>(Vec3{360., 150., 145.}, 70., std::make_shared<Dielectric>(1.5));
+    objects.add(boundary);
+    objects.add(std::make_shared<ConstantVolume>(
+        boundary, std::make_shared<SolidColor>(.2, .4, .9), .2));
+    boundary = std::make_shared<Sphere>(Vec3{0., 0., 0.}, 5000., std::make_shared<Dielectric>(1.5));
+    objects.add(std::make_shared<ConstantVolume>(
+        boundary, std::make_shared<SolidColor>(1., 1., 1.), .0001));
+
+    auto emat = std::make_shared<LambertianDiffuse>(std::make_shared<ImageTexture>("world.jpg"));
+    objects.add(std::make_shared<Sphere>(Vec3{400., 200., 400.}, 100., emat));
+    auto pertext = std::make_shared<PerlinNoiseTexture>(.1);
+    objects.add(std::make_shared<Sphere>(Vec3{220, 280., 300.}, 80., std::make_shared<LambertianDiffuse>(pertext)));
+
+    HittableList boxes2;
+    auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
+    int ns = 1000;
+    for (int j = 0; j < ns; ++j)
+    {
+        boxes2.add(std::make_shared<Sphere>(Vec3::randomVector(Vec3{}, Vec3{165., 165., 165.}), 10., white));
+    }
+
+    objects.add(std::make_shared<Translate>(
+        std::make_shared<AARotate<utils::Axis::Y>>(
+            std::make_shared<BVHNode>(boxes2, 0., 1.), 15.),
+        Vec3{-100., 270., 395.}));
+
+    return objects;
+}
+
 void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections)
 {
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
 
-    Camera camera{static_cast<double>(width) / static_cast<double>(height), 40., 0., 10., Vec3{278., 278., -800.}, Vec3{278., 278., 0.}, 0., 1.};
+    Camera camera{static_cast<double>(width) / static_cast<double>(height), 40., 0., 10., Vec3{478., 278., -600.}, Vec3{278., 278., 0.}, 0., 1.};
 
     // Hittable::HitRecord record = {0};
     Vec3 pixelColor;
@@ -166,7 +234,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter0{0., .2, 0.};
     Vec3 background{0., 0., 0.};
     Vec3 randomCenter1;
-    world = volumeCornellBox();
+    world = theNextWeekSummaryScene();
     // double chooseMaterial;
 
     // auto checker = std::make_shared<CheckerTexture>(

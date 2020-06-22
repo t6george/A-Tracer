@@ -1,10 +1,13 @@
 #include <algorithm>
-
+#include <cassert>
 #include <BVHNode.hpp>
 #include <Utils.hpp>
 #include <HittableList.hpp>
 
-BVHNode::BVHNode(HittableList &world, const size_t start, const size_t end, const double time0, const double time1)
+BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
+    : BVHNode{world, time0, time1, 0, world.hittables.size() - 1} { assert(world.hittables.size() > 0); }
+
+BVHNode::BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end)
 {
     size_t span = end - start;
 

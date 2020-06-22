@@ -126,7 +126,7 @@ Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
     return parallel - normal * sqrt(1. - parallel.sqLen());
 }
 
-Vec3 Vec3::randomColor(const Vec3 &min, const Vec3 &max)
+Vec3 Vec3::randomVector(const Vec3 &min, const Vec3 &max)
 {
     return Vec3{utils::random_double(min[0], max[0]), utils::random_double(min[1], max[1]), utils::random_double(min[2], max[2])};
 }

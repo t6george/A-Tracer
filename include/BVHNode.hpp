@@ -13,7 +13,8 @@ class BVHNode : public Hittable
 
 public:
     BVHNode() = default;
-    BVHNode(HittableList &world, const size_t start, const size_t end, const double time0, const double time1);
+    BVHNode(HittableList &world, const double time0, const double time1);
+    BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end);
 
     ~BVHNode() noexcept = default;
 

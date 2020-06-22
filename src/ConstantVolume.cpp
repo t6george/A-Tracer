@@ -33,7 +33,8 @@ Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &re
 
                 record.normal = Vec3{1., 0., 0.};
                 record.isInFront = true;
-                hit = phaseFunction->scatterRay(ray, record) ? HitType::HIT_SCATTER : HitType::HIT_NO_SCATTER;
+                hit = phaseFunction->scatterRay(ray, record) ? HitType::HIT_SCATTER
+                                                             : HitType::HIT_NO_SCATTER;
             }
         }
     }
