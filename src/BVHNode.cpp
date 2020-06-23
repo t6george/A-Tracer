@@ -4,8 +4,10 @@
 #include <Utils.hpp>
 #include <HittableList.hpp>
 
+#include <iostream>
+
 BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
-    : BVHNode{world, time0, time1, 0, world.hittables.size() - 1} { assert(world.hittables.size() > 0); }
+    : BVHNode{world, time0, time1, 0, world.hittables.size()} { assert(world.hittables.size() > 0); }
 
 BVHNode::BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end)
 {
@@ -31,8 +33,8 @@ BVHNode::BVHNode(HittableList &world, const double time0, const double time1, co
         size_t mid = start + span / 2;
         std::sort(world.hittables.begin() + start, world.hittables.begin() + end, cmp);
 
-        left = std::make_shared<BVHNode>(world, start, mid, time0, time1);
-        right = std::make_shared<BVHNode>(world, mid, end, time0, time1);
+        left = std::make_shared<BVHNode>(world, time0, time1, start, mid);
+        right = std::make_shared<BVHNode>(world, time0, time1, mid, end);
         break;
     }
 
@@ -42,6 +44,8 @@ BVHNode::BVHNode(HittableList &world, const double time0, const double time1, co
     right->getBoundingBox(time0, time1, rightBox);
 
     boundingBox = AABB::combineAABBs(leftBox, rightBox);
+    // std::cerr << "MinPoint: " << boundingBox.getMinPoint().x() << ", " << boundingBox.getMinPoint().y() << ", " << boundingBox.getMinPoint().z() << std::endl;
+    // std::cerr << "MaxPoint: " << boundingBox.getMaxPoint().x() << ", " << boundingBox.getMaxPoint().y() << ", " << boundingBox.getMaxPoint().z() << std::endl;
 }
 
 Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
