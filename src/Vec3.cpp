@@ -144,6 +144,17 @@ Vec3 Vec3::randomUnitSphereVec()
     return Vec3{r * cos(a), r * sin(a), z};
 }
 
+Vec3 Vec3::randomUnitHemisphereVec(const Vec3& normal)
+{
+    Vec3 v = Vec3::randomUnitSphereVec();
+    if (v.o(normal) < 0.)
+    {
+        v = -v;
+    }
+
+    return v;
+}
+
 Vec3 Vec3::randomUnitCircleVec()
 {
     Vec3 vec;

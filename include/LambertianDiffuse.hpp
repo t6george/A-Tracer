@@ -10,4 +10,5 @@ public:
     ~LambertianDiffuse() noexcept = default;
 
     bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
+    void scatterPdf(const Ray &ray, Hittable::HitRecord &record) const override;
 };

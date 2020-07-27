@@ -44,7 +44,8 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
-            color = record.emitted + record.attenuation * computeRayColor(record.scatteredRay, background, world, depth - 1);
+            color = record.emitted + record.albedo * record.scatterPdf *
+                    computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
             break;
         }
     }
@@ -229,7 +230,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     const double fieldOfView = 40.;
     const double apertureRadius = 0.;
     const double distanceToFocus = 10.;
-    const Vec3 lookFrom = Vec3{478., 278., -600.};
+    const Vec3 lookFrom = Vec3{278., 278., -800.};
     const Vec3 lookAt = Vec3{278., 278., 0.};
     const double t0 = 0.;
     const double t1 = 1.;
@@ -263,7 +264,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
 int main()
 {
     const double aspectR = 1.0;
-    int width = 600;
+    int width = 500;
     int height = static_cast<int>(width / aspectR);
     int samplesPerPixel = 100;
     int maxDepth = 50;

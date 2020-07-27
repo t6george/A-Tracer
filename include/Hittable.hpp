@@ -22,10 +22,12 @@ public:
         double t, u, v;
         Vec3 point;
         Vec3 normal;
-        Vec3 attenuation;
+        Vec3 albedo;
         Vec3 emitted;
         bool isInFront;
         Ray scatteredRay;
+        double samplePdf;
+        double scatterPdf;
 
         inline void setLightPosition(const Ray &ray)
         {

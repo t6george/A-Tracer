@@ -27,7 +27,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
             record.normal, n_over_nprime));
     }
 
-    record.attenuation = albedo->getValue(record.u, record.v, Vec3{});
+    record.albedo = albedo->getValue(record.u, record.v, Vec3{});
     record.scatteredRay.setOrigin(record.point);
     record.scatteredRay.setTime(ray.getTime());
     record.emitted = emitCol(record.u, record.v, Vec3{});
