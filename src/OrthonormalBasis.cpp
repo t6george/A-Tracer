@@ -5,7 +5,7 @@ Vec3 OrthonormalBasis::operator[](int i) const { return axes.at(i); }
 
 OrthonormalBasis::OrthonormalBasis(const Vec3& sample) : axes{Vec3{}, Vec3{}, sample.getUnitVector()}
 {
-    Vec3 tmp = fabs(getW().x() > .9) ? Vec3{0, 1, 0} : Vec3{1, 0, 0};
+    Vec3 tmp = fabs(getW().x()) > .9 ? Vec3{0, 1., 0} : Vec3{1., 0, 0};
     axes[1] = (getW().x(tmp)).getUnitVector();
     axes[0] = getW().x(getV());
 }
