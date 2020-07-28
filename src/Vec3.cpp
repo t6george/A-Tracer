@@ -162,3 +162,13 @@ Vec3 Vec3::randomUnitCircleVec()
     vec[1] = utils::random_double(0., sqrt(1. - vec[0] * vec[0]));
     return vec;
 }
+
+Vec3 Vec3::randomCosineVec()
+{
+    double r1 = utils::random_double();
+    double r2 = utils::random_double();
+
+    double phi = 2. * utils::pi * r1;
+
+    return Vec3{cos(phi) * sqrt(r2), sin(phi) * sqrt(r2), sqrt(1. - r2)};
+}
