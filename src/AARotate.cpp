@@ -42,7 +42,7 @@ AABB AARotate<A>::computeBoundingBox()
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
+Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip)
 {
     Hittable::HitType hit;
     Vec3 origin = ray.getOrigin();

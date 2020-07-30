@@ -33,7 +33,7 @@ AABB AARect<utils::Axis::Z>::computeBoundingBox(const double i0, const double i1
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
+Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip)
 {
     double t;
     solveForTime(ray, t);
@@ -52,10 +52,10 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
             setHitPoint(i, j, k, record);
             record.setLightPosition(ray);
 
-            // if (ray.getOrigin().x() <= 502. && ray.getOrigin().x() >= 498.)
-            // {
-            //     std::cerr << ray.getOrigin().x() << ", " << ray.getOrigin().y() << ", " << ray.getOrigin().z() << std::endl;
-            // }
+            if (flip)
+            {
+                record.normal = -record.normal;
+            }
 
             hit = material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
                                                     : Hittable::HitType::HIT_NO_SCATTER;

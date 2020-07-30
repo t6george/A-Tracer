@@ -30,7 +30,7 @@ bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
     record.albedo = albedo->getValue(record.u, record.v, Vec3{});
     record.scatteredRay.setOrigin(record.point);
     record.scatteredRay.setTime(ray.getTime());
-    record.emitted = emitCol(record.u, record.v, Vec3{});
+    record.emitted = emitCol(ray, record, Vec3{});
 
     return true;
 }

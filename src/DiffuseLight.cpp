@@ -5,8 +5,15 @@ DiffuseLight::DiffuseLight(const std::shared_ptr<Texture> emitter) : Material::M
 
 bool DiffuseLight::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
-    record.emitted = emitCol(record.u, record.v, record.point);
+    record.emitted = emitCol(ray, record, record.point);
     return false;
 }
 
-Vec3 DiffuseLight::emitCol(double u, double v, const Vec3 &point) const { return albedo->getValue(u, v, point); }
+Vec3 DiffuseLight::emitCol(const Ray& ray, Hittable::HitRecord& record, const Vec3 &point) const 
+{
+    Vec3 col{};
+    if (record.isInFront)
+        col = albedo->getValue(record.u, record.v, point); 
+
+    return col;
+}

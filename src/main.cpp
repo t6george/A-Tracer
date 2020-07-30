@@ -59,7 +59,8 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
                 return record.emitted;
 
             record.samplePdf = distance_squared / (light_cosine * light_area);
-            record.scatteredRay = Ray(record.point, to_light, ray.getTime());
+            record.scatteredRay.setDirection(to_light);
+            record.scatteredRay.setTime(ray.getTime());
 
             color = record.emitted + record.albedo * record.scatterPdf *
                     computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
@@ -113,12 +114,12 @@ HittableList cornellBox()
     auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
     auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
-    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
-    objects.add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light)));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
     objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
