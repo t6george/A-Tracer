@@ -44,6 +44,23 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
+            Vec3 on_light = Vec3{utils::random_double(213., 343.), 554., utils::random_double(227., 332.)};
+            auto to_light = on_light - record.point;
+            auto distance_squared = to_light.sqLen();
+            to_light = to_light.getUnitVector();
+
+            if (to_light.o(record.normal) < 0.)
+                return record.emitted;
+
+            double light_area = (343-213)*(332-227);
+            auto light_cosine = fabs(to_light.y());
+
+            if (light_cosine < 0.000001)
+                return record.emitted;
+
+            record.samplePdf = distance_squared / (light_cosine * light_area);
+            record.scatteredRay = Ray(record.point, to_light, ray.getTime());
+
             color = record.emitted + record.albedo * record.scatterPdf *
                     computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
             break;
@@ -266,7 +283,7 @@ int main()
     const double aspectR = 1.0;
     int width = 500;
     int height = static_cast<int>(width / aspectR);
-    int samplesPerPixel = 100;
+    int samplesPerPixel = 10;
     int maxDepth = 50;
 
     outputSphereScene(width, height, samplesPerPixel, maxDepth, aspectR);

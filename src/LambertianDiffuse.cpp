@@ -10,8 +10,8 @@ bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) 
     OrthonormalBasis onb(record.normal);
 
     record.scatteredRay.setOrigin(record.point);
-    //record.scatteredRay.setDirection((record.normal + Vec3::randomUnitSphereVec()).getUnitVector());
-    record.scatteredRay.setDirection(Vec3::randomUnitHemisphereVec(record.normal));
+    record.scatteredRay.setDirection((record.normal + Vec3::randomUnitSphereVec()).getUnitVector());
+    //record.scatteredRay.setDirection(Vec3::randomUnitHemisphereVec(record.normal));
     //record.scatteredRay.setDirection(onb.getVec(Vec3::randomCosineVec()).getUnitVector());
     record.scatteredRay.setTime(ray.getTime());
     record.albedo = albedo->getValue(record.u, record.v, record.point);
