@@ -54,7 +54,7 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
 
             if (flip)
             {
-                record.normal = -record.normal;
+                record.isInFront ^= true;
             }
 
             hit = material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER

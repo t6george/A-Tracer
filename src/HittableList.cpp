@@ -1,14 +1,14 @@
 #include <HittableList.hpp>
 #include <AABB.hpp>
 
-Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax)
+Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip)
 {
     Hittable::HitRecord tmpRecord;
     Hittable::HitType collisionType = Hittable::HitType::NO_HIT, tmpCollisionType;
 
     for (const auto &obj : hittables)
     {
-        if (static_cast<bool>(tmpCollisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax)))
+        if (static_cast<bool>(tmpCollisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax, flip)))
         {
             collisionType = tmpCollisionType;
             record = tmpRecord;

@@ -19,7 +19,7 @@ Box::Box(const Vec3 &p0, const Vec3 &p1,
     sides.add(std::make_shared<AARect<utils::Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), material));
 }
 
-Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
+Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
 {
-    return sides.getCollisionData(ray, record, tMin, tMax);
+    return sides.getCollisionData(ray, record, tMin, tMax, flip);
 }

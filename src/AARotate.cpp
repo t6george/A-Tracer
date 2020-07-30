@@ -53,7 +53,7 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRec
 
     Ray adjusted{origin, direction, ray.getTime()};
 
-    if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, tMin, tMax)))
+    if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, tMin, tMax, flip)))
     {
         Vec3 scatteredOrigin = record.scatteredRay.getOrigin();
         Vec3 scatteredDirection = record.scatteredRay.getDirection();

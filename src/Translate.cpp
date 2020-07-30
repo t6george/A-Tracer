@@ -4,12 +4,12 @@
 Translate::Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement)
     : shape{shape}, displacement{displacement} {}
 
-Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
+Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
 {
     Hittable::HitType hit;
     Ray moved{ray.getOrigin() - displacement, ray.getDirection(), ray.getTime()};
 
-    if (static_cast<bool>(hit = shape->getCollisionData(moved, record, tMin, tMax)))
+    if (static_cast<bool>(hit = shape->getCollisionData(moved, record, tMin, tMax, flip)))
     {
         record.point += displacement;
         record.scatteredRay.setOrigin(record.scatteredRay.getOrigin() + displacement);

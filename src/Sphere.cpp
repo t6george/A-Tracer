@@ -29,7 +29,7 @@ Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
       center0{center0}, center1{center1},
       center{center0}, R{R}, time0{t0}, time1{t1} {}
 
-Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax)
+Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
 {
     blur(ray.getTime());
     Vec3 los = ray.getOrigin() - center;
@@ -51,6 +51,12 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
+
+            if (flip)
+            {
+                record.isInFront ^= true;
+            }
+
             return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
                                                      : Hittable::HitType::HIT_NO_SCATTER;
         }
@@ -62,6 +68,12 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
             record.normal = (record.point - center) / R;
             Sphere::getSphereUV(record.normal, record.u, record.v);
             record.setLightPosition(ray);
+
+            if (flip)
+            {
+                record.isInFront ^= true;
+            }
+
             return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
                                                      : Hittable::HitType::HIT_NO_SCATTER;
         }
