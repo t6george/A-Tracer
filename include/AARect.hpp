@@ -4,7 +4,7 @@
 template <utils::Axis A>
 class AARect : public Shape
 {
-    double i0, i1, j0, j1, k;
+    double i0, i1, j0, j1, k, area;
 
     void solveForTime(const Ray &ray, double &t) const;
     void getPlaneIntersection(const Ray &ray, double &i, double &j, const double t) const;
@@ -21,4 +21,7 @@ public:
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
                              double tMax = utils::infinity, bool flip = false) override;
+
+    Vec3 genRandomVector(const Vec3& origin) const override;
+    double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;
 };

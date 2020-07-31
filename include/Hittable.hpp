@@ -52,7 +52,7 @@ public:
 
     virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 
-    virtual Vec3 genRandomVector() const { return Vec3{1., 0., 0.}; }
+    virtual Vec3 genRandomVector(const Vec3& origin) const { return Vec3{1., 0., 0.}; }
     
-    virtual double eval(const Vec3& origin, const Vec3& v) const { return 0.; }
+    virtual double eval(const Vec3& origin, const Vec3& v, bool flip = false) const { return 0.; }
 };

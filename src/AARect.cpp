@@ -9,7 +9,7 @@ AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
                   const std::shared_ptr<Material> material)
     : Shape::Shape{material, AABB{computeBoundingBox(i0, i1, j0, j1, k)}},
-      i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k} {}
+      i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k}, area{fabs((i1 - i0) * (j1 - j0))} {}
 
 template <>
 AABB AARect<utils::Axis::X>::computeBoundingBox(const double i0, const double i1, const double j0,
@@ -123,6 +123,28 @@ void AARect<utils::Axis::Z>::setHitPoint(const double i, const double j, const d
 {
     record.normal = Vec3{0., 0., 1.};
     record.point = Vec3{i, j, k};
+}
+
+template <>
+Vec3 AARect<utils::Axis::Y>::genRandomVector(const Vec3& origin) const
+{
+    return Vec3{utils::random_double(i0, i1), k, utils::random_double(j0, j1)} 
+        - origin;
+}
+
+template <>
+double AARect<utils::Axis::Y>::eval(const Vec3& origin, const Vec3& v, bool flip) const
+{
+    Hittable::HitRecord record;
+    double pdfVal = 0.;
+
+    if (static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
+    {
+        double cosine = fabs(v.o(record.normal)) / v.len();
+        pdfVal = record.t * record.t * v.sqLen() / cosine / area;
+    }
+
+    return pdfVal;
 }
 
 template class AARect<utils::Axis::X>;
