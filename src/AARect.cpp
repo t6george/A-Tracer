@@ -33,7 +33,7 @@ AABB AARect<utils::Axis::Z>::computeBoundingBox(const double i0, const double i1
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip)
+Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip) const
 {
     double t;
     solveForTime(ray, t);

@@ -7,7 +7,7 @@ ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
                                const double density)
     : boundary{boundary}, phaseFunction{std::make_shared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 
-Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
+Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
 {
     HitType hit = HitType::NO_HIT;
 

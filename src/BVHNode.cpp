@@ -48,7 +48,7 @@ BVHNode::BVHNode(HittableList &world, const double time0, const double time1, co
     // std::cerr << "MaxPoint: " << boundingBox.getMaxPoint().x() << ", " << boundingBox.getMaxPoint().y() << ", " << boundingBox.getMaxPoint().z() << std::endl;
 }
 
-Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
+Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
 {
     if (!boundingBox.passesThrough(ray, tMin, tMax))
     {

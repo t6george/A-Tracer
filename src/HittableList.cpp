@@ -1,7 +1,7 @@
 #include <HittableList.hpp>
 #include <AABB.hpp>
 
-Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip)
+Hittable::HitType HittableList::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip) const
 {
     Hittable::HitRecord tmpRecord;
     Hittable::HitType collisionType = Hittable::HitType::NO_HIT, tmpCollisionType;

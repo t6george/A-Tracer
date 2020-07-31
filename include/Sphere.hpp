@@ -23,8 +23,7 @@ public:
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
-                             double tMax = utils::infinity, bool flip = false) override;
+                             double tMax = utils::infinity, bool flip = false) const override;
 
-    const Vec3 &getCenter() const;
-    void blur(const double time);
+    Vec3 blur(const double time) const;
 };

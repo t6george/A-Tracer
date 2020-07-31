@@ -10,8 +10,8 @@ class AARotate : public Hittable
     AABB bbox;
 
     AABB computeBoundingBox();
-    void rotateCoords(Vec3 &v) const;
-    void inverseRotateCoords(Vec3 &v);
+    void rotateCoords(Vec3 &v, const double sin) const;
+    void inverseRotateCoords(Vec3 &v) const;
 
 public:
     AARotate(const std::shared_ptr<Hittable> shape, double angle);
@@ -19,7 +19,7 @@ public:
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
-                             double tMax = utils::infinity, bool flip = false) override;
+                             double tMax = utils::infinity, bool flip = false) const override;
 
     bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

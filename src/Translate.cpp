@@ -4,7 +4,7 @@
 Translate::Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement)
     : shape{shape}, displacement{displacement} {}
 
-Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip)
+Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
 {
     Hittable::HitType hit;
     Ray moved{ray.getOrigin() - displacement, ray.getDirection(), ray.getTime()};

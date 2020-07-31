@@ -15,5 +15,5 @@ public:
 
     HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
-                             double tMax = utils::infinity, bool flip = false) override;
+                             double tMax = utils::infinity, bool flip = false) const override;
 };
