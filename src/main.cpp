@@ -44,7 +44,7 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
-            Vec3 on_light = Vec3{utils::random_double(213., 343.), 554., utils::random_double(227., 332.)};
+            /*Vec3 on_light = Vec3{utils::random_double(213., 343.), 554., utils::random_double(227., 332.)};
             auto to_light = on_light - record.point;
             auto distance_squared = to_light.sqLen();
             to_light = to_light.getUnitVector();
@@ -61,6 +61,7 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             record.samplePdf = distance_squared / (light_cosine * light_area);
             record.scatteredRay.setDirection(to_light);
             record.scatteredRay.setTime(ray.getTime());
+            */
 
             color = record.emitted + record.albedo * record.scatterPdf *
                     computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
@@ -147,7 +148,7 @@ HittableList volumeCornellBox()
     auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
     auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
-    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
 
@@ -284,7 +285,7 @@ int main()
     const double aspectR = 1.0;
     int width = 500;
     int height = static_cast<int>(width / aspectR);
-    int samplesPerPixel = 10;
+    int samplesPerPixel = 100;
     int maxDepth = 50;
 
     outputSphereScene(width, height, samplesPerPixel, maxDepth, aspectR);
