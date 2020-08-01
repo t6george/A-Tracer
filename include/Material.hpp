@@ -11,6 +11,11 @@ protected:
     const std::shared_ptr<Texture> albedo;
 
 public:
+    // struct ScatterRecord
+    // {
+
+    // };
+
     Material(const std::shared_ptr<Texture> albedo);
     virtual ~Material() noexcept = default;
 

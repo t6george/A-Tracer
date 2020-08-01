@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include <Utils.hpp>
 #include <SolidColor.hpp>
@@ -15,7 +16,9 @@
 #include <Translate.hpp>
 #include <ConstantVolume.hpp>
 #include <BVHNode.hpp>
-
+#include <HittablePdf.hpp>
+#include <CosinePdf.hpp>
+#include <WeightedPdf.hpp>
 #include <Ray.hpp>
 #include <HittableList.hpp>
 #include <Sphere.hpp>
@@ -23,7 +26,6 @@
 #include <LambertianDiffuse.hpp>
 #include <Metal.hpp>
 #include <Dielectric.hpp>
-#include <vector>
 
 const Vec3 WHITE{1., 1., 1.};
 const Vec3 SKY_BLUE{.5, .7, 1.};
@@ -44,24 +46,13 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
-            /*Vec3 on_light = Vec3{utils::random_double(213., 343.), 554., utils::random_double(227., 332.)};
-            auto to_light = on_light - record.point;
-            auto distance_squared = to_light.sqLen();
-            to_light = to_light.getUnitVector();
+            // WeightedPdf pdf{std::make_shared<CosinePdf>(record.normal), 
+            //     std::make_shared<HittablePdf>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
+            //     std::make_shared<Material>(nullptr)), record.point), 1.};
+            CosinePdf pdf{record.normal};
+            record.scatteredRay.setDirection(pdf.genRandomVector());
 
-            if (to_light.o(record.normal) < 0.)
-                return record.emitted;
-
-            double light_area = (343-213)*(332-227);
-            auto light_cosine = fabs(to_light.y());
-
-            if (light_cosine < 0.000001)
-                return record.emitted;
-
-            record.samplePdf = distance_squared / (light_cosine * light_area);
-            record.scatteredRay.setDirection(to_light);
-            record.scatteredRay.setTime(ray.getTime());
-            */
+            record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
 
             color = record.emitted + record.albedo * record.scatterPdf *
                     computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
@@ -285,7 +276,7 @@ int main()
     const double aspectR = 1.0;
     int width = 500;
     int height = static_cast<int>(width / aspectR);
-    int samplesPerPixel = 100;
+    int samplesPerPixel = 10;
     int maxDepth = 50;
 
     outputSphereScene(width, height, samplesPerPixel, maxDepth, aspectR);

@@ -2,8 +2,6 @@
 #include <Material.hpp>
 #include <AABB.hpp>
 
-#include <iostream>
-
 template <enum utils::Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
@@ -63,6 +61,19 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
     }
 
     return hit;
+}
+
+template <enum utils::Axis A>
+double AARect<A>::eval(const Vec3& origin, const Vec3& v, bool flip) const
+{
+    Hittable::HitRecord record;
+    double pdfVal = 0.;
+    if (static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
+    {
+        double cosine = fabs(v.o(record.normal)) / v.len();
+        pdfVal = record.t * record.t * v.sqLen() / cosine / area;
+    }
+    return pdfVal;
 }
 
 template <>
@@ -126,6 +137,13 @@ void AARect<utils::Axis::Z>::setHitPoint(const double i, const double j, const d
 }
 
 template <>
+Vec3 AARect<utils::Axis::X>::genRandomVector(const Vec3& origin) const
+{
+    return Vec3{k, utils::random_double(i0, i1), utils::random_double(j0, j1)} 
+        - origin;
+}
+
+template <>
 Vec3 AARect<utils::Axis::Y>::genRandomVector(const Vec3& origin) const
 {
     return Vec3{utils::random_double(i0, i1), k, utils::random_double(j0, j1)} 
@@ -133,18 +151,10 @@ Vec3 AARect<utils::Axis::Y>::genRandomVector(const Vec3& origin) const
 }
 
 template <>
-double AARect<utils::Axis::Y>::eval(const Vec3& origin, const Vec3& v, bool flip) const
+Vec3 AARect<utils::Axis::Z>::genRandomVector(const Vec3& origin) const
 {
-    Hittable::HitRecord record;
-    double pdfVal = 0.;
-
-    if (static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
-    {
-        double cosine = fabs(v.o(record.normal)) / v.len();
-        pdfVal = record.t * record.t * v.sqLen() / cosine / area;
-    }
-
-    return pdfVal;
+    return Vec3{utils::random_double(i0, i1), utils::random_double(j0, j1), k} 
+        - origin;
 }
 
 template class AARect<utils::Axis::X>;
