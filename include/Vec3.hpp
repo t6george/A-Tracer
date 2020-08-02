@@ -33,7 +33,7 @@ public:
     double sqLen() const;
 
     void formatRaw(std::ostream &out) const;
-    void formatColor(std::ostream &out, int samplesPerPixel = 1) const;
+    void formatColor(std::ostream &out, int samplesPerPixel = 1);
 
     Vec3 operator+(const Vec3 &otherV) const;
     Vec3 operator-(const Vec3 &otherV) const;

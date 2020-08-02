@@ -11,7 +11,7 @@ class AARotate : public Hittable
 
     AABB computeBoundingBox();
     void rotateCoords(Vec3 &v, const double sin) const;
-    void inverseRotateCoords(Vec3 &v) const;
+    void inverseRotateCoords(Vec3 &v, const double sin) const;
 
 public:
     AARotate(const std::shared_ptr<Hittable> shape, double angle);

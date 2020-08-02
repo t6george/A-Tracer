@@ -46,13 +46,15 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             color = record.emitted;
             break;
         case Hittable::HitType::HIT_SCATTER:
-            // WeightedPdf pdf{std::make_shared<CosinePdf>(record.normal), 
-            //     std::make_shared<HittablePdf>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
-            //     std::make_shared<Material>(nullptr)), record.point), 1.};
-            CosinePdf pdf{record.normal};
+            WeightedPdf pdf{std::make_shared<CosinePdf>(record.normal), 
+                std::make_shared<HittablePdf>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
+                std::make_shared<Material>(nullptr)), record.scatteredRay.getOrigin()), .5};
+
             record.scatteredRay.setDirection(pdf.genRandomVector());
 
             record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
+
+            record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
 
             color = record.emitted + record.albedo * record.scatterPdf *
                     computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
@@ -106,15 +108,14 @@ HittableList cornellBox()
     auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
     auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
-    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
+    auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
-    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
-
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light)));
-    objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
-    objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
+    objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
     std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
 
@@ -276,7 +277,7 @@ int main()
     const double aspectR = 1.0;
     int width = 500;
     int height = static_cast<int>(width / aspectR);
-    int samplesPerPixel = 10;
+    int samplesPerPixel = 100;
     int maxDepth = 50;
 
     outputSphereScene(width, height, samplesPerPixel, maxDepth, aspectR);
