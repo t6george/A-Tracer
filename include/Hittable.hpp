@@ -28,6 +28,7 @@ public:
         Ray scatteredRay;
         double samplePdf;
         double scatterPdf;
+        bool isSpecular;
 
         inline void setLightPosition(const Ray &ray)
         {

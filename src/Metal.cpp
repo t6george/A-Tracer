@@ -7,6 +7,7 @@ Metal::Metal(const std::shared_ptr<Texture> albedo, const double fuzz)
 
 bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
+    record.isSpecular = true;
     record.scatteredRay.setOrigin(record.point);
     record.scatteredRay.setDirection(ray.getDirection().getUnitVector().reflect(record.normal) +
                                      Vec3::randomUnitSphereVec() * fuzz);

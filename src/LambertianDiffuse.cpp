@@ -12,6 +12,7 @@ LambertianDiffuse::LambertianDiffuse(const std::shared_ptr<Texture> albedo)
 
 bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
+    record.isSpecular = false;
     record.scatteredRay.setOrigin(record.point);
     record.scatteredRay.setTime(ray.getTime());
 

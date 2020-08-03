@@ -56,14 +56,13 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRec
     if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, tMin, tMax, flip)))
     {
         Vec3 scatteredOrigin = record.scatteredRay.getOrigin();
-        // Vec3 scatteredDirection = record.scatteredRay.getDirection();
+        Vec3 scatteredDirection = record.scatteredRay.getDirection();
         inverseRotateCoords(scatteredOrigin, sinTheta);
         inverseRotateCoords(record.normal, sinTheta);
 
         record.scatteredRay.setOrigin(scatteredOrigin);
+        record.scatteredRay.setDirection(scatteredDirection);
         record.setLightPosition(adjusted);
-
-        // record.scatteredRay.setDirection(scatteredDirection);
     }
 
     return hit;
