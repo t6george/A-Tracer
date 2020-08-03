@@ -2,8 +2,7 @@
 #include <Ray.hpp>
 #include <Material.hpp>
 #include <Utils.hpp>
-
-#include <iostream>
+#include <OrthonormalBasis.hpp>
 
 void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {
@@ -84,4 +83,26 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
 Vec3 Sphere::blur(const double time) const
 {
     return center0 + (center1 - center0) * (time - time0) / (time1 - time0);
+}
+
+Vec3 Sphere::genRandomVector(const Vec3& origin) const
+{
+    Vec3 dist = center0 - origin;
+    double disSq = dist.sqLen();
+    OrthonormalBasis basis{dist};
+    return basis.getVec(Vec3::randomVecToSphere(R, disSq));
+}
+
+double Sphere::eval(const Vec3& origin, const Vec3& v, bool flip) const
+{
+    Hittable::HitRecord record;
+    double prob = 0.;
+
+    if(static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
+    {
+        double solidAngle = 2. * utils::pi * (1. - sqrt(1. - R * R / (center0 - origin).sqLen()));
+        prob = 1. / solidAngle;
+    }
+
+    return prob;
 }

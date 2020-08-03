@@ -26,4 +26,7 @@ public:
                              double tMax = utils::infinity, bool flip = false) const override;
 
     Vec3 blur(const double time) const;
+    
+    Vec3 genRandomVector(const Vec3& origin) const override;
+    double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;
 };

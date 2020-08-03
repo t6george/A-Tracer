@@ -12,6 +12,7 @@ public:
     static Vec3 randomUnitHemisphereVec(const Vec3& normal);
     static Vec3 randomUnitCircleVec();
     static Vec3 randomCosineVec();
+    static Vec3 randomVecToSphere(const double R, const double distSq);
 
     Vec3();
     Vec3(double c1, double c2, double c3);

@@ -175,3 +175,13 @@ Vec3 Vec3::randomCosineVec()
 
     return Vec3{cos(phi) * sqrt(r2), sin(phi) * sqrt(r2), sqrt(1. - r2)};
 }
+
+Vec3 Vec3::randomVecToSphere(const double R, const double distSq)
+{
+    double r1 = utils::random_double();
+    double r2 = utils::random_double();
+    double z = 1. + r2 * (sqrt(1. - R * R  / distSq) - 1.);
+    double phi = 2. * utils::pi * r1;
+
+    return Vec3{cos(phi) *sqrt(1. - z * z), sin(phi) * sqrt(1. - z * z), z};
+}
