@@ -27,11 +27,8 @@
 #include <Metal.hpp>
 #include <Dielectric.hpp>
 
-const Vec3 WHITE{1., 1., 1.};
-const Vec3 SKY_BLUE{.5, .7, 1.};
-const Vec3 RED{1., 0., 0.};
-
-Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, int depth)
+Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, 
+    std::shared_ptr<HittableList> sampleObjects, int depth)
 {
     Vec3 color;
     if (depth > 0)
@@ -49,21 +46,19 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
             if (record.isSpecular)
             {
                 color = record.albedo * 
-                    computeRayColor(record.scatteredRay, background, world, depth - 1);
-                //std::cerr << color[0] << " " << color[1] << " " << color[2]<< std::endl;
+                    computeRayColor(record.scatteredRay, background, world, sampleObjects, depth - 1);
             }
             else
             {
                 WeightedPdf pdf{std::make_shared<CosinePdf>(record.normal), 
-                    std::make_shared<HittablePdf>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
-                    std::make_shared<Material>(nullptr)), record.scatteredRay.getOrigin()), .5};
+                    std::make_shared<HittablePdf>(sampleObjects, record.scatteredRay.getOrigin()), .5};
 
                 record.scatteredRay.setDirection(pdf.genRandomVector());
                 record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
                 record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
 
                 color = record.emitted + record.albedo * record.scatterPdf *
-                        computeRayColor(record.scatteredRay, background, world, depth - 1) / record.samplePdf;
+                        computeRayColor(record.scatteredRay, background, world, sampleObjects, depth - 1) / record.samplePdf;
             }
             break;
         }
@@ -117,17 +112,15 @@ HittableList cornellBox()
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
     auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
-    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.)));
-
-
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
-    //objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+    objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light)));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
     objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
-    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
+    // std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
+    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
 
     box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
     box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
@@ -137,8 +130,9 @@ HittableList cornellBox()
     box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
     box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
-    //objects.add(box1);
-    //objects.add(box2);
+    objects.add(box1);
+    objects.add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Dielectric>(1.5)));
+    // objects.add(box2);
 
     return objects;
 }
@@ -265,6 +259,11 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     Vec3 randomCenter1;
     world = cornellBox();
 
+    std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
+    sampleObjects->add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
+            std::make_shared<Material>(nullptr)));
+    //sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
+
     for (int i = height - 1; i >= 0; --i)
     {
         std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
@@ -274,7 +273,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
             for (int sample = 0; sample < samplesPerPixel; ++sample)
             {
                 pixelColor += computeRayColor(camera.updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                              background, world, maxReflections);
+                                              background, world, sampleObjects, maxReflections);
             }
             pixelColor.formatColor(std::cout, samplesPerPixel);
         }

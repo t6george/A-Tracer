@@ -24,5 +24,8 @@ public:
     void add(std::shared_ptr<Hittable> hittable);
     void clear();
 
+    Vec3 genRandomVector(const Vec3& origin) const override;
+    double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;
+
     friend class BVHNode;
 };

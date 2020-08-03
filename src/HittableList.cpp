@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <HittableList.hpp>
 #include <AABB.hpp>
 
@@ -38,3 +40,22 @@ bool HittableList::getBoundingBox(double time0, double time1, AABB &box) const
 void HittableList::add(std::shared_ptr<Hittable> hittable) { hittables.emplace_back(hittable); }
 
 void HittableList::clear() { hittables.clear(); }
+
+Vec3 HittableList::genRandomVector(const Vec3& origin) const
+{
+    return hittables.at(utils::random_int(0, hittables.size()))->genRandomVector(origin);
+}
+
+double HittableList::eval(const Vec3& origin, const Vec3& v, bool flip) const
+{
+    assert(hittables.size() > 0);
+    double weight = 1. / hittables.size();
+    double sum = 0.;
+
+    for (const auto& hittable : hittables)
+    {
+        sum += weight * hittable->eval(origin, v, flip);
+    }
+
+    return sum;
+}
