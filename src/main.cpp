@@ -11,12 +11,12 @@
 #include <Pdfs.hpp>
 #include <Utils.hpp>
 
-Vec3 computeRayColor(Ray &ray, const Vec3 &background, HittableList &world, 
-    std::shared_ptr<HittableList> sampleObjects, const int bounceLimit)
+Vec3 computeRayColor(Ray &ray, const unsigned  Vec3 &background, HittableList &world, 
+    std::shared_ptr<HittableList> sampleObjects, const unsigned int bounceLimit)
 {
     Vec3 color {};
     Vec3 coeff {1., 1., 1.};
-    int bounces = 0;
+    unsigned int bounces = 0;
     Hittable::HitRecord record;
     bool active = true;
 
@@ -236,7 +236,7 @@ HittableList theNextWeekSummaryScene()
     return objects;
 }
 
-void outputSphereScene(const int width, const int height, const int samplesPerPixel, const int maxReflections, const double aspectR)
+void outputSphereScene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, const unsigned int maxReflections, const double aspectR)
 {
     std::cout << "P3\n"
               << width << ' ' << height << "\n255\n";
