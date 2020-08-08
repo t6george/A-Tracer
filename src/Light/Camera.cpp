@@ -18,7 +18,7 @@ Camera::Camera(const double aspR, double fov, const double aperture, const doubl
       dimX{2. * halfWidth * focusDist * basis.getX()}, dimY{2. * halfHeight * focusDist * basis.getY()},
       time1{t1}, time2{t2} {}
 
-const Ray &Camera::updateLineOfSight(double u, double v)
+Ray &Camera::updateLineOfSight(double u, double v)
 {
     Vec3 rd = Vec3::randomUnitCircleVec() * lensRadius;
     Vec3 offset = basis.getX() * rd.x() + basis.getY() * rd.y();

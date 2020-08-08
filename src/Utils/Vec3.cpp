@@ -3,7 +3,7 @@
 #include <iostream>
 #include <Util.hpp>
 
-Vec3::Vec3() : c{0.0, 0.0, 0.0} {}
+Vec3::Vec3() : c{0., 0., 0.} {}
 
 Vec3::Vec3(double c1, double c2, double c3) : c{c1, c2, c3} {}
 
@@ -117,6 +117,14 @@ Vec3 Vec3::x(const Vec3 &otherV) const
     return Vec3(c[1] * otherV.z() - c[2] * otherV.y(),
                 c[2] * otherV.x() - c[0] * otherV.z(),
                 c[0] * otherV.y() - c[1] * otherV.x());
+}
+
+Vec3 &Vec3::operator*=(const Vec3 &otherV)
+{
+    c[0] *= otherV.x();
+    c[1] *= otherV.y();
+    c[2] *= otherV.z();
+    return *this;
 }
 
 void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }

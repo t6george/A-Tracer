@@ -11,26 +11,32 @@
 #include <Pdfs.hpp>
 #include <Utils.hpp>
 
-Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, 
-    std::shared_ptr<HittableList> sampleObjects, int depth)
+Vec3 computeRayColor(Ray &ray, const Vec3 &background, HittableList &world, 
+    std::shared_ptr<HittableList> sampleObjects, const int bounceLimit)
 {
-    Vec3 color;
-    if (depth > 0)
+    Vec3 color {};
+    Vec3 coeff {1., 1., 1.};
+    int bounces = 0;
+    Hittable::HitRecord record;
+    bool active = true;
+
+    for (; active && bounces < bounceLimit; ++bounces)
     {
-        Hittable::HitRecord record = { 0 };
+        record = { 0 };
         switch (world.getCollisionData(ray, record, .001))
         {
         case Hittable::HitType::NO_HIT:
-            color = background;
+            color += background * coeff;
+            active = false;
             break;
         case Hittable::HitType::HIT_NO_SCATTER:
-            color = record.emitted;
+            color += record.emitted * coeff;
+            active = false;
             break;
         case Hittable::HitType::HIT_SCATTER:
             if (record.isSpecular)
             {
-                color = record.albedo * 
-                    computeRayColor(record.scatteredRay, background, world, sampleObjects, depth - 1);
+                coeff *= record.albedo; 
             }
             else
             {
@@ -41,14 +47,15 @@ Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world
                 record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
                 record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
 
-                color = record.emitted + record.albedo * record.scatterPdf *
-                        computeRayColor(record.scatteredRay, background, world, sampleObjects, depth - 1) / record.samplePdf;
+                color += coeff * record.emitted;
+                coeff *= record.albedo * record.scatterPdf / record.samplePdf;
             }
+            ray = record.scatteredRay;
             break;
         }
     }
 
-    return color;
+    return active ? Vec3{} : color;
 }
 
 HittableList generatePerlinSpheres()

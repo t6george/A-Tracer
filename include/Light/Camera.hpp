@@ -35,7 +35,7 @@ public:
            double t0 = 0., double t1 = 0.);
 
     ~Camera() noexcept = default;
-    const Ray &updateLineOfSight(double u, double v);
+    Ray &updateLineOfSight(double u, double v);
     const Ray &getLineOfSight() const;
     void moveCamera(const Vec3 &displacement);
 };

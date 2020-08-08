@@ -49,6 +49,7 @@ public:
 
     double o(const Vec3 &otherV) const;
     Vec3 x(const Vec3 &otherV) const;
+    Vec3 &operator*=(const Vec3 &otherV);
     void zero();
 
     Vec3 reflect(const Vec3 &normal) const;
