@@ -5,7 +5,7 @@ SOURCES := $(shell find src -name "*.cpp" -or -name "*.cc")
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
 
-CPPC := clang++
+CPPC := g++
 CPPFLAGS := -std=c++17 -g -Wall -Werror $(INCLUDES)
 
 tracer: $(OBJECTS)

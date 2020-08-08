@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <Texture.hpp>
 #include <Vec3.hpp>
 
