@@ -1,24 +1,30 @@
 SRC_DIR ?= src
 HEADER_DIR ?= include
-target ?= cpu
+CPPC := 
+CPPFLAGS := 
+SOURCES := 
+
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
-ifeq($(target), gpu)
+
+ifeq ($(target), gpu)
 	CPPC := nvcc
-    CPPFLAGS := -g $(INCLUDES)
-    SOURCES := $(shell find src -name "*.cpp" -or -name "*.cu")
+	CPPFLAGS := -g $(INCLUDES)
+	SOURCES := $(shell find src -name "*.cpp" -or -name "*.cu")
 else
-    CPPC := g++
-    CPPFLAGS := -g -std=c++17 -g -Wall -Werror $(INCLUDES)
-    SOURCES := $(shell find src -name "*.cpp")
+	CPPC := g++
+	CPPFLAGS := -g -std=c++17 -g -Wall -Werror $(INCLUDES)
+	SOURCES := $(shell find src -name "*.cpp")
 endif
+
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
+
 tracer: $(OBJECTS)
-    $(CPPC) -o $@ $^ $(CPPFLAGS)
-%.o: %.cpp
-    $(CPPC)  $< -o $@ $(CPPFLAGS) -c
-%.o: %.cu
-    $(CPPC)  $< -o $@ $(CPPFLAGS) -c
+	$(CPPC) -o $@ $^ $(CPPFLAGS)
+
+%.o: %.c%
+	$(CPPC)  $< -o $@ $(CPPFLAGS) -c
+
 .PHONY: clean
 clean:
-    find . -type f -name '*.o' -delete
-    rm tracer
+	find . -type f -name '*.o' -delete
+	@rm tracer 2>/dev/null || true
