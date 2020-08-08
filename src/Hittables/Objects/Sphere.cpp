@@ -1,7 +1,7 @@
 #include <Sphere.hpp>
 #include <Ray.hpp>
 #include <Material.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 #include <OrthonormalBasis.hpp>
 
 void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)

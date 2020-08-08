@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cassert>
 #include <BVHNode.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 #include <HittableList.hpp>
 
 #include <iostream>

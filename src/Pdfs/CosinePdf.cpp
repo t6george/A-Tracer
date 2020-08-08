@@ -1,5 +1,5 @@
 #include <CosinePdf.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 
 CosinePdf::CosinePdf(const Vec3& v) : basis{v} {}
 

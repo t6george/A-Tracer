@@ -2,30 +2,14 @@
 #include <memory>
 #include <vector>
 
+#include <Materials.hpp>
+#include <Objects.hpp>
+#include <Textures.hpp>
+#include <Scene.hpp>
+#include <Transformations.hpp>
+#include <Light.hpp>
+#include <Pdfs.hpp>
 #include <Utils.hpp>
-#include <SolidColor.hpp>
-#include <CheckerTexture.hpp>
-#include <TurbulentTexture.hpp>
-#include <ImageTexture.hpp>
-#include <DiffuseLight.hpp>
-#include <AARect.hpp>
-#include <PerlinNoiseTexture.hpp>
-#include <FlipFace.hpp>
-#include <Box.hpp>
-#include <AARotate.hpp>
-#include <Translate.hpp>
-#include <ConstantVolume.hpp>
-#include <BVHNode.hpp>
-#include <HittablePdf.hpp>
-#include <CosinePdf.hpp>
-#include <WeightedPdf.hpp>
-#include <Ray.hpp>
-#include <HittableList.hpp>
-#include <Sphere.hpp>
-#include <Camera.hpp>
-#include <LambertianDiffuse.hpp>
-#include <Metal.hpp>
-#include <Dielectric.hpp>
 
 Vec3 computeRayColor(const Ray &ray, const Vec3 &background, HittableList &world, 
     std::shared_ptr<HittableList> sampleObjects, int depth)

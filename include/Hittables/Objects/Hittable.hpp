@@ -5,7 +5,7 @@
 
 #include <Vec3.hpp>
 #include <Ray.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 
 class Material;
 class AABB;

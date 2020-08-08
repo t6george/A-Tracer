@@ -1,5 +1,5 @@
 #include <Metal.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 #include <Texture.hpp>
 
 Metal::Metal(const std::shared_ptr<Texture> albedo, const double fuzz)

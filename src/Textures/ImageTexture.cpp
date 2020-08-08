@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <Utils.hpp>
+#include <Util.hpp>
 #include <StbImageLibrary.hpp>
 #include <ImageTexture.hpp>
 

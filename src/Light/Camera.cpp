@@ -1,5 +1,5 @@
 #include <Camera.hpp>
-#include <Utils.hpp>
+#include <Util.hpp>
 
 Camera::OrthoNormalBasis::OrthoNormalBasis(Vec3 &eyes, const Vec3 &lookat, const Vec3 &vup)
     : z{(eyes - lookat).getUnitVector()}, x{vup.x(z).getUnitVector()}, y{z.x(x)} {}
