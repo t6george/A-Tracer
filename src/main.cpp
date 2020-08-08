@@ -111,6 +111,7 @@ HittableList cornellBox()
     auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
     auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
     auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
+    auto aluminum = std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.);
 
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
     objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
@@ -120,10 +121,15 @@ HittableList cornellBox()
     objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
     // std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
-    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
+    std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, aluminum);
 
     box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
-    box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
+    box1 = std::make_shared<Translate>(box1, Vec3{300., 0., 295.});
+
+    std::shared_ptr<Hittable> box3 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 400., 165.}, white);
+
+    box3 = std::make_shared<AARotate<utils::Axis::Y>>(box3, -20.);
+    box3 = std::make_shared<Translate>(box3, Vec3{90., 0., 295.});
 
     std::shared_ptr<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
 
@@ -131,6 +137,8 @@ HittableList cornellBox()
     box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
     objects.add(box1);
+    objects.add(box3);
+    // objects.add(std::make_shared<Sphere>(Vec3{190., 390., 190.}, 90., red));
     objects.add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Dielectric>(1.5)));
     // objects.add(box2);
 
@@ -262,7 +270,7 @@ void outputSphereScene(const int width, const int height, const int samplesPerPi
     std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
     sampleObjects->add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
             std::make_shared<Material>(nullptr)));
-    //sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
+    sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
 
     for (int i = height - 1; i >= 0; --i)
     {
@@ -286,7 +294,7 @@ int main()
     const double aspectR = 1.0;
     int width = 500;
     int height = static_cast<int>(width / aspectR);
-    int samplesPerPixel = 100;
+    int samplesPerPixel = 10;
     int maxDepth = 50;
 
     outputSphereScene(width, height, samplesPerPixel, maxDepth, aspectR);
