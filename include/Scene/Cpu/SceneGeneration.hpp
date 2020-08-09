@@ -8,8 +8,8 @@
 
 namespace generate
 {
-    Vec3 ray_color(Ray &ray, const Vec3 &background, HittableList &world, 
-    	std::shared_ptr<HittableList> sampleObjects, const unsigned int bounceLimit);
+    Vec3 ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
+    	WeightedPdf& pdf, const unsigned int bounceLimit);
     
     void scene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel,
 	    const unsigned int maxReflections, const double aspectR);

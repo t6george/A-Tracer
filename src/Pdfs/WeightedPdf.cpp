@@ -5,6 +5,16 @@
 WeightedPdf::WeightedPdf(std::shared_ptr<Pdf> pdf1, std::shared_ptr<Pdf> pdf2, double pdf1Weight)
  : pdf1{pdf1}, pdf2{pdf2}, pdf1Weight{pdf1Weight} { assert(pdf1Weight >= 0 && pdf1Weight <= 1.); }
 
+std::shared_ptr<Pdf> WeightedPdf::getPdf1() const
+{
+    return pdf1;
+}
+
+std::shared_ptr<Pdf> WeightedPdf::getPdf2() const
+{
+    return pdf2;
+}
+
 double WeightedPdf::eval(const Vec3& v) const
 {
     double prob = 0.;

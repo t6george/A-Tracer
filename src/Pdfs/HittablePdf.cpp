@@ -1,8 +1,13 @@
 #include <HittablePdf.hpp>
 
-HittablePdf::HittablePdf(std::shared_ptr<Hittable> object, const Vec3& origin)
- : object{object}, origin{origin} {}
+HittablePdf::HittablePdf(std::shared_ptr<Hittable> object)
+ : object{object} {}
 
+
+void HittablePdf::construct(const Vec3& v)
+{
+    origin = v;
+}
 
 double HittablePdf::eval(const Vec3& v) const
 {

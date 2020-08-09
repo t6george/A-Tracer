@@ -19,9 +19,11 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
 
         auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
         auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
@@ -29,12 +31,12 @@ namespace scene
         auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
         auto aluminum = std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.);
 
-        objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
-        objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
-        objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light)));
-        objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
-        objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
-        objects.add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
+        objects->add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green)));
+        objects->add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+        objects->add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., light)));
+        objects->add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white)));
+        objects->add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+        objects->add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
         // std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
         std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, aluminum);
@@ -52,13 +54,17 @@ namespace scene
         box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
         box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
-        objects.add(box1);
-        objects.add(box3);
-        // objects.add(std::make_shared<Sphere>(Vec3{190., 390., 190.}, 90., red));
-        objects.add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Dielectric>(1.5)));
-        // objects.add(box2);
+        objects->add(box1);
+        objects->add(box3);
+        // objects->add(std::make_shared<Sphere>(Vec3{190., 390., 190.}, 90., red));
+        objects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Dielectric>(1.5)));
+        // objects->add(box2);
 
-        return std::make_pair(camera, objects);
+        sampleObjects->add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
+                std::make_shared<Material>(nullptr)));
+        sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
+
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
     SCENE(perlin_spheres)
@@ -71,15 +77,17 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
 
         auto pertext = std::make_shared<TurbulentTexture>();
-        objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
-        objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., std::make_shared<LambertianDiffuse>(pertext)));
+        objects->add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
+        objects->add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., std::make_shared<LambertianDiffuse>(pertext)));
 
-        return std::make_pair(camera, objects);
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
     SCENE(image_texture)
@@ -92,14 +100,16 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
 
         auto imgtext = std::make_shared<ImageTexture>("world.jpg");
-        objects.add(std::make_shared<Sphere>(Vec3{0., 0., 0.}, 2., std::make_shared<LambertianDiffuse>(imgtext)));
+        objects->add(std::make_shared<Sphere>(Vec3{0., 0., 0.}, 2., std::make_shared<LambertianDiffuse>(imgtext)));
 
-        return std::make_pair(camera, objects);
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
     SCENE(light_scene)
@@ -112,19 +122,22 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
+
         auto difflight = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(4., 4., 4.));
         auto mat = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(1., 0., 0.));
 
-        objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., mat));
-        objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., mat));
+        objects->add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., mat));
+        objects->add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., mat));
 
-        objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
-        objects.add(std::make_shared<AARect<utils::Axis::Z>>(3., 5., 1., 3., -2., difflight));
+        objects->add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
+        objects->add(std::make_shared<AARect<utils::Axis::Z>>(3., 5., 1., 3., -2., difflight));
 
-        return std::make_pair(camera, objects);
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
     SCENE(volume_cornell_box)
@@ -137,22 +150,24 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
 
         auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
         auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
         auto green = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.12, .45, .15));
         auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(15., 15., 15.));
 
-        objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
+        objects->add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 555., green));
 
-        objects.add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
-        objects.add(std::make_shared<AARect<utils::Axis::Y>>(113., 443., 127., 432., 554., light));
-        objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
-        objects.add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
-        objects.add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
+        objects->add(std::make_shared<AARect<utils::Axis::X>>(0., 555., 0., 555., 0., red));
+        objects->add(std::make_shared<AARect<utils::Axis::Y>>(113., 443., 127., 432., 554., light));
+        objects->add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 0., white));
+        objects->add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
+        objects->add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
 
         std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
 
@@ -164,10 +179,10 @@ namespace scene
         box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
         box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
 
-        objects.add(std::make_shared<ConstantVolume>(box1, std::make_shared<SolidColor>(0., 0., 0.), .01));
-        objects.add(std::make_shared<ConstantVolume>(box2, std::make_shared<SolidColor>(1., 1., 1.), .01));
+        objects->add(std::make_shared<ConstantVolume>(box1, std::make_shared<SolidColor>(0., 0., 0.), .01));
+        objects->add(std::make_shared<ConstantVolume>(box2, std::make_shared<SolidColor>(1., 1., 1.), .01));
 
-        return std::make_pair(camera, objects);
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
     SCENE(summary)
@@ -180,9 +195,11 @@ namespace scene
         const double t0 = 0.;
         const double t1 = 1.;
 
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::shared_ptr<Camera> camera = std::make_shared<Camera>(
+            aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        HittableList boxes1;
+        std::shared_ptr<HittableList> boxes1 = std::make_shared<HittableList>();
+
         auto ground = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.48, .83, .53));
 
         const int boxes_per_side = 20;
@@ -198,53 +215,55 @@ namespace scene
                 auto y1 = utils::random_double(1., 101.);
                 auto z1 = z0 + w;
 
-                boxes1.add(std::make_shared<Box>(Vec3{x0, y0, z0}, Vec3{x1, y1, z1}, ground));
+                boxes1->add(std::make_shared<Box>(Vec3{x0, y0, z0}, Vec3{x1, y1, z1}, ground));
             }
         }
 
-        HittableList objects;
+        std::shared_ptr<HittableList> objects = std::make_shared<HittableList>();
+        std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
 
-        objects.add(std::make_shared<BVHNode>(boxes1, 0., 1.));
+        objects->add(std::make_shared<BVHNode>(*boxes1.get(), 0., 1.));
         auto light = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(7., 7., 7.));
-        objects.add(std::make_shared<AARect<utils::Axis::Y>>(123., 423., 147., 412., 554., light));
+        objects->add(std::make_shared<AARect<utils::Axis::Y>>(123., 423., 147., 412., 554., light));
 
         auto center1 = Vec3{400., 400., 200.};
         auto center2 = center1 + Vec3{30., 0., 0.};
         auto moving_sphere_material =
             std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.7, .3, .1));
-        objects.add(std::make_shared<Sphere>(center1, center2, 50., moving_sphere_material));
+        objects->add(std::make_shared<Sphere>(center1, center2, 50., moving_sphere_material));
 
-        objects.add(std::make_shared<Sphere>(Vec3{260., 150., 45.}, 50., std::make_shared<Dielectric>(1.5)));
-        objects.add(std::make_shared<Sphere>(
+        objects->add(std::make_shared<Sphere>(Vec3{260., 150., 45.}, 50., std::make_shared<Dielectric>(1.5)));
+        objects->add(std::make_shared<Sphere>(
             Vec3{0., 150., 145.}, 50., std::make_shared<Metal>(std::make_shared<SolidColor>(Vec3{.8, .8, .9}), 10.)));
 
         auto boundary = std::make_shared<Sphere>(Vec3{360., 150., 145.}, 70., std::make_shared<Dielectric>(1.5));
-        objects.add(boundary);
-        objects.add(std::make_shared<ConstantVolume>(
+        objects->add(boundary);
+        objects->add(std::make_shared<ConstantVolume>(
             boundary, std::make_shared<SolidColor>(.2, .4, .9), .2));
         boundary = std::make_shared<Sphere>(Vec3{0., 0., 0.}, 5000., std::make_shared<Dielectric>(1.5));
-        objects.add(std::make_shared<ConstantVolume>(
+        objects->add(std::make_shared<ConstantVolume>(
             boundary, std::make_shared<SolidColor>(1., 1., 1.), .0001));
 
         auto emat = std::make_shared<LambertianDiffuse>(std::make_shared<ImageTexture>("world.jpg"));
-        objects.add(std::make_shared<Sphere>(Vec3{400., 200., 400.}, 100., emat));
+        objects->add(std::make_shared<Sphere>(Vec3{400., 200., 400.}, 100., emat));
         auto pertext = std::make_shared<PerlinNoiseTexture>(.1);
-        objects.add(std::make_shared<Sphere>(Vec3{220, 280., 300.}, 80., std::make_shared<LambertianDiffuse>(pertext)));
+        objects->add(std::make_shared<Sphere>(Vec3{220, 280., 300.}, 80., std::make_shared<LambertianDiffuse>(pertext)));
 
-        HittableList boxes2;
+        std::shared_ptr<HittableList> boxes2 = std::make_shared<HittableList>();
+        
         auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
         int ns = 1000;
         for (int j = 0; j < ns; ++j)
         {
-            boxes2.add(std::make_shared<Sphere>(Vec3::randomVector(Vec3{}, Vec3{165., 165., 165.}), 10., white));
+            boxes2->add(std::make_shared<Sphere>(Vec3::randomVector(Vec3{}, Vec3{165., 165., 165.}), 10., white));
         }
 
-        objects.add(std::make_shared<Translate>(
+        objects->add(std::make_shared<Translate>(
             std::make_shared<AARotate<utils::Axis::Y>>(
-                std::make_shared<BVHNode>(boxes2, 0., 1.), 15.),
+                std::make_shared<BVHNode>(*boxes2.get(), 0., 1.), 15.),
             Vec3{-100., 270., 395.}));
 
-        return std::make_pair(camera, objects);
+        return std::make_tuple(camera, sampleObjects, objects);
     }
 
 } // namespace scene

@@ -29,6 +29,13 @@ bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record,
 
     // record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
 
+    pdf.getPdf1()->construct(record.normal);
+    pdf.getPdf2()->construct(record.scatteredRay.getOrigin());
+
+    record.scatteredRay.setDirection(pdf.genRandomVector());
+    record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
+    record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
+
     return true;
 }
 

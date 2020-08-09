@@ -1,7 +1,11 @@
 #include <CosinePdf.hpp>
 #include <Util.hpp>
+CosinePdf::CosinePdf() : basis{Vec3{}} {}
 
-CosinePdf::CosinePdf(const Vec3& v) : basis{v} {}
+void CosinePdf::construct(const Vec3& v)
+{
+    basis = OrthonormalBasis{v};
+}
 
 double CosinePdf::eval(const Vec3& v) const
 {
