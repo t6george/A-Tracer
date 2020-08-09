@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <utility>
 
 #include <SceneGeneration.hpp>
 #include <Scenes.hpp>
@@ -62,29 +63,19 @@ namespace generate
         std::cout << "P3\n"
                 << width << ' ' << height << "\n255\n";
 
-        const double fieldOfView = 40.;
-        const double apertureRadius = 0.;
-        const double distanceToFocus = 10.;
-        const Vec3 lookFrom = Vec3{278., 278., -800.};
-        const Vec3 lookAt = Vec3{278., 278., 0.};
-        const double t0 = 0.;
-        const double t1 = 1.;
-
-        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+        std::pair<Camera, HittableList> scene = scene::cornell_box(aspectR);
 
         Vec3 pixelColor;
-        HittableList world;
-        Vec3 randomCenter0{0., .2, 0.};
+        Camera camera = scene.first;
+        HittableList world = scene.second;
         Vec3 background{0., 0., 0.};
-        Vec3 randomCenter1;
-        world = scene::cornell_box();
 
         std::shared_ptr<HittableList> sampleObjects = std::make_shared<HittableList>();
         sampleObjects->add(std::make_shared<AARect<utils::Axis::Y>>(213., 343., 227., 332., 554., 
                 std::make_shared<Material>(nullptr)));
         sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
 
-        for (unsigned int i = height - 1; i >= 0; --i)
+        for (int i = static_cast<int>(height) - 1; i >= 0; --i)
         {
             std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
             for (unsigned int j = 0; j < width; ++j)

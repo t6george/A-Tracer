@@ -11,6 +11,16 @@ namespace scene
 {
     SCENE(cornell_box)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList objects;
 
         auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
@@ -48,32 +58,62 @@ namespace scene
         objects.add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Dielectric>(1.5)));
         // objects.add(box2);
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
     SCENE(perlin_spheres)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList objects;
 
         auto pertext = std::make_shared<TurbulentTexture>();
         objects.add(std::make_shared<Sphere>(Vec3{0., -1000., 0.}, 1000., std::make_shared<LambertianDiffuse>(pertext)));
         objects.add(std::make_shared<Sphere>(Vec3{0., 2., 0.}, 2., std::make_shared<LambertianDiffuse>(pertext)));
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
     SCENE(image_texture)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList objects;
 
         auto imgtext = std::make_shared<ImageTexture>("world.jpg");
         objects.add(std::make_shared<Sphere>(Vec3{0., 0., 0.}, 2., std::make_shared<LambertianDiffuse>(imgtext)));
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
     SCENE(light_scene)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList objects;
         auto difflight = std::make_shared<DiffuseLight>(std::make_shared<SolidColor>(4., 4., 4.));
         auto mat = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(1., 0., 0.));
@@ -84,11 +124,21 @@ namespace scene
         objects.add(std::make_shared<Sphere>(Vec3{0., 7., 0.}, 2., difflight));
         objects.add(std::make_shared<AARect<utils::Axis::Z>>(3., 5., 1., 3., -2., difflight));
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
     SCENE(volume_cornell_box)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList objects;
 
         auto red = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.65, .05, .05));
@@ -117,11 +167,21 @@ namespace scene
         objects.add(std::make_shared<ConstantVolume>(box1, std::make_shared<SolidColor>(0., 0., 0.), .01));
         objects.add(std::make_shared<ConstantVolume>(box2, std::make_shared<SolidColor>(1., 1., 1.), .01));
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
     SCENE(summary)
     {
+        const double fieldOfView = 40.;
+        const double apertureRadius = 0.;
+        const double distanceToFocus = 10.;
+        const Vec3 lookFrom = Vec3{278., 278., -800.};
+        const Vec3 lookAt = Vec3{278., 278., 0.};
+        const double t0 = 0.;
+        const double t1 = 1.;
+
+        Camera camera{aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1};
+
         HittableList boxes1;
         auto ground = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.48, .83, .53));
 
@@ -184,7 +244,7 @@ namespace scene
                 std::make_shared<BVHNode>(boxes2, 0., 1.), 15.),
             Vec3{-100., 270., 395.}));
 
-        return objects;
+        return std::make_pair(camera, objects);
     }
 
 } // namespace scene

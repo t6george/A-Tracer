@@ -1,7 +1,8 @@
 #pragma once
+#include <utility>
 #include <SceneRepresentation.hpp>
 
-#define SCENE(name) HittableList name()
+#define SCENE(name) std::pair<Camera, HittableList> name(const double aspectR)
 
 namespace scene
 {
