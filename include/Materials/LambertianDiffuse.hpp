@@ -8,7 +8,5 @@ public:
     LambertianDiffuse(const std::shared_ptr<Texture> albedo);
     ~LambertianDiffuse() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record,
-        WeightedPdf& pdf) const override;
-    void scatterPdf(const Ray &ray, Hittable::HitRecord &record) const override;
+    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

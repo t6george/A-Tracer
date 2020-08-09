@@ -6,8 +6,7 @@
 Metal::Metal(const std::shared_ptr<Texture> albedo, const double fuzz)
     : Material::Material{albedo}, fuzz{utils::clamp(fuzz, 0., 1.)} {}
 
-bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record,
-    WeightedPdf& pdf) const
+bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
     record.isSpecular = true;
     record.scatteredRay.setOrigin(record.point);

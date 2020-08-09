@@ -10,6 +10,5 @@ public:
     DiffuseLight(const std::shared_ptr<Texture> emitter);
     ~DiffuseLight() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record,
-        WeightedPdf& pdf) const override;
+    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

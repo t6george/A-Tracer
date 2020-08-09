@@ -48,7 +48,7 @@ public:
         HIT_SCATTER
     };
 
-    virtual HitType getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+    virtual HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const = 0;
 

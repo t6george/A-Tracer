@@ -7,15 +7,15 @@ ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
                                const double density)
     : boundary{boundary}, phaseFunction{std::make_shared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 
-Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     HitType hit = HitType::NO_HIT;
 
     HitRecord rec1, rec2;
 
-    if (static_cast<bool>(boundary->getCollisionData(ray, rec1, pdf, -utils::infinity, utils::infinity, flip)) &&
-        static_cast<bool>(boundary->getCollisionData(ray, rec2, pdf, rec1.t + .0001, utils::infinity, flip)))
+    if (static_cast<bool>(boundary->getCollisionData(ray, rec1, -utils::infinity, utils::infinity, flip)) &&
+        static_cast<bool>(boundary->getCollisionData(ray, rec2, rec1.t + .0001, utils::infinity, flip)))
     {
         rec1.t = fmax(tMin, rec1.t);
         rec2.t = fmin(tMax, rec2.t);
@@ -34,7 +34,7 @@ Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &re
 
                 record.normal = Vec3{1., 0., 0.};
                 record.isInFront = true;
-                hit = phaseFunction->scatterRay(ray, record, pdf) ? HitType::HIT_SCATTER
+                hit = phaseFunction->scatterRay(ray, record) ? HitType::HIT_SCATTER
                                                              : HitType::HIT_NO_SCATTER;
             }
         }

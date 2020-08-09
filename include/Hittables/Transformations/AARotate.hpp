@@ -17,7 +17,7 @@ public:
     AARotate(const std::shared_ptr<Hittable> shape, double angle);
     ~AARotate() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+    HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 

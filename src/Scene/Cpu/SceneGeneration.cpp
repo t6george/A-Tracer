@@ -23,7 +23,7 @@ namespace generate
         for (; active && bounces < bounceLimit; ++bounces)
         {
             record = { 0 };
-            switch (world->getCollisionData(ray, record, pdf, .001))
+            switch (world->getCollisionData(ray, record, .001))
             {
             case Hittable::HitType::NO_HIT:
                 color += background * coeff;

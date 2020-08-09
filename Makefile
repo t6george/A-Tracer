@@ -11,7 +11,7 @@ ifeq ($(target), gpu)
 	CPPFLAGS := -g $(INCLUDES)
 	SOURCES := $(shell find src -name "*.cpp" -or -name "*.cu")
 else
-	CPPC := g++
+	CPPC := clang++
 	CPPFLAGS := -g -std=c++17 -g -Wall -Werror $(INCLUDES)
 	SOURCES := $(shell find src -name "*.cpp")
 endif
