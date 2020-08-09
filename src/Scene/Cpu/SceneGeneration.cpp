@@ -63,14 +63,13 @@ namespace generate
         std::cout << "P3\n"
                 << width << ' ' << height << "\n255\n";
 
-        std::tuple<std::shared_ptr<Camera>, std::shared_ptr<HittableList>, std::shared_ptr<HittableList>> scene 
-            = scene::cornell_box(aspectR);
-
         Vec3 pixelColor;
-        std::shared_ptr<Camera> camera = std::get<0>(scene);
-        std::shared_ptr<HittableList> sampleObjects = std::get<1>(scene);
-        std::shared_ptr<HittableList> world = std::get<2>(scene);
-        Vec3 background{0., 0., 0.};
+        std::shared_ptr<Camera> camera = nullptr;
+        std::shared_ptr<HittableList> sampleObjects = nullptr;
+        std::shared_ptr<HittableList> world = nullptr;
+        Vec3 background;
+	
+	scene::cornell_box(camera, sampleObjects, world, background, aspectR);
 
         WeightedPdf pdf{std::make_shared<CosinePdf>(), 
             std::make_shared<HittablePdf>(sampleObjects), .5};
