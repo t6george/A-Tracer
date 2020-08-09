@@ -16,12 +16,17 @@ else
 	SOURCES := $(shell find src -name "*.cpp")
 endif
 
+export CXX=$(CPPC)
+
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
 
 tracer: $(OBJECTS)
 	$(CPPC) -o $@ $^ $(CPPFLAGS)
 
-%.o: %.c%
+%.o: %.cpp
+	$(CPPC)  $< -o $@ $(CPPFLAGS) -c
+
+%.o: %.cu
 	$(CPPC)  $< -o $@ $(CPPFLAGS) -c
 
 .PHONY: clean

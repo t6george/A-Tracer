@@ -84,13 +84,13 @@ namespace generate
                 std::make_shared<Material>(nullptr)));
         sampleObjects->add(std::make_shared<Sphere>(Vec3{190., 90., 190.}, 90., std::make_shared<Material>(nullptr)));
 
-        for (int i = height - 1; i >= 0; --i)
+        for (unsigned int i = height - 1; i >= 0; --i)
         {
             std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
-            for (int j = 0; j < width; ++j)
+            for (unsigned int j = 0; j < width; ++j)
             {
                 pixelColor.zero();
-                for (int sample = 0; sample < samplesPerPixel; ++sample)
+                for (unsigned int sample = 0; sample < samplesPerPixel; ++sample)
                 {
                     pixelColor += generate::ray_color(camera.updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
                                                 background, world, sampleObjects, maxReflections);
