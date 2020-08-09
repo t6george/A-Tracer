@@ -4,6 +4,7 @@
 
 class Texture;
 class Vec3;
+class WeightedPdf;
 
 class Material
 {
@@ -14,7 +15,8 @@ public:
     Material(const std::shared_ptr<Texture> albedo);
     virtual ~Material() noexcept = default;
 
-    virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const;
+    virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record,
+        WeightedPdf& pdf) const;
     virtual void scatterPdf(const Ray &ray, Hittable::HitRecord &record) const;
     virtual Vec3 emitCol(const Ray &ray, Hittable::HitRecord &record, const Vec3 &point) const;
 };

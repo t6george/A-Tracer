@@ -9,6 +9,7 @@
 
 class Material;
 class AABB;
+class WeightedPdf;
 
 class Hittable
 {
@@ -47,9 +48,9 @@ public:
         HIT_SCATTER
     };
 
-    virtual HitType getCollisionData(const Ray &ray, HitRecord &record,
-                                     double tMin = -utils::infinity,
-                                     double tMax = utils::infinity, bool flip = false) const = 0;
+    virtual HitType getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin = -utils::infinity, double tMax = utils::infinity, 
+                             bool flip = false) const = 0;
 
     virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 

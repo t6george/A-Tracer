@@ -7,5 +7,5 @@ public:
     IsotropicMaterial(const std::shared_ptr<Texture> albedo);
     virtual ~IsotropicMaterial() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
-};
+    bool scatterRay(const Ray &ray, Hittable::HitRecord &record,
+        WeightedPdf& pdf) const override;};

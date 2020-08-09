@@ -22,7 +22,8 @@ Box::Box(const Vec3 &p0, const Vec3 &p1,
         std::make_shared<AARect<utils::Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), material)));
 }
 
-Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
+Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin, double tMax, bool flip) const
 {
-    return sides.getCollisionData(ray, record, tMin, tMax, flip);
+    return sides.getCollisionData(ray, record, pdf, tMin, tMax, flip);
 }

@@ -3,6 +3,7 @@
 #include <Material.hpp>
 #include <Util.hpp>
 #include <OrthonormalBasis.hpp>
+#include <WeightedPdf.hpp>
 
 void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {
@@ -28,7 +29,8 @@ Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
       center0{center0}, center1{center1},
       R{R}, time0{t0}, time1{t1} {}
 
-Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
+Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin, double tMax, bool flip) const
 {
     Vec3 center = blur(ray.getTime());
     Vec3 los = ray.getOrigin() - center;
@@ -56,7 +58,7 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
                 record.isInFront ^= true;
             }
 
-            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+            return material->scatterRay(ray, record, pdf) ? Hittable::HitType::HIT_SCATTER
                                                      : Hittable::HitType::HIT_NO_SCATTER;
         }
         t = (-half_b + disc_root) / a;
@@ -73,7 +75,7 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record, do
                 record.isInFront ^= true;
             }
 
-            return material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+            return material->scatterRay(ray, record, pdf) ? Hittable::HitType::HIT_SCATTER
                                                      : Hittable::HitType::HIT_NO_SCATTER;
         }
     }
@@ -97,8 +99,9 @@ double Sphere::eval(const Vec3& origin, const Vec3& v, bool flip) const
 {
     Hittable::HitRecord record;
     double prob = 0.;
+    WeightedPdf pdf = WeightedPdf{nullptr, nullptr, 0.};
 
-    if(static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
+    if(static_cast<bool>(getCollisionData(Ray(origin, v), record, pdf, .001, utils::infinity, flip)))
     {
         double solidAngle = 2. * utils::pi * (1. - sqrt(1. - R * R / (center0 - origin).sqLen()));
         prob = 1. / solidAngle;

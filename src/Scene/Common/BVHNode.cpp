@@ -48,15 +48,16 @@ BVHNode::BVHNode(HittableList &world, const double time0, const double time1, co
     // std::cerr << "MaxPoint: " << boundingBox.getMaxPoint().x() << ", " << boundingBox.getMaxPoint().y() << ", " << boundingBox.getMaxPoint().z() << std::endl;
 }
 
-Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, double tMin, double tMax, bool flip) const
+Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin, double tMax, bool flip) const
 {
     if (!boundingBox.passesThrough(ray, tMin, tMax))
     {
         return Hittable::HitType::NO_HIT;
     }
 
-    Hittable::HitType hitLeft = left->getCollisionData(ray, record, tMin, tMax, flip);
-    Hittable::HitType hitRight = right->getCollisionData(ray, record, tMin, static_cast<bool>(hitLeft) ? record.t : tMax, flip);
+    Hittable::HitType hitLeft = left->getCollisionData(ray, record, pdf, tMin, tMax, flip);
+    Hittable::HitType hitRight = right->getCollisionData(ray, record, pdf, tMin, static_cast<bool>(hitLeft) ? record.t : tMax, flip);
 
     return static_cast<bool>(hitRight) ? hitRight : hitLeft;
 }

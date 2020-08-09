@@ -42,7 +42,8 @@ AABB AARotate<A>::computeBoundingBox()
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip) const
+Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin, double tMax, bool flip) const
 {
     Hittable::HitType hit;
     Vec3 origin = ray.getOrigin();
@@ -53,7 +54,7 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, Hittable::HitRec
 
     Ray adjusted{origin, direction, ray.getTime()};
 
-    if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, tMin, tMax, flip)))
+    if (static_cast<bool>(hit = shape->getCollisionData(adjusted, record, pdf, tMin, tMax, flip)))
     {
         Vec3 scatteredOrigin = record.scatteredRay.getOrigin();
         Vec3 scatteredDirection = record.scatteredRay.getDirection();

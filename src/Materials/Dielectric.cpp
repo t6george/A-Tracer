@@ -1,11 +1,13 @@
 #include <Dielectric.hpp>
 #include <SolidColor.hpp>
+#include <WeightedPdf.hpp>
 
 Dielectric::Dielectric(const double reflectiveIndex)
     : Material::Material{std::make_shared<SolidColor>(Vec3{1., 1., 1.})},
       reflectiveIndex{reflectiveIndex} {}
 
-bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
+bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record,
+    WeightedPdf& pdf) const
 {
     double n_over_nprime = reflectiveIndex;
     if (record.isInFront)

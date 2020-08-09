@@ -8,5 +8,6 @@ class Dielectric : public Material
 public:
     Dielectric(const double reflectiveIndex);
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
+    bool scatterRay(const Ray &ray, Hittable::HitRecord &record,
+        WeightedPdf& pdf) const override;
 };

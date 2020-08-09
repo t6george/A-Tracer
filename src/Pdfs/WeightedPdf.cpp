@@ -7,15 +7,24 @@ WeightedPdf::WeightedPdf(std::shared_ptr<Pdf> pdf1, std::shared_ptr<Pdf> pdf2, d
 
 double WeightedPdf::eval(const Vec3& v) const
 {
-    return pdf1Weight * pdf1->eval(v) + (1. - pdf1Weight) * pdf2->eval(v);
+    double prob = 0.;
+    if (pdf1 && pdf2)
+    {
+        prob = pdf1Weight * pdf1->eval(v) + (1. - pdf1Weight) * pdf2->eval(v);
+    }
+    return prob;
 }
 
 Vec3 WeightedPdf::genRandomVector() const
 {
-    Vec3 randomVec = pdf1->genRandomVector();
-    if (utils::random_double() > pdf1Weight)
+    Vec3 randomVec;
+    if (pdf1 && pdf2)
     {
-        randomVec = pdf2->genRandomVector();
+        randomVec = pdf1->genRandomVector();
+        if (utils::random_double() > pdf1Weight)
+        {
+            randomVec = pdf2->genRandomVector();
+        }
     }
 
     return randomVec;

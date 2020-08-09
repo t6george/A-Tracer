@@ -19,11 +19,12 @@ namespace generate
         unsigned int bounces = 0;
         Hittable::HitRecord record;
         bool active = true;
+        WeightedPdf tmp = WeightedPdf{nullptr, nullptr, 0.};
 
         for (; active && bounces < bounceLimit; ++bounces)
         {
             record = { 0 };
-            switch (world.getCollisionData(ray, record, .001))
+            switch (world.getCollisionData(ray, record, tmp, .001))
             {
             case Hittable::HitType::NO_HIT:
                 color += background * coeff;

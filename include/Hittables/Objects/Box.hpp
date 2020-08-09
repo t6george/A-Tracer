@@ -13,7 +13,7 @@ public:
 
     ~Box() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
-                             double tMin = -utils::infinity,
-                             double tMax = utils::infinity, bool flip = false) const override;
+    HitType getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin = -utils::infinity, double tMax = utils::infinity, 
+                             bool flip = false) const override;
 };

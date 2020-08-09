@@ -18,9 +18,9 @@ public:
            const std::shared_ptr<Material> material);
     ~AARect() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
-                             double tMin = -utils::infinity,
-                             double tMax = utils::infinity, bool flip = false) const override;
+    HitType getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin = -utils::infinity, double tMax = utils::infinity, 
+                             bool flip = false) const override;
 
     Vec3 genRandomVector(const Vec3& origin) const override;
     double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;

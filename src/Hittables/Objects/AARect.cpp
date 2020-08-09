@@ -1,6 +1,7 @@
 #include <AARect.hpp>
 #include <Material.hpp>
 #include <AABB.hpp>
+#include <WeightedPdf.hpp>
 
 template <enum utils::Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,
@@ -31,7 +32,8 @@ AABB AARect<utils::Axis::Z>::computeBoundingBox(const double i0, const double i1
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecord &record, double tMin, double tMax, bool flip) const
+Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, HitRecord &record, WeightedPdf &pdf,
+                             double tMin, double tMax, bool flip) const
 {
     double t;
     solveForTime(ray, t);
@@ -55,7 +57,7 @@ Hittable::HitType AARect<A>::getCollisionData(const Ray &ray, Hittable::HitRecor
                 record.isInFront ^= true;
             }
 
-            hit = material->scatterRay(ray, record) ? Hittable::HitType::HIT_SCATTER
+            hit = material->scatterRay(ray, record, pdf) ? Hittable::HitType::HIT_SCATTER
                                                     : Hittable::HitType::HIT_NO_SCATTER;
         }
     }
@@ -68,7 +70,8 @@ double AARect<A>::eval(const Vec3& origin, const Vec3& v, bool flip) const
 {
     Hittable::HitRecord record;
     double pdfVal = 0.;
-    if (static_cast<bool>(getCollisionData(Ray(origin, v), record, .001, utils::infinity, flip)))
+    WeightedPdf pdf = WeightedPdf{nullptr, nullptr, 0.};
+    if (static_cast<bool>(getCollisionData(Ray(origin, v), record, pdf, .001, utils::infinity, flip)))
     {
         double cosine = fabs(v.o(record.normal)) / v.len();
         pdfVal = record.t * record.t * v.sqLen() / cosine / area;

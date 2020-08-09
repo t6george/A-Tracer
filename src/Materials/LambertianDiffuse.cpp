@@ -4,13 +4,13 @@
 #include <CosinePdf.hpp>
 #include <HittablePdf.hpp>
 #include <WeightedPdf.hpp>
-#include <WeightedPdf.hpp>
 #include <AARect.hpp>
 
 LambertianDiffuse::LambertianDiffuse(const std::shared_ptr<Texture> albedo)
     : Material::Material{albedo} {}
 
-bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
+bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record,
+    WeightedPdf& pdf) const
 {
     record.isSpecular = false;
     record.scatteredRay.setOrigin(record.point);
