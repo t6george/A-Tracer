@@ -1,7 +1,6 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <utility>
 
 #include <SceneGeneration.hpp>
 #include <Scenes.hpp>

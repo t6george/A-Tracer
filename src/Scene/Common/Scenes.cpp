@@ -5,7 +5,6 @@
 #include <Transformations.hpp>
 #include <Light.hpp>
 #include <Pdfs.hpp>
-#include <Utils.hpp>
 
 namespace scene
 {
