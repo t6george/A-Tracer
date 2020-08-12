@@ -16,6 +16,12 @@ else
 	SOURCES := $(shell find src -name "*.cpp")
 endif
 
+ifeq ($(sample), montecarlo)
+	CPPFLAGS += -D MONTE_CARLO=1
+else
+	CPPFLAGS += -D MONTE_CARLO=0
+endif
+
 export CXX=$(CPPC)
 
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))

@@ -8,15 +8,24 @@
 #include <Objects.hpp>
 #include <Material.hpp>
 
+<<<<<<< Updated upstream
 namespace cudagenerate
 {
     __device__
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
         WeightedPdf& pdf, const int bounceLimiti, Vec3 &finalColor)
+=======
+namespace generate
+{
+    __device__
+    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
+        WeightedPdf& pdf, const int bounceLimit)
+>>>>>>> Stashed changes
     {
 
     }
 
+<<<<<<< Updated upstream
 
     __global__
     void scene(float * image, const unsigned int width, const unsigned int height)
@@ -89,3 +98,12 @@ namespace cudagenerate
         }
     }
 } // namespace generate
+=======
+    __global__
+    void scene(const int width, const int height, const int samplesPerPixel,
+        const int maxReflections, const double aspectR)
+    {
+
+    }
+} // namespace generate
+>>>>>>> Stashed changes
