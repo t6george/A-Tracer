@@ -8,33 +8,73 @@
 #include <Objects.hpp>
 #include <Material.hpp>
 
-<<<<<<< Updated upstream
 namespace cudagenerate
 {
     __device__
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
-        WeightedPdf& pdf, const int bounceLimiti, Vec3 &finalColor)
-=======
-namespace generate
-{
-    __device__
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
-        WeightedPdf& pdf, const int bounceLimit)
->>>>>>> Stashed changes
+        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
     {
+	Vec3 color;
+        Vec3 coeff {1., 1., 1.};
+        Hittable::HitRecord record;
+        bool active = true;
 
+        for (unsigned int reflections = 0;  active && reflections < maxReflections; ++reflections)
+        {
+            record = { 0 };
+            switch (world->getCollisionData(ray, record, .001))
+            {
+            case Hittable::HitType::NO_HIT:
+                color += background * coeff;
+                active = false;
+                break;
+            case Hittable::HitType::HIT_NO_SCATTER:
+                color += record.emitted * coeff;
+                active = false;
+                break;
+            case Hittable::HitType::HIT_SCATTER:
+                if (record.isSpecular)
+                {
+                    coeff *= record.albedo;
+                }
+                else
+                {
+#if MONTE_CARLO
+                    pdf.getPdf1()->construct(record.normal);
+                    pdf.getPdf2()->construct(record.scatteredRay.getOrigin());
+                    record.scatteredRay.setDirection(pdf.genRandomVector());
+                    record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
+                    record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
+                    color += coeff * record.emitted;
+                    coeff *= record.albedo * record.scatterPdf / record.samplePdf;
+#else
+                    record.scatteredRay.setDirection(Vec3::randomUnitHemisphereVec(record.normal));
+                    color += coeff * record.emitted;
+                    coeff *= record.albedo;
+#endif
+                }
+                ray = record.scatteredRay;
+                break;
+            }
+        }
+
+        finalColor =  active ? Vec3{} : color;
     }
 
-<<<<<<< Updated upstream
-
     __global__
-    void scene(float * image, const unsigned int width, const unsigned int height)
+    void scene(float * image, const unsigned int width, const unsigned int height, const unsigned int maxReflections)
     {
-	/*extern*/__shared__ double samples[blockDim.x * 3];
+	/*extern*/__shared__ double samples[samplesPerPixel * 3];
+
+	Vec3 finalColor;
 
         Vec3 color = cudagenerate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                                background, world, pdf, maxReflections);
+                                                background, world, pdf, maxReflections, finalColor);
 	
+	samples[blockIdx.x * 3] = finalColor.x();
+	samples[blockIdx.x * 3 + 1] = finalColor.y();
+	samples[blockIdx.x * 3 + 2] = finalColor.z();
+
 	__syncthreads();
 
 	if (threadIdx.x == 0)
@@ -77,14 +117,16 @@ namespace generate
 	cudaMallocHost(&h_img, sizeof(double) * width * height * 3);
 	cudaMalloc(&d_img, sizeof(double) * width * height * 3);
 	
-	for (unsigned int i = 0; i < width * height; ++i)
-	{
-		h_img[i] = 0.;
-	}
+	cudaMemcpy(d_img, h_img, width * height * 3, cudaMemcpyHostToDevice);
+
+	dim3 threads = {samplesPerPixel, 1, 1};
+	dim3 blocks = {width, height, 1};
 	
-	cudaMemcpy(d_img, h_img, width * height);
+	scene <<<blocks, threads>>> (d_img, width, height, maxReflections);
 
 	cudaDeviceSynchronize();
+
+	cudaMemcpy(h_img, d_img, width * height * 3, cudaMemcpyDeviceToHost);
 	
 	int idx;
         
@@ -96,14 +138,8 @@ namespace generate
                 Vec3{h_img[idx], h_img[idx + 1], h_img[idx + 2]}.formatColor(std::cout, samplesPerPixel);
             }
         }
-    }
-} // namespace generate
-=======
-    __global__
-    void scene(const int width, const int height, const int samplesPerPixel,
-        const int maxReflections, const double aspectR)
-    {
 
+	cudaFreeHost(h_img);
+	cudaFree(d_img);
     }
 } // namespace generate
->>>>>>> Stashed changes

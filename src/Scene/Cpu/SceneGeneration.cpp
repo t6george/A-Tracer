@@ -11,15 +11,14 @@
 namespace generate
 {
     Vec3 ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
-        WeightedPdf& pdf, const unsigned int bounceLimit)
+        WeightedPdf& pdf, const unsigned int maxReflections)
     {
-        Vec3 color {};
+        Vec3 color;
         Vec3 coeff {1., 1., 1.};
-        unsigned int bounces = 0;
         Hittable::HitRecord record;
         bool active = true;
 
-        for (; active && bounces < bounceLimit; ++bounces)
+        for (unsigned int reflections = 0; active && reflections < maxReflections; ++reflections)
         {
             record = { 0 };
             switch (world->getCollisionData(ray, record, .001))
@@ -92,5 +91,5 @@ namespace generate
             }
         }
         std::cerr << std::endl;
-}
+    }
 } // namespace scene
