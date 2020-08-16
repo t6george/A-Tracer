@@ -2,19 +2,22 @@ SRC_DIR ?= src
 HEADER_DIR ?= include
 CPPC := 
 CPPFLAGS := 
-SOURCES := 
+NOINCFLAG := 
 
+SOURCES := $(shell find src -name "*.cpp")
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
 
 ifeq ($(target), gpu)
 	CPPC := nvcc
 	CPPFLAGS := -g $(INCLUDES) -D GPU=1
-	SOURCES := $(shell find src -name "*.cpp" -or -name "*.cu")
+	SOURCES += $(shell find src -name "*.cu")
 else
 	CPPC := clang++
-	CPPFLAGS := -g -std=c++17 -g -Wall -Werror $(INCLUDES) -D GPU=0
-	SOURCES := $(shell find src -name "*.cpp")
+	CPPFLAGS := -g -std=c++17 -Wall -Werror $(INCLUDES) -D GPU=0
+	NOINCFLAG := -nocudainc -nocudalib
 endif
+
+OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
 
 ifeq ($(sample), montecarlo)
 	CPPFLAGS += -D MONTE_CARLO=1
@@ -24,16 +27,14 @@ endif
 
 export CXX=$(CPPC)
 
-OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
-
 tracer: $(OBJECTS)
 	$(CPPC) -o $@ $^ $(CPPFLAGS)
 
 %.o: %.cpp
-	$(CPPC)  $< -o $@ $(CPPFLAGS) -c
+	$(CPPC) $< -o $@ $(CPPFLAGS) -c
 
 %.o: %.cu
-	$(CPPC)  $< -o $@ $(CPPFLAGS) -c
+	$(CPPC) $(NOINCFLAG) $< -o $@ $(CPPFLAGS) -c
 
 .PHONY: clean
 clean:

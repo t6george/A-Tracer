@@ -1,4 +1,8 @@
+#if GPU
+#include <SceneGeneration.cuh>
+#else
 #include <SceneGeneration.hpp>
+#endif
 
 int main()
 {
