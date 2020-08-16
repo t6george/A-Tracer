@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <SceneGeneration.cuh>
+#include <SceneGeneration.hpp>
 #include <Scenes.hpp>
 #include <Pdfs.hpp>
 #include <Objects.hpp>
@@ -10,57 +11,6 @@
 
 namespace cudagenerate
 {
-    __device__
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
-        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
-    {
-	Vec3 color;
-        Vec3 coeff {1., 1., 1.};
-        Hittable::HitRecord record;
-        bool active = true;
-
-        for (unsigned int reflections = 0;  active && reflections < maxReflections; ++reflections)
-        {
-            record = { 0 };
-            switch (world->getCollisionData(ray, record, .001))
-            {
-            case Hittable::HitType::NO_HIT:
-                color += background * coeff;
-                active = false;
-                break;
-            case Hittable::HitType::HIT_NO_SCATTER:
-                color += record.emitted * coeff;
-                active = false;
-                break;
-            case Hittable::HitType::HIT_SCATTER:
-                if (record.isSpecular)
-                {
-                    coeff *= record.albedo;
-                }
-                else
-                {
-#if MONTE_CARLO
-                    pdf.getPdf1()->construct(record.normal);
-                    pdf.getPdf2()->construct(record.scatteredRay.getOrigin());
-                    record.scatteredRay.setDirection(pdf.genRandomVector());
-                    record.samplePdf = pdf.eval(record.scatteredRay.getDirection());
-                    record.scatterPdf = fmax(0., record.normal.o(record.scatteredRay.getDirection().getUnitVector()) / utils::pi);
-                    color += coeff * record.emitted;
-                    coeff *= record.albedo * record.scatterPdf / record.samplePdf;
-#else
-                    record.scatteredRay.setDirection(Vec3::randomUnitHemisphereVec(record.normal));
-                    color += coeff * record.emitted;
-                    coeff *= record.albedo;
-#endif
-                }
-                ray = record.scatteredRay;
-                break;
-            }
-        }
-
-        finalColor =  active ? Vec3{} : color;
-    }
-
     __global__
     void scene(float * image, const unsigned int width, const unsigned int height, const unsigned int maxReflections)
     {
@@ -68,7 +18,7 @@ namespace cudagenerate
 
 	Vec3 finalColor;
 
-        Vec3 color = cudagenerate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
+        Vec3 color = generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
                                                 background, world, pdf, maxReflections, finalColor);
 	
 	samples[blockIdx.x * 3] = finalColor.x();
@@ -95,7 +45,8 @@ namespace cudagenerate
     }
 
 
-    void launch_cuda_kernel(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, const unsigned int maxReflections, const double aspectR)
+    void launch_cuda_kernel(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, 
+		    const unsigned int maxReflections, const double aspectR)
     {
 	std::cout << "P3\n"
    		<< width << ' ' << height << "\n255\n";

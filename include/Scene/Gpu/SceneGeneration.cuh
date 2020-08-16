@@ -9,10 +9,13 @@
 namespace generate
 {
     __device__
-    Vec3 ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
-        WeightedPdf& pdf, const int bounceLimit);
+    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
+        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor);
 
     __global__
-    void scene(const int width, const int height, const int samplesPerPixel,
-        const int maxReflections, const double aspectR);
+    void scene(float * image, const unsigned int width, const unsigned int height, const unsigned int maxReflections);
+    
+    __global__
+    void launch_cuda_kernel(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel,
+                const unsigned int maxReflections, const double aspectR);
 } // namespace generate

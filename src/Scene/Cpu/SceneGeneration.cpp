@@ -10,8 +10,11 @@
 
 namespace generate
 {
+#if GPU
+    __device__
+#endif   
     Vec3 ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
-        WeightedPdf& pdf, const unsigned int maxReflections)
+        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
         Vec3 coeff {1., 1., 1.};
@@ -57,7 +60,7 @@ namespace generate
             }
         }
 
-        return active ? Vec3{} : color;
+        finalColor =  active ? Vec3{} : color;
     }
 
     void scene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, const unsigned int maxReflections, const double aspectR)
@@ -65,7 +68,7 @@ namespace generate
         std::cout << "P3\n"
                 << width << ' ' << height << "\n255\n";
 
-        Vec3 pixelColor;
+        Vec3 pixelColor, tmp;
         std::shared_ptr<Camera> camera = nullptr;
         std::shared_ptr<HittableList> sampleObjects = nullptr;
         std::shared_ptr<HittableList> world = nullptr;
@@ -84,8 +87,9 @@ namespace generate
                 pixelColor.zero();
                 for (unsigned int sample = 0; sample < samplesPerPixel; ++sample)
                 {
-                    pixelColor += generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                                background, world, pdf, maxReflections);
+                    generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
+                                 background, world, pdf, maxReflections, tmp);
+		    pixelColor += tmp;
                 }
                 pixelColor.formatColor(std::cout, samplesPerPixel);
             }
