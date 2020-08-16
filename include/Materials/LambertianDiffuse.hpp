@@ -5,8 +5,8 @@
 class LambertianDiffuse : public Material
 {
 public:
-    LambertianDiffuse(const std::shared_ptr<Texture> albedo);
-    ~LambertianDiffuse() noexcept = default;
+    DEV HOST LambertianDiffuse(const std::shared_ptr<Texture> albedo);
+    DEV HOST ~LambertianDiffuse() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
+    DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

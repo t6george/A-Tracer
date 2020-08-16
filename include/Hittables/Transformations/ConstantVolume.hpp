@@ -10,14 +10,14 @@ class ConstantVolume : public Hittable
     const double densityReciprocal;
 
 public:
-    ConstantVolume(const std::shared_ptr<Hittable> boundary,
+    DEV HOST ConstantVolume(const std::shared_ptr<Hittable> boundary,
                    const std::shared_ptr<Texture> phaseFunction,
                    const double density);
-    ~ConstantVolume() noexcept = default;
+    DEV HOST ~ConstantVolume() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

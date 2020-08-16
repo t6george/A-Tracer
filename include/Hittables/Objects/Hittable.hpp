@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <memory>
 
+#include <Macro.hpp>
 #include <Vec3.hpp>
 #include <Ray.hpp>
 #include <Util.hpp>
@@ -14,8 +15,8 @@ class WeightedPdf;
 class Hittable
 {
 protected:
-    Hittable() = default;
-    virtual ~Hittable() noexcept = default;
+    DEV HOST Hittable() = default;
+    virtual DEV HOST ~Hittable() noexcept = default;
 
 public:
     struct HitRecord
@@ -48,13 +49,13 @@ public:
         HIT_SCATTER
     };
 
-    virtual HitType getCollisionData(const Ray &ray, HitRecord &record,
+    virtual DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const = 0;
 
-    virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
+    virtual DEV bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 
-    virtual Vec3 genRandomVector(const Vec3& origin) const { return Vec3{1., 0., 0.}; }
+    virtual DEV Vec3 genRandomVector(const Vec3& origin) const { return Vec3{1., 0., 0.}; }
     
-    virtual double eval(const Vec3& origin, const Vec3& v, bool flip = false) const { return 0.; }
+    virtual DEV double eval(const Vec3& origin, const Vec3& v, bool flip = false) const { return 0.; }
 };

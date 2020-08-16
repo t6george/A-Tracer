@@ -1,12 +1,9 @@
 #pragma once
+
+#include <Macro.hpp>
 #include <SceneRepresentation.hpp>
 
-#if GPU
-#define SCENE(name) __device__ void name(std::shared_ptr<Camera> &camera, std::shared_ptr<HittableList> &sampleObjects, std::shared_ptr<HittableList> &objects, Vec3 &
-bg, const double aspectR)
-#else
-#define SCENE(name) void name(std::shared_ptr<Camera> &camera, std::shared_ptr<HittableList> &sampleObjects, std::shared_ptr<HittableList> &objects, Vec3 &bg, const double aspectR)
-#endif
+#define SCENE(name) DEV void name(std::shared_ptr<Camera> &camera, std::shared_ptr<HittableList> &sampleObjects, std::shared_ptr<HittableList> &objects, Vec3 &bg, const double aspectR)
 
 namespace scene
 {

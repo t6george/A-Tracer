@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Macro.hpp>
 #include <Hittable.hpp>
 
 class Texture;

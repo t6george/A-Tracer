@@ -12,21 +12,21 @@ class BVHNode : public Hittable
     AABB boundingBox;
 
 public:
-    BVHNode() = default;
-    BVHNode(HittableList &world, const double time0, const double time1);
-    BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end);
+    DEV HOST BVHNode() = default;
+    DEV HOST BVHNode(HittableList &world, const double time0, const double time1);
+    DEV HOST BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end);
 
-    ~BVHNode() noexcept = default;
+    DEV HOST ~BVHNode() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,
                              double tMax = utils::infinity, bool flip = false) const override;
 
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };
 
 template <utils::Axis dim>
-inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+inline DEV bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     AABB bbA, bbB;
     a->getBoundingBox(0., 0., bbA);
@@ -35,17 +35,17 @@ inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<
     return bbA.getMinPoint()[static_cast<int>(dim)] < bbB.getMinPoint()[static_cast<int>(dim)];
 }
 
-inline bool xCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+inline DEV bool xCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     return dimCompare<utils::Axis::X>(a, b);
 }
 
-inline bool yCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+inline DEV bool yCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     return dimCompare<utils::Axis::Y>(a, b);
 }
 
-inline bool zCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+inline DEV bool zCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
 {
     return dimCompare<utils::Axis::Z>(a, b);
 }

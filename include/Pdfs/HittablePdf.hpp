@@ -9,10 +9,10 @@ class HittablePdf : public Pdf
     Vec3 origin;
 
 public:
-    HittablePdf(std::shared_ptr<Hittable> object);
-    ~HittablePdf() noexcept = default;
+    DEV HOST HittablePdf(std::shared_ptr<Hittable> object);
+    DEV HOST ~HittablePdf() noexcept = default;
 
-    virtual void construct(const Vec3& v) override;
-    double eval(const Vec3& v) const override;
-    Vec3 genRandomVector() const override;
+    virtual DEV void construct(const Vec3& v) override;
+    DEV double eval(const Vec3& v) const override;
+    DEV Vec3 genRandomVector() const override;
 };

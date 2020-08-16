@@ -1,5 +1,7 @@
 #pragma once
+
 #include <Vec3.hpp>
+#include <Macro.hpp>
 
 class Ray
 {
@@ -7,17 +9,17 @@ class Ray
     double tm;
 
 public:
-    Ray();
-    Ray(const Vec3 &origin, const Vec3 &direction = Vec3{}, double time = 0.);
-    ~Ray() noexcept = default;
+    DEV HOST Ray();
+    DEV HOST Ray(const Vec3 &origin, const Vec3 &direction = Vec3{}, double time = 0.);
+    DEV HOST ~Ray() noexcept = default;
 
-    double getTime() const;
-    void setTime(double time);
+    DEV double getTime() const;
+    DEV void setTime(double time);
 
-    const Vec3 &getOrigin() const;
-    const Vec3 &getDirection() const;
-    void setOrigin(const Vec3 &otherV);
-    void setDirection(const Vec3 &otherV);
+    DEV const Vec3 &getOrigin() const;
+    DEV const Vec3 &getDirection() const;
+    DEV void setOrigin(const Vec3 &otherV);
+    DEV void setDirection(const Vec3 &otherV);
 
-    Vec3 eval(double t) const;
+    DEV Vec3 eval(double t) const;
 };

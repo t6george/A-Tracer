@@ -1,4 +1,6 @@
 #pragma once
+
+#include <Macro.hpp>
 #include <Vec3.hpp>
 #include <Ray.hpp>
 
@@ -9,12 +11,12 @@ class Camera
         Vec3 z, x, y;
 
     public:
-        OrthoNormalBasis(Vec3 &eyes, const Vec3 &lookat, const Vec3 &vup = Vec3{0., 1., 0.});
-        ~OrthoNormalBasis() noexcept = default;
+        DEV HOST OrthoNormalBasis(Vec3 &eyes, const Vec3 &lookat, const Vec3 &vup = Vec3{0., 1., 0.});
+        DEV HOST ~OrthoNormalBasis() noexcept = default;
 
-        const Vec3 &getX() const;
-        const Vec3 &getY() const;
-        const Vec3 &getZ() const;
+        DEV const Vec3 &getX() const;
+        DEV const Vec3 &getY() const;
+        DEV const Vec3 &getZ() const;
     };
 
     Ray lineOfSight;
@@ -30,12 +32,13 @@ class Camera
     double time1, time2;
 
 public:
-    Camera(const double aspR, double fov, const double aperture, const double focusD,
+    DEV HOST Camera(const double aspR, double fov, const double aperture, const double focusD,
            const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.},
            double t0 = 0., double t1 = 0.);
 
-    ~Camera() noexcept = default;
-    Ray &updateLineOfSight(double u, double v);
-    const Ray &getLineOfSight() const;
-    void moveCamera(const Vec3 &displacement);
+    DEV HOST ~Camera() noexcept = default;
+    
+    DEV Ray &updateLineOfSight(double u, double v);
+    DEV const Ray &getLineOfSight() const;
+    DEV void moveCamera(const Vec3 &displacement);
 };

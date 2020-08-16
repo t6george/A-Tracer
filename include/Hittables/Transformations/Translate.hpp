@@ -7,12 +7,12 @@ class Translate : public Hittable
     Vec3 displacement;
 
 public:
-    Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement);
-    ~Translate() noexcept = default;
+    DEV HOST Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement);
+    DEV HOST ~Translate() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

@@ -4,7 +4,7 @@
 class IsotropicMaterial : public Material
 {
 public:
-    IsotropicMaterial(const std::shared_ptr<Texture> albedo);
-    virtual ~IsotropicMaterial() noexcept = default;
+    DEV HOST IsotropicMaterial(const std::shared_ptr<Texture> albedo);
+    DEV HOST virtual ~IsotropicMaterial() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;};
+    DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;};

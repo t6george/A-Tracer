@@ -8,9 +8,9 @@ protected:
     const std::shared_ptr<Material> material;
     AABB boundingBox;
 
-    Shape(const std::shared_ptr<Material> material, const AABB &boundingBox);
-    virtual ~Shape() noexcept = default;
+    DEV HOST Shape(const std::shared_ptr<Material> material, const AABB &boundingBox);
+    DEV HOST virtual ~Shape() noexcept = default;
 
 public:
-    virtual bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    virtual DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

@@ -1,12 +1,14 @@
 #pragma once
+
+#include <Macro.hpp>
 #include <Vec3.hpp>
 
 class Pdf
 {
 public:
-    virtual ~Pdf() noexcept = default;
+    virtual DEV HOST ~Pdf() noexcept = default;
 
-    virtual void construct(const Vec3& v) {}
-    virtual double eval(const Vec3& v) const = 0;
-    virtual Vec3 genRandomVector() const = 0;
+    virtual DEV void construct(const Vec3& v) {}
+    virtual DEV double eval(const Vec3& v) const = 0;
+    virtual DEV Vec3 genRandomVector() const = 0;
 };

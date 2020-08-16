@@ -8,12 +8,12 @@ class FlipFace : public Hittable
     const std::shared_ptr<Hittable> hittable;
 
 public:
-    FlipFace(const std::shared_ptr<Hittable> hittable);
-    ~FlipFace() noexcept = default;
+    DEV HOST FlipFace(const std::shared_ptr<Hittable> hittable);
+    DEV HOST ~FlipFace() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

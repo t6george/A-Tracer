@@ -10,7 +10,7 @@ protected:
     const Perlin noise;
 
 public:
-    NoiseTexture(const double scale, const Vec3 &albedo)
+    DEV HOST NoiseTexture(const double scale, const Vec3 &albedo)
         : scale{scale}, albedo{Vec3::clamp(albedo, 0., 1.)} {}
-    virtual ~NoiseTexture() noexcept = default;
+    virtual DEV HOST ~NoiseTexture() noexcept = default;
 };

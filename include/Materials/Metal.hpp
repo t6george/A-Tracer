@@ -6,8 +6,8 @@ class Metal : public Material
     double fuzz;
 
 public:
-    Metal(const std::shared_ptr<Texture> albedo, const double fuzz = 0.);
-    virtual ~Metal() noexcept = default;
+    DEV HOST Metal(const std::shared_ptr<Texture> albedo, const double fuzz = 0.);
+    DEV HOST virtual ~Metal() noexcept = default;
 
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
+    DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

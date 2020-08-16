@@ -12,8 +12,8 @@ class ImageTexture : public Texture
     int bytesPerScanline;
 
 public:
-    ImageTexture(const std::string &filename);
-    ~ImageTexture() noexcept = default;
+    DEV HOST ImageTexture(const std::string &filename);
+    DEV HOST ~ImageTexture() noexcept = default;
 
-    Vec3 getValue(double u, double v, const Vec3 &point) const override;
+    DEV Vec3 getValue(double u, double v, const Vec3 &point) const override;
 };

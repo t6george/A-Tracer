@@ -2,12 +2,7 @@
 #include <memory>
 #include <vector>
 
-#if GPU
-#include <SceneGeneration.cuh>
-#else
 #include <SceneGeneration.hpp>
-#endif
-
 #include <Scenes.hpp>
 #include <Pdfs.hpp>
 #include <Objects.hpp>
@@ -15,9 +10,7 @@
 
 namespace generate
 {
-#if GPU
     __device__
-#endif
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
         WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
     {
@@ -70,7 +63,6 @@ namespace generate
 
     void scene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, 
         const unsigned int maxReflections, const double aspectR)
-#if GPU
     {
         std::cout << "P3\n"
             << width << ' ' << height << "\n255\n";
@@ -151,38 +143,4 @@ namespace generate
             image[idx] = samples[2] / blockDim.x;
         }
     }
-#else
-    {
-        std::cout << "P3\n"
-                << width << ' ' << height << "\n255\n";
-
-        Vec3 pixelColor, tmp;
-        std::shared_ptr<Camera> camera = nullptr;
-        std::shared_ptr<HittableList> sampleObjects = nullptr;
-        std::shared_ptr<HittableList> world = nullptr;
-        Vec3 background;
-	
-	scene::cornell_box(camera, sampleObjects, world, background, aspectR);
-
-        WeightedPdf pdf{std::make_shared<CosinePdf>(), 
-            std::make_shared<HittablePdf>(sampleObjects), .5};
-
-        for (int i = static_cast<int>(height) - 1; i >= 0; --i)
-        {
-            std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
-            for (unsigned int j = 0; j < width; ++j)
-            {
-                pixelColor.zero();
-                for (unsigned int sample = 0; sample < samplesPerPixel; ++sample)
-                {
-                    generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                 background, world, pdf, maxReflections, tmp);
-		    pixelColor += tmp;
-                }
-                pixelColor.formatColor(std::cout, samplesPerPixel);
-            }
-        }
-        std::cerr << std::endl;
-    }
-#endif
 } // namespace generate

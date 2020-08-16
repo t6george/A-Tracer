@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+
+#include <Macro.hpp>
 #include <Vec3.hpp>
 
 class OrthonormalBasis

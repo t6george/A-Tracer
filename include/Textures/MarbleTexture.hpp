@@ -6,11 +6,11 @@ class MarbleTexture : public NoiseTexture
     const int turbulence;
 
 public:
-    MarbleTexture(const double scale = 1.,
+    DEV HOST MarbleTexture(const double scale = 1.,
                   const Vec3 &albedo = Vec3{1., 1., 1.},
                   const int turbulence = 7);
 
-    ~MarbleTexture() noexcept = default;
+    DEV HOST ~MarbleTexture() noexcept = default;
 
-    Vec3 getValue(double u, double v, const Vec3 &point) const override;
+    DEV Vec3 getValue(double u, double v, const Vec3 &point) const override;
 };

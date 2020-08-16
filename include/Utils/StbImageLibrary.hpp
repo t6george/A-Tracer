@@ -384,6 +384,7 @@ License:
 //
 
 // Disable pedantic warnings for this external library.
+#include <Macro.hpp>
 #ifdef _MSC_VER
 #pragma warning(push, 0)
 #endif
@@ -6361,7 +6362,7 @@ typedef struct
     int line_size;
 } stbi__gif;
 
-static int stbi__gif_test_raw(stbi__context *s)
+static DEV int stbi__gif_test_raw(stbi__context *s)
 {
     int sz;
     if (stbi__get8(s) != 'G' || stbi__get8(s) != 'I' || stbi__get8(s) != 'F' || stbi__get8(s) != '8')

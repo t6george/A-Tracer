@@ -10,27 +10,27 @@ class Perlin
     std::array<Vec3, Perlin::pointCount> randomVectors;
     std::array<int, Perlin::pointCount> permX, permY, permZ;
 
-    void init();
+    DEV void init();
 
-    double trilinearInterpolation(const double c[2][2][2],
+    DEV double trilinearInterpolation(const double c[2][2][2],
                                   double u,
                                   double v,
                                   double w) const;
 
-    double perlinInterpolation(const Vec3 c[2][2][2],
+    DEV double perlinInterpolation(const Vec3 c[2][2][2],
                                double u,
                                double v,
                                double w) const;
 
 public:
     template <typename T, size_t N>
-    static void permuteArray(std::array<T, N> &arr);
+    static DEV void permuteArray(std::array<T, N> &arr);
 
-    Perlin();
-    ~Perlin() noexcept = default;
+    DEV HOST Perlin();
+    DEV HOST ~Perlin() noexcept = default;
 
-    double getScalarNoise(const Vec3 &point) const;
-    double getLaticeVectorNoise(const Vec3 &point) const;
+    DEV double getScalarNoise(const Vec3 &point) const;
+    DEV double getLaticeVectorNoise(const Vec3 &point) const;
 
-    double getTurbulence(const Vec3 &point, int depth) const;
+    DEV double getTurbulence(const Vec3 &point, int depth) const;
 };
