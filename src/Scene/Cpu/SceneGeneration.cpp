@@ -11,14 +11,14 @@
 namespace generate
 {
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
-        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
+        WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
         Vec3 coeff {1., 1., 1.};
         Hittable::HitRecord record;
         bool active = true;
 
-        for (unsigned int reflections = 0; active && reflections < maxReflections; ++reflections)
+        for (unsigned reflections = 0; active && reflections < maxReflections; ++reflections)
         {
             record = { 0 };
             switch (world->getCollisionData(ray, record, .001))
@@ -60,8 +60,8 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    void scene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, 
-        const unsigned int maxReflections, const double aspectR)
+    void scene(const unsigned width, const unsigned height, const unsigned samplesPerPixel, 
+        const unsigned maxReflections, const double aspectR)
     {
         std::cout << "P3\n"
                 << width << ' ' << height << "\n255\n";
@@ -80,10 +80,10 @@ namespace generate
         for (int i = static_cast<int>(height) - 1; i >= 0; --i)
         {
             std::cerr << "\rScanlines remaining: " << i << ' ' << std::flush;
-            for (unsigned int j = 0; j < width; ++j)
+            for (unsigned j = 0; j < width; ++j)
             {
                 pixelColor.zero();
-                for (unsigned int sample = 0; sample < samplesPerPixel; ++sample)
+                for (unsigned sample = 0; sample < samplesPerPixel; ++sample)
                 {
                     generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
                                  background, world, pdf, maxReflections, tmp);

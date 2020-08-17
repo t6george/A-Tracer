@@ -12,14 +12,14 @@ namespace generate
 {
     __device__
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
-        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
+        WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
         Vec3 coeff {1., 1., 1.};
         Hittable::HitRecord record;
         bool active = true;
 
-        for (unsigned int reflections = 0; active && reflections < maxReflections; ++reflections)
+        for (unsigned reflections = 0; active && reflections < maxReflections; ++reflections)
         {
             record = { 0 };
             switch (world->getCollisionData(ray, record, .001))
@@ -61,7 +61,44 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    void scene(const unsigned int width, const unsigned int height, const unsigned int maxReflections, const double aspectR)
+    __global__
+    void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
+		    std::shared_ptr<Camera> camera, WeightedPdf &pdf, const Vec3 &background, std::shared_ptr<HittableList> world)
+    {
+        /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
+
+        Vec3 finalColor;
+	
+	unsigned x = blockIdx.x * blockDim.x + threadIdx.x;
+	unsigned y = blockIdx.y * blockDim.y + threadIdx.y;
+
+        generate::ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
+                                     background, world, pdf, maxReflections, finalColor);
+
+        samples[blockIdx.x * 3] = finalColor.x();
+        samples[blockIdx.x * 3 + 1] = finalColor.y();
+        samples[blockIdx.x * 3 + 2] = finalColor.z();
+
+        __syncthreads();
+
+        if (threadIdx.x == 0)
+        {
+            for (int i = 3; i < blockDim.x; i+=3)
+            {
+                samples[0] += samples[i];
+                samples[1] += samples[i + 1];
+                samples[2] += samples[i + 2];
+            }
+
+            unsigned idx = blockDim.y * blockIdx.y + blockIdx.x;
+            
+            image[idx] = samples[0] / blockDim.x;
+            image[idx] = samples[1] / blockDim.x;
+            image[idx] = samples[2] / blockDim.x;
+        }
+    }
+
+    void scene(const unsigned width, const unsigned height, const unsigned maxReflections, const double aspectR)
     {
         std::cout << "P3\n"
             << width << ' ' << height << "\n255\n";
@@ -98,7 +135,7 @@ namespace generate
             
         for (int i = static_cast<int>(height) - 1; i >= 0; --i)
             {
-                for (unsigned int j = 0; j < width; ++j)
+                for (unsigned j = 0; j < width; ++j)
                 {
                     idx = (i * width + j) * 3;
                     Vec3{h_img[idx], h_img[idx + 1], h_img[idx + 2]}.formatColor(std::cout, SAMPLES_PER_PIXEL);
@@ -107,42 +144,5 @@ namespace generate
 
         cudaFreeHost(h_img);
         cudaFree(d_img);
-    }
-
-    __global__
-    void sample_pixel(float * image, const unsigned int width, const unsigned int height, const unsigned int maxReflections, 
-		    std::shared_ptr<Camera> camera, WeightedPdf &pdf, const Vec3 &background, std::shared_ptr<HittableList> world)
-    {
-        /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
-
-        Vec3 finalColor;
-	
-	unsigned int x = blockIdx.x * blockDim.x + threadIdx.x;
-	unsigned int y = blockIdx.y * blockDim.y + threadIdx.y;
-
-        generate::ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
-                                     background, world, pdf, maxReflections, finalColor);
-
-        samples[blockIdx.x * 3] = finalColor.x();
-        samples[blockIdx.x * 3 + 1] = finalColor.y();
-        samples[blockIdx.x * 3 + 2] = finalColor.z();
-
-        __syncthreads();
-
-        if (threadIdx.x == 0)
-        {
-            for (int i = 3; i < blockDim.x; i+=3)
-            {
-                samples[0] += samples[i];
-                samples[1] += samples[i + 1];
-                samples[2] += samples[i + 2];
-            }
-
-            int idx = blockDim.y * blockIdx.y + blockIdx.x;
-            
-            image[idx] = samples[0] / blockDim.x;
-            image[idx] = samples[1] / blockDim.x;
-            image[idx] = samples[2] / blockDim.x;
-        }
     }
 } // namespace generate
