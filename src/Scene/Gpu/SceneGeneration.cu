@@ -2,11 +2,11 @@
 #include <memory>
 #include <vector>
 
-#include <SceneGeneration.hpp>
-#include <Scenes.hpp>
-#include <Pdfs.hpp>
-#include <Objects.hpp>
-#include <Material.hpp>
+#include <SceneGeneration.cuh>
+#include <Scenes.cuh>
+#include <Pdfs.cuh>
+#include <Objects.cuh>
+#include <Material.cuh>
 
 namespace generate
 {

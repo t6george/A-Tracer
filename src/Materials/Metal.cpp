@@ -1,7 +1,7 @@
-#include <Metal.hpp>
-#include <Util.hpp>
-#include <Texture.hpp>
-#include <WeightedPdf.hpp>
+#include <Metal.cuh>
+#include <Util.cuh>
+#include <Texture.cuh>
+#include <WeightedPdf.cuh>
 
 Metal::Metal(const std::shared_ptr<Texture> albedo, const double fuzz)
     : Material::Material{albedo}, fuzz{utils::clamp(fuzz, 0., 1.)} {}

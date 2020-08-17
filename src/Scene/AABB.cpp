@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include <AABB.hpp>
-#include <Ray.hpp>
+#include <AABB.cuh>
+#include <Ray.cuh>
 
 AABB AABB::combineAABBs(const AABB &b1, const AABB &b2)
 {

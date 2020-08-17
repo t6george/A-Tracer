@@ -1,4 +1,4 @@
-#include <HittablePdf.hpp>
+#include <HittablePdf.cuh>
 
 HittablePdf::HittablePdf(std::shared_ptr<Hittable> object)
  : object{object} {}

@@ -1,10 +1,10 @@
-#include <Scenes.hpp>
-#include <Materials.hpp>
-#include <Objects.hpp>
-#include <Textures.hpp>
-#include <Transformations.hpp>
-#include <Light.hpp>
-#include <Pdfs.hpp>
+#include <Scenes.cuh>
+#include <Materials.cuh>
+#include <Objects.cuh>
+#include <Textures.cuh>
+#include <Transformations.cuh>
+#include <Light.cuh>
+#include <Pdfs.cuh>
 
 namespace scene
 {

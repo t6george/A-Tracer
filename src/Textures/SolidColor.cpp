@@ -1,4 +1,4 @@
-#include <SolidColor.hpp>
+#include <SolidColor.cuh>
 
 SolidColor::SolidColor(const Vec3 &color) : color{color} {}
 

@@ -1,4 +1,4 @@
-#include <Ray.hpp>
+#include <Ray.cuh>
 
 Ray::Ray() : orig{Vec3{}}, dir{Vec3{}}, tm{0.} {}
 

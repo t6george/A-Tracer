@@ -1,6 +1,6 @@
-#include <Material.hpp>
-#include <Vec3.hpp>
-#include <WeightedPdf.hpp>
+#include <Material.cuh>
+#include <Vec3.cuh>
+#include <WeightedPdf.cuh>
 
 Material::Material(const std::shared_ptr<Texture> albedo) : albedo{albedo} {}
 

@@ -1,6 +1,6 @@
-#include <DiffuseLight.hpp>
-#include <Texture.hpp>
-#include <WeightedPdf.hpp>
+#include <DiffuseLight.cuh>
+#include <Texture.cuh>
+#include <WeightedPdf.cuh>
 
 DiffuseLight::DiffuseLight(const std::shared_ptr<Texture> emitter) : Material::Material{emitter} {}
 

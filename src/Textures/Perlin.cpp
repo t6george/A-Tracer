@@ -1,5 +1,5 @@
-#include <Perlin.hpp>
-#include <Util.hpp>
+#include <Perlin.cuh>
+#include <Util.cuh>
 
 double Perlin::trilinearInterpolation(const double c[2][2][2],
                                       double u,

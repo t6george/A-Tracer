@@ -1,4 +1,4 @@
-#include <Shape.hpp>
+#include <Shape.cuh>
 
 Shape::Shape(const std::shared_ptr<Material> material, const AABB &boundingBox)
     : material{material}, boundingBox{boundingBox} {}

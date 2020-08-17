@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include <CheckerTexture.hpp>
+#include <CheckerTexture.cuh>
 
 CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
                                const std::shared_ptr<Texture> tex2, const Vec3 &scale)

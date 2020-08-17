@@ -1,4 +1,4 @@
-#include <AARotate.hpp>
+#include <AARotate.cuh>
 
 template <enum utils::Axis A>
 AARotate<A>::AARotate(const std::shared_ptr<Hittable> shape, double angle)

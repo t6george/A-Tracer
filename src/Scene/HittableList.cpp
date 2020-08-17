@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include <HittableList.hpp>
-#include <AABB.hpp>
+#include <HittableList.cuh>
+#include <AABB.cuh>
 
 Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const

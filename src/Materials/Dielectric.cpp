@@ -1,6 +1,6 @@
-#include <Dielectric.hpp>
-#include <SolidColor.hpp>
-#include <WeightedPdf.hpp>
+#include <Dielectric.cuh>
+#include <SolidColor.cuh>
+#include <WeightedPdf.cuh>
 
 Dielectric::Dielectric(const double reflectiveIndex)
     : Material::Material{std::make_shared<SolidColor>(Vec3{1., 1., 1.})},

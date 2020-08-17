@@ -1,4 +1,4 @@
-#include <TurbulentTexture.hpp>
+#include <TurbulentTexture.cuh>
 
 TurbulentTexture::TurbulentTexture(const double scale, const Vec3 &albedo, const int turbulence)
     : NoiseTexture::NoiseTexture{scale, albedo}, turbulence{turbulence} {}

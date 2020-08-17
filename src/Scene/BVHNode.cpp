@@ -2,10 +2,10 @@
 #include <cassert>
 #include <iostream>
 
-#include <BVHNode.hpp>
-#include <Util.hpp>
-#include <HittableList.hpp>
-#include <WeightedPdf.hpp>
+#include <BVHNode.cuh>
+#include <Util.cuh>
+#include <HittableList.cuh>
+#include <WeightedPdf.cuh>
 
 BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
     : BVHNode{world, time0, time1, 0, world.hittables.size()} { assert(world.hittables.size() > 0); }

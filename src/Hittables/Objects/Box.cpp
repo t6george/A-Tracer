@@ -1,8 +1,8 @@
 #include <memory>
 
-#include <Box.hpp>
-#include <AARect.hpp>
-#include <FlipFace.hpp>
+#include <Box.cuh>
+#include <AARect.cuh>
+#include <FlipFace.cuh>
 
 Box::Box(const Vec3 &p0, const Vec3 &p1,
          const std::shared_ptr<Material> material)

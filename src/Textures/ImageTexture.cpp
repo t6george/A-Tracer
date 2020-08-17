@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include <Util.hpp>
-#include <StbImageLibrary.hpp>
-#include <ImageTexture.hpp>
+#include <Util.cuh>
+#include <StbImageLibrary.cuh>
+#include <ImageTexture.cuh>
 
 ImageTexture::ImageTexture(const std::string &filename)
     : width{0}, height{0}, componentsPerPicture{bytesPerPixel},

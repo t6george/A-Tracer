@@ -1,6 +1,6 @@
-#include <ConstantVolume.hpp>
-#include <IsotropicMaterial.hpp>
-#include <Texture.hpp>
+#include <ConstantVolume.cuh>
+#include <IsotropicMaterial.cuh>
+#include <Texture.cuh>
 
 ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
                                const std::shared_ptr<Texture> phaseFunction,

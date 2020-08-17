@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include <MarbleTexture.hpp>
+#include <MarbleTexture.cuh>
 
 MarbleTexture::MarbleTexture(const double scale, const Vec3 &albedo, const int turbulence)
     : NoiseTexture::NoiseTexture{scale, albedo}, turbulence{turbulence} {}

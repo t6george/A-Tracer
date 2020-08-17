@@ -1,4 +1,4 @@
-#include <SmoothNoiseTexture.hpp>
+#include <SmoothNoiseTexture.cuh>
 
 SmoothNoiseTexture::SmoothNoiseTexture(const double scale, const Vec3 &albedo)
     : NoiseTexture::NoiseTexture{scale, albedo} {}

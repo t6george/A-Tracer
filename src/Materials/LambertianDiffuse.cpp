@@ -1,10 +1,10 @@
-#include <LambertianDiffuse.hpp>
-#include <Texture.hpp>
-#include <OrthonormalBasis.hpp>
-#include <CosinePdf.hpp>
-#include <HittablePdf.hpp>
-#include <WeightedPdf.hpp>
-#include <AARect.hpp>
+#include <LambertianDiffuse.cuh>
+#include <Texture.cuh>
+#include <OrthonormalBasis.cuh>
+#include <CosinePdf.cuh>
+#include <HittablePdf.cuh>
+#include <WeightedPdf.cuh>
+#include <AARect.cuh>
 
 LambertianDiffuse::LambertianDiffuse(const std::shared_ptr<Texture> albedo)
     : Material::Material{albedo} {}

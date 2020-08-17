@@ -1,5 +1,5 @@
-#include <WeightedPdf.hpp>
-#include <Util.hpp>
+#include <WeightedPdf.cuh>
+#include <Util.cuh>
 #include <cassert>
 
 WeightedPdf::WeightedPdf(std::shared_ptr<Pdf> pdf1, std::shared_ptr<Pdf> pdf2, double pdf1Weight)

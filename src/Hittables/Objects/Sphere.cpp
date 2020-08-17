@@ -1,9 +1,9 @@
-#include <Sphere.hpp>
-#include <Ray.hpp>
-#include <Material.hpp>
-#include <Util.hpp>
-#include <OrthonormalBasis.hpp>
-#include <WeightedPdf.hpp>
+#include <Sphere.cuh>
+#include <Ray.cuh>
+#include <Material.cuh>
+#include <Util.cuh>
+#include <OrthonormalBasis.cuh>
+#include <WeightedPdf.cuh>
 
 void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {

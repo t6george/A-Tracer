@@ -1,4 +1,4 @@
-#include <SceneGeneration.hpp>
+#include <SceneGeneration.cuh>
 
 int main()
 {

@@ -1,4 +1,4 @@
-#include <PerlinNoiseTexture.hpp>
+#include <PerlinNoiseTexture.cuh>
 
 PerlinNoiseTexture::PerlinNoiseTexture(const double scale, const Vec3 &albedo)
     : NoiseTexture::NoiseTexture{scale, albedo} {}

@@ -1,7 +1,7 @@
-#include <Vec3.hpp>
+#include <Vec3.cuh>
 
 #include <iostream>
-#include <Util.hpp>
+#include <Util.cuh>
 
 Vec3::Vec3() : c{0., 0., 0.} {}
 

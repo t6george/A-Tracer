@@ -1,6 +1,6 @@
-#include <IsotropicMaterial.hpp>
-#include <Texture.hpp>
-#include <WeightedPdf.hpp>
+#include <IsotropicMaterial.cuh>
+#include <Texture.cuh>
+#include <WeightedPdf.cuh>
 
 IsotropicMaterial::IsotropicMaterial(const std::shared_ptr<Texture> albedo) : Material::Material(albedo) {}
 

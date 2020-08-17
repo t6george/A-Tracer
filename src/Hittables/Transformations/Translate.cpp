@@ -1,5 +1,5 @@
-#include <Translate.hpp>
-#include <AABB.hpp>
+#include <Translate.cuh>
+#include <AABB.cuh>
 
 Translate::Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement)
     : shape{shape}, displacement{displacement} {}

@@ -1,7 +1,7 @@
-#include <AARect.hpp>
-#include <Material.hpp>
-#include <AABB.hpp>
-#include <WeightedPdf.hpp>
+#include <AARect.cuh>
+#include <Material.cuh>
+#include <AABB.cuh>
+#include <WeightedPdf.cuh>
 
 template <enum utils::Axis A>
 AARect<A>::AARect(const double i0, const double i1, const double j0,

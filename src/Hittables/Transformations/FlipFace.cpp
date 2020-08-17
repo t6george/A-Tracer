@@ -1,4 +1,4 @@
-#include <FlipFace.hpp>
+#include <FlipFace.cuh>
 
 FlipFace::FlipFace(const std::shared_ptr<Hittable> hittable) : hittable{hittable} {}
 

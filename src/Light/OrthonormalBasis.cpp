@@ -1,4 +1,4 @@
-#include <OrthonormalBasis.hpp>
+#include <OrthonormalBasis.cuh>
 #include <cmath>
 
 Vec3 OrthonormalBasis::operator[](int i) const { return axes.at(i); } 
