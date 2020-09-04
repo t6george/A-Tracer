@@ -18,7 +18,11 @@ namespace utils
 
     inline DEV double random_double(double min = 0., double max = 1.)
     {
+#ifdef __CUDACC__
+        return 0.;
+#else	
         return min + (max - min) * (rand() / (RAND_MAX + 1.));
+#endif
     }
 
     inline DEV int random_int(int min = 0, int max = 2)

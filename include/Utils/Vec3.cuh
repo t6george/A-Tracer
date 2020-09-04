@@ -36,8 +36,8 @@ public:
     DEV double len() const;
     DEV double sqLen() const;
 
-    DEV void formatRaw(std::ostream &out) const;
-    DEV void formatColor(std::ostream &out, int samplesPerPixel = 1);
+    HOST void formatRaw(std::ostream &out) const;
+    HOST void formatColor(std::ostream &out, int samplesPerPixel = 1);
 
     DEV Vec3 operator+(const Vec3 &otherV) const;
     DEV Vec3 operator-(const Vec3 &otherV) const;
