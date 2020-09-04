@@ -4,7 +4,7 @@
 #include <AARect.cuh>
 #include <FlipFace.cuh>
 
-Box::Box(const Vec3 &p0, const Vec3 &p1,
+DEV HOST Box::Box(const Vec3 &p0, const Vec3 &p1,
          const std::shared_ptr<Material> material)
     : Shape::Shape{material, AABB{p0, p1}},
       minPoint{p0}, maxPoint{p1}
@@ -22,7 +22,7 @@ Box::Box(const Vec3 &p0, const Vec3 &p1,
         std::make_shared<AARect<utils::Axis::X>>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), material)));
 }
 
-Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType Box::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     return sides.getCollisionData(ray, record, tMin, tMax, flip);

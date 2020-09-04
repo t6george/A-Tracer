@@ -10,7 +10,7 @@ class Perlin
     std::array<Vec3, Perlin::pointCount> randomVectors;
     std::array<int, Perlin::pointCount> permX, permY, permZ;
 
-    DEV void init();
+    DEV HOST void init();
 
     DEV double trilinearInterpolation(const double c[2][2][2],
                                   double u,

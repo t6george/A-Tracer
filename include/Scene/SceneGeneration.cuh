@@ -8,10 +8,7 @@
 
 namespace generate
 {
-#if GPU
-    __device__
-#endif
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
+    DEV void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
         WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor);
     
 #if GPU

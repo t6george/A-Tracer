@@ -3,7 +3,7 @@
 #include <AABB.cuh>
 #include <Ray.cuh>
 
-AABB AABB::combineAABBs(const AABB &b1, const AABB &b2)
+DEV HOST AABB AABB::combineAABBs(const AABB &b1, const AABB &b2)
 {
     Vec3 minPoint{
         fmin(b1.getMinPoint().x(), b2.getMinPoint().x()),
@@ -18,18 +18,18 @@ AABB AABB::combineAABBs(const AABB &b1, const AABB &b2)
     return AABB{minPoint, maxPoint};
 }
 
-AABB::AABB(const Vec3 &minPoint, const Vec3 &maxPoint)
+DEV HOST AABB::AABB(const Vec3 &minPoint, const Vec3 &maxPoint)
     : minPoint{minPoint}, maxPoint{maxPoint} {}
 
-const Vec3 &AABB::getMinPoint() const { return minPoint; }
+DEV const Vec3 &AABB::getMinPoint() const { return minPoint; }
 
-const Vec3 &AABB::getMaxPoint() const { return maxPoint; }
+DEV const Vec3 &AABB::getMaxPoint() const { return maxPoint; }
 
-void AABB::setMinPoint(const Vec3 &v) { minPoint = v; }
+DEV void AABB::setMinPoint(const Vec3 &v) { minPoint = v; }
 
-void AABB::setMaxPoint(const Vec3 &v) { maxPoint = v; }
+DEV void AABB::setMaxPoint(const Vec3 &v) { maxPoint = v; }
 
-bool AABB::passesThrough(const Ray &ray, double tmin, double tmax) const
+DEV bool AABB::passesThrough(const Ray &ray, double tmin, double tmax) const
 {
     double invD, t0, t1;
 

@@ -12,20 +12,20 @@ class HittableList : public Hittable
     std::vector<std::shared_ptr<Hittable>> hittables;
 
 public:
-    HittableList() = default;
-    ~HittableList() noexcept = default;
+    DEV HOST HittableList() = default;
+    DEV HOST ~HittableList() noexcept = default;
 
-    HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 
-    bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 
-    void add(std::shared_ptr<Hittable> hittable);
-    void clear();
+    DEV void add(std::shared_ptr<Hittable> hittable);
+    DEV void clear();
 
-    Vec3 genRandomVector(const Vec3& origin) const override;
-    double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;
+    DEV Vec3 genRandomVector(const Vec3& origin) const override;
+    DEV double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;
 
     friend class BVHNode;
 };

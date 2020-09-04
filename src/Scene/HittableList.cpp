@@ -3,7 +3,7 @@
 #include <HittableList.cuh>
 #include <AABB.cuh>
 
-Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
+DEV DEV Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     Hittable::HitRecord tmpRecord;
@@ -22,7 +22,7 @@ Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &reco
     return collisionType;
 }
 
-bool HittableList::getBoundingBox(double time0, double time1, AABB &box) const
+DEV bool HittableList::getBoundingBox(double time0, double time1, AABB &box) const
 {
     bool firstBox = true;
     AABB tmp, outputBox;
@@ -38,16 +38,16 @@ bool HittableList::getBoundingBox(double time0, double time1, AABB &box) const
     return !hittables.empty();
 }
 
-void HittableList::add(std::shared_ptr<Hittable> hittable) { hittables.emplace_back(hittable); }
+DEV void HittableList::add(std::shared_ptr<Hittable> hittable) { hittables.emplace_back(hittable); }
 
-void HittableList::clear() { hittables.clear(); }
+DEV void HittableList::clear() { hittables.clear(); }
 
-Vec3 HittableList::genRandomVector(const Vec3& origin) const
+DEV Vec3 HittableList::genRandomVector(const Vec3& origin) const
 {
     return hittables.at(utils::random_int(0, hittables.size()))->genRandomVector(origin);
 }
 
-double HittableList::eval(const Vec3& origin, const Vec3& v, bool flip) const
+DEV double HittableList::eval(const Vec3& origin, const Vec3& v, bool flip) const
 {
     assert(hittables.size() > 0);
     double weight = 1. / hittables.size();

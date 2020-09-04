@@ -4,7 +4,7 @@
 #include <StbImageLibrary.cuh>
 #include <ImageTexture.cuh>
 
-ImageTexture::ImageTexture(const std::string &filename)
+DEV HOST ImageTexture::ImageTexture(const std::string &filename)
     : width{0}, height{0}, componentsPerPicture{bytesPerPixel},
       rgbData{stbi_load(filename.c_str(), &width, &height, &componentsPerPicture, componentsPerPicture)},
       bytesPerScanline{width * bytesPerPixel}
@@ -15,7 +15,7 @@ ImageTexture::ImageTexture(const std::string &filename)
     }
 }
 
-Vec3 ImageTexture::getValue(double u, double v, const Vec3 &point) const
+DEV Vec3 ImageTexture::getValue(double u, double v, const Vec3 &point) const
 {
     if (rgbData)
     {

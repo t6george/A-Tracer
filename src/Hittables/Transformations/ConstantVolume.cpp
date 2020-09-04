@@ -2,12 +2,12 @@
 #include <IsotropicMaterial.cuh>
 #include <Texture.cuh>
 
-ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
+DEV HOST ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
                                const std::shared_ptr<Texture> phaseFunction,
                                const double density)
     : boundary{boundary}, phaseFunction{std::make_shared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 
-Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     HitType hit = HitType::NO_HIT;
@@ -43,7 +43,7 @@ Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &re
     return hit;
 }
 
-bool ConstantVolume::getBoundingBox(double time0, double time1, AABB &box) const
+DEV bool ConstantVolume::getBoundingBox(double time0, double time1, AABB &box) const
 {
     return boundary->getBoundingBox(time0, time1, box);
 }

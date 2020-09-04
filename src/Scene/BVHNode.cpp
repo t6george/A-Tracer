@@ -7,10 +7,10 @@
 #include <HittableList.cuh>
 #include <WeightedPdf.cuh>
 
-BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
+DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
     : BVHNode{world, time0, time1, 0, world.hittables.size()} { assert(world.hittables.size() > 0); }
 
-BVHNode::BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end)
+DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end)
 {
     size_t span = end - start;
 
@@ -45,11 +45,9 @@ BVHNode::BVHNode(HittableList &world, const double time0, const double time1, co
     right->getBoundingBox(time0, time1, rightBox);
 
     boundingBox = AABB::combineAABBs(leftBox, rightBox);
-    // std::cerr << "MinPoint: " << boundingBox.getMinPoint().x() << ", " << boundingBox.getMinPoint().y() << ", " << boundingBox.getMinPoint().z() << std::endl;
-    // std::cerr << "MaxPoint: " << boundingBox.getMaxPoint().x() << ", " << boundingBox.getMaxPoint().y() << ", " << boundingBox.getMaxPoint().z() << std::endl;
 }
 
-Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     if (!boundingBox.passesThrough(ray, tMin, tMax))
@@ -63,7 +61,7 @@ Hittable::HitType BVHNode::getCollisionData(const Ray &ray, HitRecord &record,
     return static_cast<bool>(hitRight) ? hitRight : hitLeft;
 }
 
-bool BVHNode::getBoundingBox(double time0, double time1, AABB &box) const
+DEV bool BVHNode::getBoundingBox(double time0, double time1, AABB &box) const
 {
     box = boundingBox;
     return true;

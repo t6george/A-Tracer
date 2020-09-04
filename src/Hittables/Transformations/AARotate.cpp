@@ -1,12 +1,12 @@
 #include <AARotate.cuh>
 
 template <enum utils::Axis A>
-AARotate<A>::AARotate(const std::shared_ptr<Hittable> shape, double angle)
+DEV HOST AARotate<A>::AARotate(const std::shared_ptr<Hittable> shape, double angle)
     : shape{shape}, sinTheta{sin(utils::deg_to_rad(angle))}, cosTheta{cos(utils::deg_to_rad(angle))},
       bbox{computeBoundingBox()} {}
 
 template <enum utils::Axis A>
-AABB AARotate<A>::computeBoundingBox()
+DEV AABB AARotate<A>::computeBoundingBox()
 {
     AABB box;
     Vec3 minPoint{utils::infinity, utils::infinity, utils::infinity};
@@ -42,7 +42,7 @@ AABB AARotate<A>::computeBoundingBox()
 }
 
 template <enum utils::Axis A>
-Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     Hittable::HitType hit;
@@ -70,7 +70,7 @@ Hittable::HitType AARotate<A>::getCollisionData(const Ray &ray, HitRecord &recor
 }
 
 template <enum utils::Axis A>
-bool AARotate<A>::getBoundingBox(double time0, double time1, AABB &box) const
+DEV bool AARotate<A>::getBoundingBox(double time0, double time1, AABB &box) const
 {
     AABB tmp;
     bool hasBox = shape->getBoundingBox(time0, time1, tmp);
@@ -84,7 +84,7 @@ bool AARotate<A>::getBoundingBox(double time0, double time1, AABB &box) const
 }
 
 template <>
-void AARotate<utils::Axis::X>::rotateCoords(Vec3 &v, const double sin) const
+DEV void AARotate<utils::Axis::X>::rotateCoords(Vec3 &v, const double sin) const
 {
     v = Vec3{
         v.x(),
@@ -93,7 +93,7 @@ void AARotate<utils::Axis::X>::rotateCoords(Vec3 &v, const double sin) const
 }
 
 template <>
-void AARotate<utils::Axis::Y>::rotateCoords(Vec3 &v, const double sin) const
+DEV void AARotate<utils::Axis::Y>::rotateCoords(Vec3 &v, const double sin) const
 {
     v = Vec3{
         cosTheta * v.x() - sin * v.z(),
@@ -102,7 +102,7 @@ void AARotate<utils::Axis::Y>::rotateCoords(Vec3 &v, const double sin) const
 }
 
 template <>
-void AARotate<utils::Axis::Z>::rotateCoords(Vec3 &v, const double sin) const
+DEV void AARotate<utils::Axis::Z>::rotateCoords(Vec3 &v, const double sin) const
 {
     v = Vec3{
         cosTheta * v.x() - sin * v.y(),
@@ -111,7 +111,7 @@ void AARotate<utils::Axis::Z>::rotateCoords(Vec3 &v, const double sin) const
 }
 
 template <enum utils::Axis A>
-void AARotate<A>::inverseRotateCoords(Vec3 &v, const double sin) const
+DEV void AARotate<A>::inverseRotateCoords(Vec3 &v, const double sin) const
 {
     rotateCoords(v, -sin);
 }

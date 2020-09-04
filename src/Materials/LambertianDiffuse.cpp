@@ -6,10 +6,10 @@
 #include <WeightedPdf.cuh>
 #include <AARect.cuh>
 
-LambertianDiffuse::LambertianDiffuse(const std::shared_ptr<Texture> albedo)
+DEV HOST LambertianDiffuse::LambertianDiffuse(const std::shared_ptr<Texture> albedo)
     : Material::Material{albedo} {}
 
-bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
+DEV bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {
     record.isSpecular = false;
     record.scatteredRay.setOrigin(record.point);
