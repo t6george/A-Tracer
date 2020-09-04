@@ -1,10 +1,10 @@
 #include <Translate.cuh>
 #include <AABB.cuh>
 
-Translate::Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement)
+DEV HOST Translate::Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement)
     : shape{shape}, displacement{displacement} {}
 
-Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     Hittable::HitType hit;
@@ -20,7 +20,7 @@ Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record,
     return hit;
 }
 
-bool Translate::getBoundingBox(double time0, double time1, AABB &box) const
+DEV bool Translate::getBoundingBox(double time0, double time1, AABB &box) const
 {
     bool hasBox = false;
     if (shape->getBoundingBox(time0, time1, box))

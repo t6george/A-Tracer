@@ -5,7 +5,7 @@
 #include <OrthonormalBasis.cuh>
 #include <WeightedPdf.cuh>
 
-void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
+DEV void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
 {
     double phi = atan2(p.z(), p.x());
     double theta = asin(p.y());
@@ -13,12 +13,12 @@ void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
     v = (theta + utils::pi / 2.) / utils::pi;
 }
 
-Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
+DEV HOST Sphere::Sphere(const Vec3 &center0, const double R, const std::shared_ptr<Material> material,
                const double t0, const double t1)
     : Shape::Shape{material, AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}}},
       center0{center0}, center1{center0}, R{R}, time0{t0}, time1{t1} {}
 
-Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
+DEV HOST Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
                const std::shared_ptr<Material> material, const double t0, const double t1)
     : Shape::Shape{material,
                    AABB::combineAABBs(
@@ -29,7 +29,7 @@ Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
       center0{center0}, center1{center1},
       R{R}, time0{t0}, time1{t1} {}
 
-Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     Vec3 center = blur(ray.getTime());
@@ -82,12 +82,12 @@ Hittable::HitType Sphere::getCollisionData(const Ray &ray, HitRecord &record,
     return Hittable::HitType::NO_HIT;
 }
 
-Vec3 Sphere::blur(const double time) const
+DEV Vec3 Sphere::blur(const double time) const
 {
     return center0 + (center1 - center0) * (time - time0) / (time1 - time0);
 }
 
-Vec3 Sphere::genRandomVector(const Vec3& origin) const
+DEV Vec3 Sphere::genRandomVector(const Vec3& origin) const
 {
     Vec3 dist = center0 - origin;
     double disSq = dist.sqLen();
@@ -95,7 +95,7 @@ Vec3 Sphere::genRandomVector(const Vec3& origin) const
     return basis.getVec(Vec3::randomVecToSphere(R, disSq));
 }
 
-double Sphere::eval(const Vec3& origin, const Vec3& v, bool flip) const
+DEV double Sphere::eval(const Vec3& origin, const Vec3& v, bool flip) const
 {
     Hittable::HitRecord record;
     double prob = 0.;

@@ -3,21 +3,21 @@
 #include <iostream>
 #include <Util.cuh>
 
-Vec3::Vec3() : c{0., 0., 0.} {}
+DEV HOST Vec3::Vec3() : c{0., 0., 0.} {}
 
-Vec3::Vec3(double c1, double c2, double c3) : c{c1, c2, c3} {}
+DEV HOST Vec3::Vec3(double c1, double c2, double c3) : c{c1, c2, c3} {}
 
-double Vec3::x() const { return c[0]; }
+DEV double Vec3::x() const { return c[0]; }
 
-double Vec3::y() const { return c[1]; }
+DEV double Vec3::y() const { return c[1]; }
 
-double Vec3::z() const { return c[2]; }
+DEV double Vec3::z() const { return c[2]; }
 
-double Vec3::operator[](int i) const { return c.at(i); }
+DEV double Vec3::operator[](int i) const { return c.at(i); }
 
-double &Vec3::operator[](int i) { return c.at(i); }
+DEV double &Vec3::operator[](int i) { return c.at(i); }
 
-Vec3 &Vec3::operator+=(const Vec3 &otherV)
+DEV Vec3 &Vec3::operator+=(const Vec3 &otherV)
 {
     c[0] += otherV.x();
     c[1] += otherV.y();
@@ -25,7 +25,7 @@ Vec3 &Vec3::operator+=(const Vec3 &otherV)
     return *this;
 }
 
-Vec3 &Vec3::operator*=(double s)
+DEV Vec3 &Vec3::operator*=(double s)
 {
     c[0] *= s;
     c[1] *= s;
@@ -33,7 +33,7 @@ Vec3 &Vec3::operator*=(double s)
     return *this;
 }
 
-Vec3 &Vec3::operator/=(double s)
+DEV Vec3 &Vec3::operator/=(double s)
 {
     c[0] /= s;
     c[1] /= s;
@@ -41,20 +41,20 @@ Vec3 &Vec3::operator/=(double s)
     return *this;
 }
 
-Vec3 Vec3::operator-() const { return Vec3(-c[0], -c[1], -c[2]); }
+DEV Vec3 Vec3::operator-() const { return Vec3(-c[0], -c[1], -c[2]); }
 
-double Vec3::len() const { return sqrt(sqLen()); }
+DEV double Vec3::len() const { return sqrt(sqLen()); }
 
-double Vec3::sqLen() const { return c[0] * c[0] + c[1] * c[1] + c[2] * c[2]; }
+DEV double Vec3::sqLen() const { return c[0] * c[0] + c[1] * c[1] + c[2] * c[2]; }
 
-void Vec3::formatRaw(std::ostream &out) const
+DEV void Vec3::formatRaw(std::ostream &out) const
 {
     out << c[0] << ' '
         << c[1] << ' '
         << c[2] << '\n';
 }
 
-void Vec3::formatColor(std::ostream &out, int samplesPerPixel)
+DEV void Vec3::formatColor(std::ostream &out, int samplesPerPixel)
 {
     if (c[0] != c[0])
     {
@@ -73,53 +73,53 @@ void Vec3::formatColor(std::ostream &out, int samplesPerPixel)
         << static_cast<int>(256 * utils::clamp(sqrt(c[2] / samplesPerPixel), 0., .999)) << '\n';
 }
 
-Vec3 Vec3::operator+(const Vec3 &otherV) const
+DEV Vec3 Vec3::operator+(const Vec3 &otherV) const
 {
     return Vec3{c[0] + otherV.x(), c[1] + otherV.y(), c[2] + otherV.z()};
 }
 
-Vec3 Vec3::operator-(const Vec3 &otherV) const
+DEV Vec3 Vec3::operator-(const Vec3 &otherV) const
 {
     return Vec3{c[0] - otherV.x(), c[1] - otherV.y(), c[2] - otherV.z()};
 }
 
-Vec3 Vec3::operator*(const Vec3 &otherV) const
+DEV Vec3 Vec3::operator*(const Vec3 &otherV) const
 {
     return Vec3{c[0] * otherV.x(), c[1] * otherV.y(), c[2] * otherV.z()};
 }
 
-Vec3 Vec3::operator*(double s) const
+DEV Vec3 Vec3::operator*(double s) const
 {
     return Vec3{c[0] * s, c[1] * s, c[2] * s};
 }
 
-Vec3 Vec3::operator/(double s) const
+DEV Vec3 Vec3::operator/(double s) const
 {
     return Vec3{c[0] / s, c[1] / s, c[2] / s};
 }
 
-bool Vec3::operator==(const Vec3 &otherV) const
+DEV bool Vec3::operator==(const Vec3 &otherV) const
 {
     return c[0] == otherV.x() && c[1] == otherV.y() && c[2] == otherV.z();
 }
 
-bool Vec3::operator!=(const Vec3 &otherV) const { return !(*this == otherV); }
+DEV bool Vec3::operator!=(const Vec3 &otherV) const { return !(*this == otherV); }
 
-Vec3 Vec3::getUnitVector() const { return *this / len(); }
+DEV Vec3 Vec3::getUnitVector() const { return *this / len(); }
 
-double Vec3::o(const Vec3 &otherV) const
+DEV double Vec3::o(const Vec3 &otherV) const
 {
     return c[0] * otherV.x() + c[1] * otherV.y() + c[2] * otherV.z();
 }
 
-Vec3 Vec3::x(const Vec3 &otherV) const
+DEV Vec3 Vec3::x(const Vec3 &otherV) const
 {
     return Vec3(c[1] * otherV.z() - c[2] * otherV.y(),
                 c[2] * otherV.x() - c[0] * otherV.z(),
                 c[0] * otherV.y() - c[1] * otherV.x());
 }
 
-Vec3 &Vec3::operator*=(const Vec3 &otherV)
+DEV Vec3 &Vec3::operator*=(const Vec3 &otherV)
 {
     c[0] *= otherV.x();
     c[1] *= otherV.y();
@@ -127,27 +127,27 @@ Vec3 &Vec3::operator*=(const Vec3 &otherV)
     return *this;
 }
 
-void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }
+DEV void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }
 
-Vec3 Vec3::reflect(const Vec3 &normal) const { return *this - 2 * o(normal) * normal; }
+DEV Vec3 Vec3::reflect(const Vec3 &normal) const { return *this - 2 * o(normal) * normal; }
 
-Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
+DEV Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
 {
     Vec3 parallel = n_over_nprime * (*this + normal * normal.o(-*this));
     return parallel - normal * sqrt(1. - parallel.sqLen());
 }
 
-Vec3 Vec3::randomVector(const Vec3 &min, const Vec3 &max)
+DEV Vec3 Vec3::randomVector(const Vec3 &min, const Vec3 &max)
 {
     return Vec3{utils::random_double(min[0], max[0]), utils::random_double(min[1], max[1]), utils::random_double(min[2], max[2])};
 }
 
-Vec3 Vec3::clamp(const Vec3 &v, const double min, const double max)
+DEV Vec3 Vec3::clamp(const Vec3 &v, const double min, const double max)
 {
     return Vec3{utils::clamp(v[0], min, max), utils::clamp(v[1], min, max), utils::clamp(v[2], min, max)};
 }
 
-Vec3 Vec3::randomUnitSphereVec()
+DEV Vec3 Vec3::randomUnitSphereVec()
 {
     double a = utils::random_double(0, 2 * utils::pi);
     double z = utils::random_double(-1., 1.);
@@ -155,7 +155,7 @@ Vec3 Vec3::randomUnitSphereVec()
     return Vec3{r * cos(a), r * sin(a), z};
 }
 
-Vec3 Vec3::randomUnitHemisphereVec(const Vec3& normal)
+DEV Vec3 Vec3::randomUnitHemisphereVec(const Vec3& normal)
 {
     Vec3 v = Vec3::randomUnitSphereVec();
     if (v.o(normal) < 0.)
@@ -166,7 +166,7 @@ Vec3 Vec3::randomUnitHemisphereVec(const Vec3& normal)
     return v;
 }
 
-Vec3 Vec3::randomUnitCircleVec()
+DEV Vec3 Vec3::randomUnitCircleVec()
 {
     Vec3 vec;
     vec[0] = utils::random_double();
@@ -174,7 +174,7 @@ Vec3 Vec3::randomUnitCircleVec()
     return vec;
 }
 
-Vec3 Vec3::randomCosineVec()
+DEV Vec3 Vec3::randomCosineVec()
 {
     double r1 = utils::random_double();
     double r2 = utils::random_double();
@@ -184,7 +184,7 @@ Vec3 Vec3::randomCosineVec()
     return Vec3{cos(phi) * sqrt(r2), sin(phi) * sqrt(r2), sqrt(1. - r2)};
 }
 
-Vec3 Vec3::randomVecToSphere(const double R, const double distSq)
+DEV Vec3 Vec3::randomVecToSphere(const double R, const double distSq)
 {
     double r1 = utils::random_double();
     double r2 = utils::random_double();

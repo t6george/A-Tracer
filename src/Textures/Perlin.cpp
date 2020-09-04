@@ -1,7 +1,7 @@
 #include <Perlin.cuh>
 #include <Util.cuh>
 
-double Perlin::trilinearInterpolation(const double c[2][2][2],
+DEV double Perlin::trilinearInterpolation(const double c[2][2][2],
                                       double u,
                                       double v,
                                       double w) const
@@ -32,7 +32,7 @@ double Perlin::trilinearInterpolation(const double c[2][2][2],
     return a;
 }
 
-double Perlin::perlinInterpolation(const Vec3 c[2][2][2],
+DEV double Perlin::perlinInterpolation(const Vec3 c[2][2][2],
                                    double u,
                                    double v,
                                    double w) const
@@ -64,7 +64,7 @@ double Perlin::perlinInterpolation(const Vec3 c[2][2][2],
 }
 
 template <typename T, size_t N>
-void Perlin::permuteArray(std::array<T, N> &arr)
+DEV void Perlin::permuteArray(std::array<T, N> &arr)
 {
     int tgt;
     for (size_t i = N - 1; i > 0; --i)
@@ -74,9 +74,9 @@ void Perlin::permuteArray(std::array<T, N> &arr)
     }
 }
 
-Perlin::Perlin() { init(); }
+DEV HOST Perlin::Perlin() { init(); }
 
-void Perlin::init()
+DEV HOST void Perlin::init()
 {
     for (int i = 0; i < Perlin::pointCount; ++i)
     {
@@ -90,7 +90,7 @@ void Perlin::init()
     Perlin::permuteArray(permZ);
 }
 
-double Perlin::getScalarNoise(const Vec3 &point) const
+DEV double Perlin::getScalarNoise(const Vec3 &point) const
 {
     int i = static_cast<int>(floor(point.x()));
     int j = static_cast<int>(floor(point.y()));
@@ -118,7 +118,7 @@ double Perlin::getScalarNoise(const Vec3 &point) const
     return trilinearInterpolation(c, u, v, w);
 }
 
-double Perlin::getLaticeVectorNoise(const Vec3 &point) const
+DEV double Perlin::getLaticeVectorNoise(const Vec3 &point) const
 {
     int i = static_cast<int>(floor(point.x()));
     int j = static_cast<int>(floor(point.y()));
@@ -146,7 +146,7 @@ double Perlin::getLaticeVectorNoise(const Vec3 &point) const
     return perlinInterpolation(c, u, v, w);
 }
 
-double Perlin::getTurbulence(const Vec3 &point, int depth) const
+DEV double Perlin::getTurbulence(const Vec3 &point, int depth) const
 {
     double a = 0., weight = 1.;
     Vec3 tmp = point;

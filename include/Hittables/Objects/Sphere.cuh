@@ -9,7 +9,7 @@ class Sphere : public Shape
     const double R, time0, time1;
 
 public:
-    static void getSphereUV(const Vec3 &p, double &u, double &v);
+    static DEV void getSphereUV(const Vec3 &p, double &u, double &v);
 
     DEV HOST Sphere(const Vec3 &center0, const double R,
            const std::shared_ptr<Material> material,

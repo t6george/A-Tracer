@@ -11,11 +11,8 @@
 
 namespace generate
 {
-#ifdef __CUDACC__
-    __device__
-#endif
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
-        WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor);
+    DEV void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
+        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor);
     
 #ifdef __CUDACC__
     __global__
