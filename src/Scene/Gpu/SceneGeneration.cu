@@ -12,14 +12,14 @@ namespace generate
 {
     __device__
     void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
-        WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor)
+        WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
         Vec3 coeff {1., 1., 1.};
         Hittable::HitRecord record;
         bool active = true;
 
-        for (unsigned int reflections = 0; active && reflections < maxReflections; ++reflections)
+        for (unsigned reflections = 0; active && reflections < maxReflections; ++reflections)
         {
             record = { 0 };
             switch (world->getCollisionData(ray, record, .001))
@@ -61,65 +61,19 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    void scene(const unsigned int width, const unsigned int height, const unsigned int samplesPerPixel, 
-        const unsigned int maxReflections, const double aspectR)
-    {
-        std::cout << "P3\n"
-            << width << ' ' << height << "\n255\n";
-
-            Vec3 pixelColor;
-            std::shared_ptr<Camera> camera = nullptr;
-            std::shared_ptr<HittableList> sampleObjects = nullptr;
-            std::shared_ptr<HittableList> world = nullptr;
-            Vec3 background;
-            
-        scene::cornell_box(camera, sampleObjects, world, background, aspectR);
-            
-        WeightedPdf pdf{std::make_shared<CosinePdf>(),
-                std::make_shared<HittablePdf>(sampleObjects), .5};
-
-        Vec3 *h_img = nullptr;
-        Vec3 *d_img = nullptr;
-
-        cudaMallocHost(&h_img, sizeof(double) * width * height * 3);
-        cudaMalloc(&d_img, sizeof(double) * width * height * 3);
-
-        cudaMemcpy(d_img, h_img, width * height * 3, cudaMemcpyHostToDevice);
-
-        dim3 threads = {samplesPerPixel, 1, 1};
-        dim3 blocks = {width, height, 1};
-
-        sample_pixel <<<blocks, threads>>> (d_img, width, height, maxReflections);
-
-        cudaDeviceSynchronize();
-
-        cudaMemcpy(h_img, d_img, width * height * 3, cudaMemcpyDeviceToHost);
-
-        int idx;
-            
-        for (int i = static_cast<int>(height) - 1; i >= 0; --i)
-            {
-                for (unsigned int j = 0; j < width; ++j)
-                {
-                    idx = (i * width + j) * 3;
-                    Vec3{h_img[idx], h_img[idx + 1], h_img[idx + 2]}.formatColor(std::cout, samplesPerPixel);
-                }
-            }
-
-        cudaFreeHost(h_img);
-        cudaFree(d_img);
-    }
-
     __global__
-    void sample_pixel(float * image, const unsigned int width, const unsigned int height, 
-        const unsigned int maxReflections)
+    void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
+		    std::shared_ptr<Camera> camera, WeightedPdf &pdf, const Vec3 &background, std::shared_ptr<HittableList> world)
     {
-        /*extern*/__shared__ double samples[samplesPerPixel * 3];
+        /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
 
         Vec3 finalColor;
+	
+	unsigned x = blockIdx.x * blockDim.x + threadIdx.x;
+	unsigned y = blockIdx.y * blockDim.y + threadIdx.y;
 
-        Vec3 color = generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
-                                                background, world, pdf, maxReflections, finalColor);
+        generate::ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
+                                     background, world, pdf, maxReflections, finalColor);
 
         samples[blockIdx.x * 3] = finalColor.x();
         samples[blockIdx.x * 3 + 1] = finalColor.y();
@@ -136,11 +90,59 @@ namespace generate
                 samples[2] += samples[i + 2];
             }
 
-            int idx = blockDim.y * blockIdx.y + blockIdx.x;
+            unsigned idx = blockDim.y * blockIdx.y + blockIdx.x;
             
             image[idx] = samples[0] / blockDim.x;
             image[idx] = samples[1] / blockDim.x;
             image[idx] = samples[2] / blockDim.x;
         }
+    }
+
+    void scene(const unsigned width, const unsigned height, const unsigned maxReflections, const double aspectR)
+    {
+        std::cout << "P3\n"
+            << width << ' ' << height << "\n255\n";
+
+        Vec3 pixelColor;
+        std::shared_ptr<Camera> camera = nullptr;
+        std::shared_ptr<HittableList> sampleObjects = nullptr;
+        std::shared_ptr<HittableList> world = nullptr;
+        Vec3 background;
+            
+        scene::cornell_box(camera, sampleObjects, world, background, aspectR);
+            
+        WeightedPdf pdf{std::make_shared<CosinePdf>(),
+                std::make_shared<HittablePdf>(sampleObjects), .5};
+
+        float *h_img = nullptr;
+        float *d_img = nullptr;
+
+        cudaMallocHost(&h_img, sizeof(double) * width * height * 3);
+        cudaMalloc(&d_img, sizeof(double) * width * height * 3);
+
+        cudaMemcpy(d_img, h_img, width * height * 3, cudaMemcpyHostToDevice);
+
+        dim3 threads = {SAMPLES_PER_PIXEL, 1, 1};
+        dim3 blocks = {width, height, 1};
+
+        sample_pixel <<<blocks, threads>>> (d_img, width, height, maxReflections, camera, pdf, background, world);
+
+        cudaDeviceSynchronize();
+
+        cudaMemcpy(h_img, d_img, width * height * 3, cudaMemcpyDeviceToHost);
+
+        int idx;
+            
+        for (int i = static_cast<int>(height) - 1; i >= 0; --i)
+            {
+                for (unsigned j = 0; j < width; ++j)
+                {
+                    idx = (i * width + j) * 3;
+                    Vec3{h_img[idx], h_img[idx + 1], h_img[idx + 2]}.formatColor(std::cout, SAMPLES_PER_PIXEL);
+                }
+            }
+
+        cudaFreeHost(h_img);
+        cudaFree(d_img);
     }
 } // namespace generate

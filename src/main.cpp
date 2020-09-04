@@ -8,5 +8,5 @@ int main()
     const unsigned samplesPerPixel = 10;
     const unsigned maxDepth = 50;
 
-    generate::scene(width, height, samplesPerPixel, maxDepth, aspectR);
+    generate::scene(width, height, maxDepth, aspectR);
 }
