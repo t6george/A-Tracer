@@ -6,7 +6,7 @@ template <typename T>
 class UniquePointer : public Pointer<T>
 {
 public:
-    static UniquePointer<T> makeShared(T&& obj)
+    static UniquePointer<T> makeUnique(T&& obj)
     {
 #ifdef __CUDACC__
     T* pointer = nullptr;
