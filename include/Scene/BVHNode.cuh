@@ -1,5 +1,5 @@
 #pragma once
-#include <memory>
+#include <SharedPointer.cuh>
 
 #include <Hittable.cuh>
 #include <AABB.cuh>
@@ -8,7 +8,7 @@ class HittableList;
 
 class BVHNode : public Hittable
 {
-    std::shared_ptr<Hittable> left, right;
+    SharedPointer<Hittable> left, right;
     AABB boundingBox;
 
 public:
@@ -26,7 +26,7 @@ public:
 };
 
 template <utils::Axis dim>
-DEV inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+DEV inline bool dimCompare(const SharedPointer<Hittable> a, const SharedPointer<Hittable> b)
 {
     AABB bbA, bbB;
     a->getBoundingBox(0., 0., bbA);
@@ -35,17 +35,17 @@ DEV inline bool dimCompare(const std::shared_ptr<Hittable> a, const std::shared_
     return bbA.getMinPoint()[static_cast<int>(dim)] < bbB.getMinPoint()[static_cast<int>(dim)];
 }
 
-DEV inline bool xCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+DEV inline bool xCompare(const SharedPointer<Hittable> a, const SharedPointer<Hittable> b)
 {
     return dimCompare<utils::Axis::X>(a, b);
 }
 
-DEV inline bool yCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+DEV inline bool yCompare(const SharedPointer<Hittable> a, const SharedPointer<Hittable> b)
 {
     return dimCompare<utils::Axis::Y>(a, b);
 }
 
-DEV inline bool zCompare(const std::shared_ptr<Hittable> a, const std::shared_ptr<Hittable> b)
+DEV inline bool zCompare(const SharedPointer<Hittable> a, const SharedPointer<Hittable> b)
 {
     return dimCompare<utils::Axis::Z>(a, b);
 }

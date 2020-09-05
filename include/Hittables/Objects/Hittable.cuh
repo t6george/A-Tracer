@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstddef>
-#include <memory>
 
+#include <SharedPointer.cuh>
 #include <Macro.cuh>
 #include <Vec3.cuh>
 #include <Ray.cuh>

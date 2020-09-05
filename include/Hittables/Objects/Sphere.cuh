@@ -12,11 +12,11 @@ public:
     static DEV void getSphereUV(const Vec3 &p, double &u, double &v);
 
     DEV HOST Sphere(const Vec3 &center0, const double R,
-           const std::shared_ptr<Material> material,
+           const SharedPointer<Material> material,
            const double t0 = 0., const double t1 = 1.);
 
     DEV HOST Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
-           const std::shared_ptr<Material> material,
+           const SharedPointer<Material> material,
            const double t0 = 0., const double t1 = 1.);
 
     DEV HOST ~Sphere() noexcept = default;

@@ -1,6 +1,6 @@
 #include <HittablePdf.cuh>
 
-DEV HOST HittablePdf::HittablePdf(std::shared_ptr<Hittable> object)
+DEV HOST HittablePdf::HittablePdf(SharedPointer<Hittable> object)
  : object{object} {}
 
 

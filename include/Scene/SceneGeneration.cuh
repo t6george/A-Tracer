@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include <SharedPointer.cuh>
 
 #include <HittableList.cuh>
 #include <Camera.cuh>
@@ -11,14 +11,14 @@
 
 namespace generate
 {
-    DEV void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world,
+    DEV void ray_color(Ray &ray, const Vec3 &background, SharedPointer<HittableList> world,
         WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor);
     
 #ifdef __CUDACC__
     __global__
 #endif
     void sample_pixel(float *image, const unsigned width, const unsigned height, const unsigned maxReflections, 
-		    std::shared_ptr<Camera> camera, WeightedPdf &pdf, const Vec3 &background, std::shared_ptr<HittableList> world);
+		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world);
         
     void scene(const unsigned width, const unsigned height,
         const unsigned maxReflections, const double aspectR);

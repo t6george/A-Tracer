@@ -1,7 +1,7 @@
 #ifdef __CUDACC__
 
 #include <iostream>
-#include <memory>
+#include <SharedPointer.cuh>
 #include <vector>
 
 #include <SceneGeneration.cuh>
@@ -12,7 +12,7 @@
 
 namespace generate
 {
-    DEV void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
+    DEV void ray_color(Ray &ray, const Vec3 &background, SharedPointer<HittableList> world, 
         WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
@@ -64,7 +64,7 @@ namespace generate
 
     __global__
     void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
-		    std::shared_ptr<Camera> camera, WeightedPdf &pdf, const Vec3 &background, std::shared_ptr<HittableList> world)
+		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world)
     {
         /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
 
@@ -105,9 +105,9 @@ namespace generate
             << width << ' ' << height << "\n255\n";
 
         Vec3 pixelColor;
-        std::shared_ptr<Camera> camera = nullptr;
-        std::shared_ptr<HittableList> sampleObjects = nullptr;
-        std::shared_ptr<HittableList> world = nullptr;
+        SharedPointer<Camera> camera = nullptr;
+        SharedPointer<HittableList> sampleObjects = nullptr;
+        SharedPointer<HittableList> world = nullptr;
         Vec3 background;
             
         scene::cornell_box(camera, sampleObjects, world, background, aspectR);

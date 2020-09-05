@@ -2,8 +2,8 @@
 #include <IsotropicMaterial.cuh>
 #include <Texture.cuh>
 
-DEV HOST ConstantVolume::ConstantVolume(const std::shared_ptr<Hittable> boundary,
-                               const std::shared_ptr<Texture> phaseFunction,
+DEV HOST ConstantVolume::ConstantVolume(const SharedPointer<Hittable> boundary,
+                               const SharedPointer<Texture> phaseFunction,
                                const double density)
     : boundary{boundary}, phaseFunction{std::make_shared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 

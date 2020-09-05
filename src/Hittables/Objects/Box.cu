@@ -1,11 +1,11 @@
-#include <memory>
+#include <SharedPointer.cuh>
 
 #include <Box.cuh>
 #include <AARect.cuh>
 #include <FlipFace.cuh>
 
 DEV HOST Box::Box(const Vec3 &p0, const Vec3 &p1,
-         const std::shared_ptr<Material> material)
+         const SharedPointer<Material> material)
     : Shape::Shape{material, AABB{p0, p1}},
       minPoint{p0}, maxPoint{p1}
 {

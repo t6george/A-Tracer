@@ -9,7 +9,7 @@ class Box : public Shape
 
 public:
     HOST Box(const Vec3 &p0, const Vec3 &p1,
-        const std::shared_ptr<Material> material);
+        const SharedPointer<Material> material);
 
     HOST ~Box() noexcept = default;
 

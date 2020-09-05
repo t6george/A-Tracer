@@ -2,15 +2,15 @@
 #include <Util.cuh>
 #include <cassert>
 
-DEV HOST WeightedPdf::WeightedPdf(std::shared_ptr<Pdf> pdf1, std::shared_ptr<Pdf> pdf2, double pdf1Weight)
+DEV HOST WeightedPdf::WeightedPdf(SharedPointer<Pdf> pdf1, SharedPointer<Pdf> pdf2, double pdf1Weight)
  : pdf1{pdf1}, pdf2{pdf2}, pdf1Weight{pdf1Weight} { assert(pdf1Weight >= 0 && pdf1Weight <= 1.); }
 
-DEV std::shared_ptr<Pdf> WeightedPdf::getPdf1() const
+DEV SharedPointer<Pdf> WeightedPdf::getPdf1() const
 {
     return pdf1;
 }
 
-DEV std::shared_ptr<Pdf> WeightedPdf::getPdf2() const
+DEV SharedPointer<Pdf> WeightedPdf::getPdf2() const
 {
     return pdf2;
 }

@@ -10,8 +10,8 @@ public:
     {
 #ifdef __CUDACC__
     T* pointer = nullptr;
-    cudaMallocManaged(static_cast<void**>(&dPointer), sizeof(T));
-    memcpy(static_cast<void*>(dPointer), static_cast<void*>(&obj), sizeof(T));
+    cudaMallocManaged(static_cast<void**>(&pointer), sizeof(T));
+    memcpy(static_cast<void*>(pointer), static_cast<void*>(&obj), sizeof(T));
 #else
     T* pointer = new T{obj};
 #endif

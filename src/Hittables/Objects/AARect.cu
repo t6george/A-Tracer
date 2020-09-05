@@ -6,7 +6,7 @@
 template <enum utils::Axis A>
 DEV HOST AARect<A>::AARect(const double i0, const double i1, const double j0,
                   const double j1, const double k,
-                  const std::shared_ptr<Material> material)
+                  const SharedPointer<Material> material)
     : Shape::Shape{material, AABB{computeBoundingBox(i0, i1, j0, j1, k)}},
       i0{i0}, i1{i1}, j0{j0}, j1{j1}, k{k}, area{fabs((i1 - i0) * (j1 - j0))} {}
 

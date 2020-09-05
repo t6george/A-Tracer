@@ -15,7 +15,7 @@ class AARect : public Shape
 public:
     HOST AARect(const double i0, const double i1, const double j0,
            const double j1, const double k,
-           const std::shared_ptr<Material> material);
+           const SharedPointer<Material> material);
     HOST ~AARect() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,

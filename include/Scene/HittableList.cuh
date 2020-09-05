@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <memory>
+#include <SharedPointer.cuh>
 
 #include <Hittable.cuh>
 #include <AABB.cuh>
@@ -9,7 +9,7 @@ class Ray;
 
 class HittableList : public Hittable
 {
-    std::vector<std::shared_ptr<Hittable>> hittables;
+    std::vector<SharedPointer<Hittable>> hittables;
 
 public:
     DEV HOST HittableList() = default;
@@ -21,7 +21,7 @@ public:
 
     DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 
-    DEV void add(std::shared_ptr<Hittable> hittable);
+    DEV void add(SharedPointer<Hittable> hittable);
     DEV void clear();
 
     DEV Vec3 genRandomVector(const Vec3& origin) const override;

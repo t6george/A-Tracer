@@ -5,13 +5,13 @@ class Texture;
 
 class ConstantVolume : public Hittable
 {
-    std::shared_ptr<Hittable> boundary;
-    std::shared_ptr<Material> phaseFunction;
+    SharedPointer<Hittable> boundary;
+    SharedPointer<Material> phaseFunction;
     const double densityReciprocal;
 
 public:
-    DEV HOST ConstantVolume(const std::shared_ptr<Hittable> boundary,
-                   const std::shared_ptr<Texture> phaseFunction,
+    DEV HOST ConstantVolume(const SharedPointer<Hittable> boundary,
+                   const SharedPointer<Texture> phaseFunction,
                    const double density);
     DEV HOST ~ConstantVolume() noexcept = default;
 

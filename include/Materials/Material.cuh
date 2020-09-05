@@ -10,10 +10,10 @@ class WeightedPdf;
 class Material
 {
 protected:
-    const std::shared_ptr<Texture> albedo;
+    const SharedPointer<Texture> albedo;
 
 public:
-    DEV HOST Material(const std::shared_ptr<Texture> albedo);
+    DEV HOST Material(const SharedPointer<Texture> albedo);
     DEV HOST virtual ~Material() noexcept = default;
 
     DEV virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const;

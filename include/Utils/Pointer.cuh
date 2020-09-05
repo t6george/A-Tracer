@@ -18,8 +18,16 @@ protected:
     ptr{ptr} 
 {
 #ifdef __CUDACC__
-    cudaDeviceSynchronize();
-    *refcnt = 1;
+    if (ptr)
+    {
+        T* pointer = nullptr;
+        cudaMallocManaged(static_cast<void**>(&pointer), sizeof(T));
+        memcpy(static_cast<void*>(pointer), static_cast<void*>(ptr), sizeof(T));
+        delete ptr;
+        ptr = pointer;
+        cudaDeviceSynchronize();
+        *refcnt = 1;
+    }
 #endif
 }
 

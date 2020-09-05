@@ -5,10 +5,10 @@
 class Shape : public Hittable
 {
 protected:
-    const std::shared_ptr<Material> material;
+    const SharedPointer<Material> material;
     AABB boundingBox;
 
-    HOST Shape(const std::shared_ptr<Material> material, const AABB &boundingBox);
+    HOST Shape(const SharedPointer<Material> material, const AABB &boundingBox);
     DEV HOST virtual ~Shape() noexcept = default;
 
 public:

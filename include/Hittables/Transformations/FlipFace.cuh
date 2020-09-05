@@ -5,10 +5,10 @@ class AABB;
 
 class FlipFace : public Hittable
 {
-    const std::shared_ptr<Hittable> hittable;
+    const SharedPointer<Hittable> hittable;
 
 public:
-    DEV HOST FlipFace(const std::shared_ptr<Hittable> hittable);
+    DEV HOST FlipFace(const SharedPointer<Hittable> hittable);
     DEV HOST ~FlipFace() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,

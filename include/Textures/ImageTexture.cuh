@@ -1,14 +1,14 @@
 #pragma once
-#include <memory>
 #include <string>
 
+#include <UniquePointer.cuh>
 #include <Texture.cuh>
 
 class ImageTexture : public Texture
 {
     const int bytesPerPixel = 3;
     int width, height, componentsPerPicture;
-    std::unique_ptr<unsigned char> rgbData;
+    UniquePointer<unsigned char> rgbData;
     int bytesPerScanline;
 
 public:

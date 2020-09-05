@@ -1,21 +1,21 @@
 #pragma once
 
-#include <memory>
+#include <SharedPointer.cuh>
 #include <Texture.cuh>
 #include <Vec3.cuh>
 
 class CheckerTexture : public Texture
 {
-    const std::shared_ptr<Texture> tex1, tex2;
+    const SharedPointer<Texture> tex1, tex2;
     const Vec3 scale;
 
 public:
-    HOST CheckerTexture(const std::shared_ptr<Texture> tex1,
-                   const std::shared_ptr<Texture> tex2,
+    HOST CheckerTexture(const SharedPointer<Texture> tex1,
+                   const SharedPointer<Texture> tex2,
                    const double x, const double y, const double z);
 
-    HOST CheckerTexture(const std::shared_ptr<Texture> tex1,
-                   const std::shared_ptr<Texture> tex2, const Vec3 &scale);
+    HOST CheckerTexture(const SharedPointer<Texture> tex1,
+                   const SharedPointer<Texture> tex2, const Vec3 &scale);
    
     HOST ~CheckerTexture() noexcept = default;
 

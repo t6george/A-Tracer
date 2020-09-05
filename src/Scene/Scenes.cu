@@ -36,18 +36,18 @@ namespace scene
         objects->add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
         objects->add(std::make_shared<FlipFace>(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white)));
 
-        // std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
-        std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, aluminum);
+        // SharedPointer<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, std::make_shared<Metal>(std::make_shared<SolidColor>(.8, .85, .88), 0.));
+        SharedPointer<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, aluminum);
 
         box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
         box1 = std::make_shared<Translate>(box1, Vec3{300., 0., 295.});
 
-        std::shared_ptr<Hittable> box3 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 400., 165.}, white);
+        SharedPointer<Hittable> box3 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 400., 165.}, white);
 
         box3 = std::make_shared<AARotate<utils::Axis::Y>>(box3, -20.);
         box3 = std::make_shared<Translate>(box3, Vec3{90., 0., 295.});
 
-        std::shared_ptr<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
+        SharedPointer<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
 
         box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
         box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
@@ -155,12 +155,12 @@ namespace scene
         objects->add(std::make_shared<AARect<utils::Axis::Y>>(0., 555., 0., 555., 555., white));
         objects->add(std::make_shared<AARect<utils::Axis::Z>>(0., 555., 0., 555., 555., white));
 
-        std::shared_ptr<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
+        SharedPointer<Hittable> box1 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 330., 165.}, white);
 
         box1 = std::make_shared<AARotate<utils::Axis::Y>>(box1, 15.);
         box1 = std::make_shared<Translate>(box1, Vec3{265., 0., 295.});
 
-        std::shared_ptr<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
+        SharedPointer<Hittable> box2 = std::make_shared<Box>(Vec3{0., 0., 0.}, Vec3{165., 165., 165.}, white);
 
         box2 = std::make_shared<AARotate<utils::Axis::Y>>(box2, -18.);
         box2 = std::make_shared<Translate>(box2, Vec3{130., 0., 65.});
@@ -181,7 +181,7 @@ namespace scene
 
         camera = std::make_shared<Camera>(aspectR, fieldOfView, apertureRadius, distanceToFocus, lookFrom, lookAt, t0, t1);
 
-        std::shared_ptr<HittableList> boxes1 = std::make_shared<HittableList>();
+        SharedPointer<HittableList> boxes1 = std::make_shared<HittableList>();
 
         auto ground = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.48, .83, .53));
 
@@ -232,7 +232,7 @@ namespace scene
         auto pertext = std::make_shared<PerlinNoiseTexture>(.1);
         objects->add(std::make_shared<Sphere>(Vec3{220, 280., 300.}, 80., std::make_shared<LambertianDiffuse>(pertext)));
 
-        std::shared_ptr<HittableList> boxes2 = std::make_shared<HittableList>();
+        SharedPointer<HittableList> boxes2 = std::make_shared<HittableList>();
         
         auto white = std::make_shared<LambertianDiffuse>(std::make_shared<SolidColor>(.73, .73, .73));
         int ns = 1000;

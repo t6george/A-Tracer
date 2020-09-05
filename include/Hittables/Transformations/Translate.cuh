@@ -3,11 +3,11 @@
 
 class Translate : public Hittable
 {
-    const std::shared_ptr<Hittable> shape;
+    const SharedPointer<Hittable> shape;
     Vec3 displacement;
 
 public:
-    DEV HOST Translate(const std::shared_ptr<Hittable> shape, const Vec3 &displacement);
+    DEV HOST Translate(const SharedPointer<Hittable> shape, const Vec3 &displacement);
     DEV HOST ~Translate() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,

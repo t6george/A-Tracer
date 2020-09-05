@@ -5,7 +5,7 @@
 template <utils::Axis A>
 class AARotate : public Hittable
 {
-    const std::shared_ptr<Hittable> shape;
+    const SharedPointer<Hittable> shape;
     double sinTheta, cosTheta;
     AABB bbox;
 
@@ -14,7 +14,7 @@ class AARotate : public Hittable
     DEV void inverseRotateCoords(Vec3 &v, const double sin) const;
 
 public:
-    DEV HOST AARotate(const std::shared_ptr<Hittable> shape, double angle);
+    DEV HOST AARotate(const SharedPointer<Hittable> shape, double angle);
     DEV HOST ~AARotate() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,

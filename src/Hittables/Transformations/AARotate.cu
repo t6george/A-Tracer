@@ -1,7 +1,7 @@
 #include <AARotate.cuh>
 
 template <enum utils::Axis A>
-DEV HOST AARotate<A>::AARotate(const std::shared_ptr<Hittable> shape, double angle)
+DEV HOST AARotate<A>::AARotate(const SharedPointer<Hittable> shape, double angle)
     : shape{shape}, sinTheta{sin(utils::deg_to_rad(angle))}, cosTheta{cos(utils::deg_to_rad(angle))},
       bbox{computeBoundingBox()} {}
 

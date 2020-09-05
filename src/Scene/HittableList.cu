@@ -38,7 +38,7 @@ DEV bool HittableList::getBoundingBox(double time0, double time1, AABB &box) con
     return !hittables.empty();
 }
 
-DEV void HittableList::add(std::shared_ptr<Hittable> hittable) { hittables.emplace_back(hittable); }
+DEV void HittableList::add(SharedPointer<Hittable> hittable) { hittables.emplace_back(hittable); }
 
 DEV void HittableList::clear() { hittables.clear(); }
 

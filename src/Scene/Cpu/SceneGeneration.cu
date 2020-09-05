@@ -1,7 +1,7 @@
 #ifndef __CUDACC__
 
 #include <iostream>
-#include <memory>
+#include <SharedPointer.cuh>
 #include <vector>
 
 #include <SceneGeneration.cuh>
@@ -12,7 +12,7 @@
 
 namespace generate
 {
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
+    void ray_color(Ray &ray, const Vec3 &background, SharedPointer<HittableList> world, 
         WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
@@ -69,9 +69,9 @@ namespace generate
                 << width << ' ' << height << "\n255\n";
 
         Vec3 pixelColor, tmp;
-        std::shared_ptr<Camera> camera = nullptr;
-        std::shared_ptr<HittableList> sampleObjects = nullptr;
-        std::shared_ptr<HittableList> world = nullptr;
+        SharedPointer<Camera> camera = nullptr;
+        SharedPointer<HittableList> sampleObjects = nullptr;
+        SharedPointer<HittableList> world = nullptr;
         Vec3 background;
 	
 	scene::cornell_box(camera, sampleObjects, world, background, aspectR);
