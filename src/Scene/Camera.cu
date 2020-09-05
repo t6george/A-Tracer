@@ -1,10 +1,10 @@
 #include <Camera.cuh>
 #include <Util.cuh>
 
-DEV HOST Camera::OrthoNormalBasis::OrthoNormalBasis(Vec3 &eyes, const Vec3 &lookat, const Vec3 &vup)
+HOST Camera::OrthoNormalBasis::OrthoNormalBasis(Vec3 &eyes, const Vec3 &lookat, const Vec3 &vup)
     : z{(eyes - lookat).getUnitVector()}, x{vup.x(z).getUnitVector()}, y{z.x(x)} {}
 
-DEV HOST Camera::Camera(const double aspR, double fov, const double aperture, const double focusD,
+HOST Camera::Camera(const double aspR, double fov, const double aperture, const double focusD,
                const Vec3 &lookfrom, const Vec3 &lookat, double t1, double t2)
     : lineOfSight{Ray{lookfrom}}, halfHeight{tan(utils::deg_to_rad(fov / 2.))}, halfWidth{aspR * halfHeight},
       lensRadius{aperture / 2.}, focusDist{focusD}, eyes{lookfrom}, basis{Camera::OrthoNormalBasis{eyes, lookat}},

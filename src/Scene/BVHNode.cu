@@ -7,7 +7,7 @@
 #include <HittableList.cuh>
 #include <WeightedPdf.cuh>
 
-DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
+HOST BVHNode::BVHNode(HittableList &world, const double time0, const double time1)
     : BVHNode{world, time0, time1, 0, world.hittables.size()} { assert(world.hittables.size() > 0); }
 
 DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end)

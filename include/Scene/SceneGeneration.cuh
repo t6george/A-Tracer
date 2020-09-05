@@ -13,13 +13,12 @@ namespace generate
 {
     DEV void ray_color(Ray &ray, const Vec3 &background, SharedPointer<HittableList> world,
         WeightedPdf& pdf, const unsigned int maxReflections, Vec3 &finalColor);
-    
-#ifdef __CUDACC__
-    __global__
-#endif
-    void sample_pixel(float *image, const unsigned width, const unsigned height, const unsigned maxReflections, 
-		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world);
-        
-    void scene(const unsigned width, const unsigned height,
+
+    HOST void scene(const unsigned width, const unsigned height,
         const unsigned maxReflections, const double aspectR);
+
+#if GPU == 1 
+    GLBL void sample_pixel(float *image, const unsigned width, const unsigned height, const unsigned maxReflections,
+                    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world);
+#endif
 } // namespace generate

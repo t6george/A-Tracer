@@ -14,8 +14,8 @@ class AARotate : public Hittable
     DEV void inverseRotateCoords(Vec3 &v, const double sin) const;
 
 public:
-    DEV HOST AARotate(const SharedPointer<Hittable> shape, double angle);
-    DEV HOST ~AARotate() noexcept = default;
+    HOST AARotate(const SharedPointer<Hittable> shape, double angle);
+    HOST ~AARotate() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

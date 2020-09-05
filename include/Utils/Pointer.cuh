@@ -23,6 +23,7 @@ protected:
         if (ptr)
         {
             T* pointer = nullptr;
+
             cudaMallocManaged((void**)&pointer, sizeof(T));
             memcpy((void*)pointer, static_cast<void*>(ptr), sizeof(T));
             delete ptr;
@@ -50,12 +51,12 @@ protected:
         refcnt = nullptr;
     }
 
-    HOST void incRef() noexcept
+    DEV HOST void incRef() noexcept
     {
         refcnt && ++(*refcnt);
     }
 
-    HOST void decRef() noexcept
+    DEV HOST void decRef() noexcept
     {
         refcnt && --(*refcnt);
     }

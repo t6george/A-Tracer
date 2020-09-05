@@ -1,9 +1,10 @@
-#ifndef __CUDACC__
+#if GPU == 0
 
 #include <iostream>
 #include <SharedPointer.cuh>
 #include <vector>
 
+#include <Macro.cuh>
 #include <SceneGeneration.cuh>
 #include <Scenes.cuh>
 #include <Pdfs.cuh>

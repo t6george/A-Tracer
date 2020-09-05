@@ -12,30 +12,25 @@ CPPFLAGS := -g $(INCLUDES) --expt-relaxed-constexpr
 
 ifeq ($(target), gpu)
 	CPPFLAGS += -D GPU=1
-	LINKFLAG := -dc
 else
 	CPPFLAGS += -D GPU=0
-	LINKFLAG := -c
+endif
+
+ifeq ($(sample), montecarlo)
+        CPPFLAGS += -D MONTE_CARLO=1
+else
+        CPPFLAGS += -D MONTE_CARLO=0
 endif
 
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
-
-ifeq ($(sample), montecarlo)
-	CPPFLAGS += -D MONTE_CARLO=1
-else
-	CPPFLAGS += -D MONTE_CARLO=0
-endif
 
 export CXX=$(CPPC)
 
 tracer: $(OBJECTS)
 	$(CPPC) -o $@ $^ $(CPPFLAGS)
 
-%.o: %.cpp
-	$(CPPC) $< -o $@ $(CPPFLAGS) $(LINKFLAG)
-
 %.o: %.cu
-	$(CPPC) $(NOINCFLAG) $< -o $@ $(CPPFLAGS) $(LINKFLAG)
+	$(CPPC) $(NOINCFLAG) $< -o $@ $(CPPFLAGS) -dc
 
 .PHONY: clean
 clean:

@@ -12,8 +12,8 @@ class HittableList : public Hittable
     std::vector<SharedPointer<Hittable>> hittables;
 
 public:
-    DEV HOST HittableList() = default;
-    DEV HOST ~HittableList() noexcept = default;
+    HOST HittableList() = default;
+    HOST ~HittableList() noexcept = default;
 
     DEV Hittable::HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

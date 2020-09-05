@@ -18,7 +18,7 @@ DEV HOST AABB AABB::combineAABBs(const AABB &b1, const AABB &b2)
     return AABB{minPoint, maxPoint};
 }
 
-DEV HOST AABB::AABB(const Vec3 &minPoint, const Vec3 &maxPoint)
+HOST AABB::AABB(const Vec3 &minPoint, const Vec3 &maxPoint)
     : minPoint{minPoint}, maxPoint{maxPoint} {}
 
 DEV const Vec3 &AABB::getMinPoint() const { return minPoint; }

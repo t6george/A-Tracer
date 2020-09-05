@@ -1,4 +1,4 @@
-#ifdef __CUDACC__
+#if GPU == 1
 
 #include <iostream>
 #include <SharedPointer.cuh>
@@ -62,7 +62,7 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    __global__
+    GLBL_
     void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
 		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world)
     {

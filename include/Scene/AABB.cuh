@@ -10,9 +10,9 @@ class AABB
     Vec3 minPoint, maxPoint;
 
 public:
-    static DEV HOST AABB combineAABBs(const AABB &b1, const AABB &b2);
-    DEV HOST AABB(const Vec3 &minPoint = Vec3{}, const Vec3 &maxPoint = Vec3{});
-    DEV HOST ~AABB() noexcept = default;
+    DEV HOST static AABB combineAABBs(const AABB &b1, const AABB &b2);
+    HOST AABB(const Vec3 &minPoint = Vec3{}, const Vec3 &maxPoint = Vec3{});
+    HOST ~AABB() noexcept = default;
 
     DEV const Vec3 &getMinPoint() const;
     DEV const Vec3 &getMaxPoint() const;

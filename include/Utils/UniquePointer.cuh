@@ -2,6 +2,15 @@
 
 #include <Pointer.cuh>
 
+#include <Objects.cuh>
+#include <Transformations.cuh>
+#include <Light.cuh>
+#include <Materials.cuh>
+#include <Pdfs.cuh>
+#include <SceneGeneration.cuh>
+#include <Textures.cuh>
+#include <Vec3.cuh>
+
 template <typename T>
 class UniquePointer : public Pointer<T>
 {

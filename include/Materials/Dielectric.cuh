@@ -9,5 +9,5 @@ public:
     HOST Dielectric(const double reflectiveIndex);
     HOST ~Dielectric() noexcept = default;
     
-    bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
+    DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

@@ -7,8 +7,8 @@ class Translate : public Hittable
     Vec3 displacement;
 
 public:
-    DEV HOST Translate(const SharedPointer<Hittable> shape, const Vec3 &displacement);
-    DEV HOST ~Translate() noexcept = default;
+    HOST Translate(const SharedPointer<Hittable> shape, const Vec3 &displacement);
+    HOST ~Translate() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

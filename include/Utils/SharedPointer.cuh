@@ -2,6 +2,15 @@
 
 #include <Pointer.cuh>
 
+#include <Objects.cuh>
+#include <Transformations.cuh>
+#include <Light.cuh>
+#include <Materials.cuh>
+#include <Pdfs.cuh>
+#include <SceneGeneration.cuh>
+#include <Textures.cuh>
+#include <Vec3.cuh>
+
 template <typename T>
 class SharedPointer : public Pointer<T>
 {
@@ -21,7 +30,7 @@ public:
     HOST explicit SharedPointer(T* ptr = nullptr) : Pointer<T>{ptr} {}
     HOST ~SharedPointer() noexcept = default;
 
-    DEV HOST SharedPointer(const SharedPointer<T>& other) noexcept
+    HOST SharedPointer(const SharedPointer<T>& other) noexcept
     {
 	Pointer<T>::ptr = other.ptr;
 	Pointer<T>::refcnt = other.refcnt;
