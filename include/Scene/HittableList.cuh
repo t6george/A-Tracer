@@ -15,7 +15,7 @@ public:
     DEV HOST HittableList() = default;
     DEV HOST ~HittableList() noexcept = default;
 
-    DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV Hittable::HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const override;
 

@@ -3,7 +3,7 @@
 #include <HittableList.cuh>
 #include <AABB.cuh>
 
-DEV DEV Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
+DEV Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
 {
     Hittable::HitRecord tmpRecord;

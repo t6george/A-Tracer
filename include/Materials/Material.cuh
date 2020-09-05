@@ -14,8 +14,8 @@ protected:
 
 public:
     DEV HOST Material(const std::shared_ptr<Texture> albedo);
-    virtual DEV HOST ~Material() noexcept = default;
+    DEV HOST virtual ~Material() noexcept = default;
 
-    virtual DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const;
-    virtual DEV Vec3 emitCol(const Ray &ray, Hittable::HitRecord &record, const Vec3 &point) const;
+    DEV virtual bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const;
+    DEV virtual Vec3 emitCol(const Ray &ray, Hittable::HitRecord &record, const Vec3 &point) const;
 };

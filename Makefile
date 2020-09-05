@@ -3,6 +3,7 @@ HEADER_DIR ?= include
 CPPC := 
 CPPFLAGS := 
 NOINCFLAG := 
+LINKFLAG :=
 
 SOURCES := $(shell find src -name "*.cpp")
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
@@ -11,10 +12,12 @@ ifeq ($(target), gpu)
 	CPPC := nvcc
 	CPPFLAGS := -g $(INCLUDES) -D GPU=1
 	SOURCES += $(shell find src -name "*.cu")
+	LINKFLAG := -dc
 else
 	CPPC := clang++
 	CPPFLAGS := -g -std=c++17 -Wall -Werror $(INCLUDES) -D GPU=0
 	NOINCFLAG := -nocudainc -nocudalib
+	LINKFLAG := -c
 endif
 
 OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
@@ -31,10 +34,10 @@ tracer: $(OBJECTS)
 	$(CPPC) -o $@ $^ $(CPPFLAGS)
 
 %.o: %.cpp
-	$(CPPC) $< -o $@ $(CPPFLAGS) -c
+	$(CPPC) $< -o $@ $(CPPFLAGS) $(LINKFLAG)
 
 %.o: %.cu
-	$(CPPC) $(NOINCFLAG) $< -o $@ $(CPPFLAGS) -c
+	$(CPPC) $(NOINCFLAG) $< -o $@ $(CPPFLAGS) $(LINKFLAG)
 
 .PHONY: clean
 clean:

@@ -1,3 +1,5 @@
+#ifdef __CUDACC__
+
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -10,8 +12,7 @@
 
 namespace generate
 {
-    __device__
-    void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
+    DEV void ray_color(Ray &ray, const Vec3 &background, std::shared_ptr<HittableList> world, 
         WeightedPdf& pdf, const unsigned maxReflections, Vec3 &finalColor)
     {
         Vec3 color;
@@ -69,11 +70,11 @@ namespace generate
 
         Vec3 finalColor;
 	
-	unsigned x = blockIdx.x * blockDim.x + threadIdx.x;
-	unsigned y = blockIdx.y * blockDim.y + threadIdx.y;
-
-        generate::ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
-                                     background, world, pdf, maxReflections, finalColor);
+	//unsigned x = blockIdx.x * blockDim.x + threadIdx.x;
+	//unsigned y = blockIdx.y * blockDim.y + threadIdx.y;
+	
+        //ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
+        //          background, world, pdf, maxReflections, finalColor);
 
         samples[blockIdx.x * 3] = finalColor.x();
         samples[blockIdx.x * 3 + 1] = finalColor.y();
@@ -146,3 +147,5 @@ namespace generate
         cudaFree(d_img);
     }
 } // namespace generate
+
+#endif

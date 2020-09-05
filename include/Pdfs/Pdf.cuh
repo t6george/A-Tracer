@@ -6,9 +6,10 @@
 class Pdf
 {
 public:
-    virtual DEV HOST ~Pdf() noexcept = default;
+    DEV HOST Pdf() = default;
+    DEV HOST virtual ~Pdf() noexcept = default;
 
-    virtual DEV void construct(const Vec3& v) {}
-    virtual DEV double eval(const Vec3& v) const = 0;
-    virtual DEV Vec3 genRandomVector() const = 0;
+    DEV virtual void construct(const Vec3& v) {}
+    DEV virtual double eval(const Vec3& v) const = 0;
+    DEV virtual Vec3 genRandomVector() const = 0;
 };

@@ -1,3 +1,5 @@
+#ifndef __CUDACC__
+
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -60,7 +62,7 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    void scene(const unsigned width, const unsigned height, const unsigned samplesPerPixel, 
+    void scene(const unsigned width, const unsigned height, 
         const unsigned maxReflections, const double aspectR)
     {
         std::cout << "P3\n"
@@ -83,15 +85,17 @@ namespace generate
             for (unsigned j = 0; j < width; ++j)
             {
                 pixelColor.zero();
-                for (unsigned sample = 0; sample < samplesPerPixel; ++sample)
+                for (unsigned sample = 0; sample < SAMPLES_PER_PIXEL; ++sample)
                 {
                     generate::ray_color(camera->updateLineOfSight((j + utils::random_double()) / width, (i + utils::random_double()) / height),
                                  background, world, pdf, maxReflections, tmp);
 		    pixelColor += tmp;
                 }
-                pixelColor.formatColor(std::cout, samplesPerPixel);
+                pixelColor.formatColor(std::cout, SAMPLES_PER_PIXEL);
             }
         }
         std::cerr << std::endl;
     }
 } // namespace generate
+
+#endif

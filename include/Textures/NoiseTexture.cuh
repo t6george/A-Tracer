@@ -12,5 +12,5 @@ protected:
 public:
     DEV HOST NoiseTexture(const double scale, const Vec3 &albedo)
         : scale{scale}, albedo{Vec3::clamp(albedo, 0., 1.)} {}
-    virtual DEV HOST ~NoiseTexture() noexcept = default;
+    DEV HOST virtual ~NoiseTexture() noexcept = default;
 };

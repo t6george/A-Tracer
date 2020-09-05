@@ -12,5 +12,5 @@ protected:
     DEV HOST virtual ~Shape() noexcept = default;
 
 public:
-    virtual DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
+    DEV virtual bool getBoundingBox(double time0, double time1, AABB &box) const override;
 };

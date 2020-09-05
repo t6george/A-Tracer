@@ -16,7 +16,7 @@ class Hittable
 {
 protected:
     DEV HOST Hittable() = default;
-    virtual DEV HOST ~Hittable() noexcept = default;
+    DEV HOST virtual ~Hittable() noexcept = default;
 
 public:
     struct HitRecord
@@ -32,7 +32,7 @@ public:
         double scatterPdf;
         bool isSpecular;
 
-        inline void setLightPosition(const Ray &ray)
+        DEV inline void setLightPosition(const Ray &ray)
         {
             isInFront = ray.getDirection().o(normal) < 0.;
             if (!isInFront)
@@ -49,13 +49,13 @@ public:
         HIT_SCATTER
     };
 
-    virtual DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
+    DEV virtual HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 
                              bool flip = false) const = 0;
 
-    virtual DEV bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
+    DEV virtual bool getBoundingBox(double time0, double time1, AABB &box) const = 0;
 
-    virtual DEV Vec3 genRandomVector(const Vec3& origin) const { return Vec3{1., 0., 0.}; }
+    DEV virtual Vec3 genRandomVector(const Vec3& origin) const { return Vec3{1., 0., 0.}; }
     
-    virtual DEV double eval(const Vec3& origin, const Vec3& v, bool flip = false) const { return 0.; }
+    DEV virtual double eval(const Vec3& origin, const Vec3& v, bool flip = false) const { return 0.; }
 };
