@@ -15,15 +15,17 @@ template <typename T>
 class UniquePointer : public Pointer<T>
 {
 public:
-    HOST static UniquePointer<T> makeUnique(T&& obj)
+    template<template T, template ... Args>
+    HOST static UniquePointer<T> makeUnique(Args&& ... args)
     {
+        T obj{std::forward<Args>(args)...);
 #ifdef __CUDACC__
         T* pointer = nullptr;
         cudaMallocManaged((void**)&pointer, sizeof(T));
-        memcpy((void*)pointer, static_cast<void*>(&obj), sizeof(T));
 #else
-        T* pointer = new T{obj};
+        T* pointer = new T;
 #endif
+        memcpy((void*)pointer, static_cast<void*>(&obj), sizeof(T));
         return UniquePointer<T>(pointer);
     }
 

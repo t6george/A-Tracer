@@ -15,15 +15,17 @@ template <typename T>
 class SharedPointer : public Pointer<T>
 {
 public:
-    HOST static SharedPointer<T> makeShared(T&& obj) noexcept
+    template<template T, template ... Args>
+    HOST static SharedPointer<T> makeShared(Args&& ... args)
     {
+        T obj{std::forward<Args>(args)...);
 #ifdef __CUDACC__
         T* pointer = nullptr;
         cudaMallocManaged((void**)&pointer, sizeof(T));
-        memcpy((void*)pointer, static_cast<void*>(&obj), sizeof(T));
 #else
-        T* pointer = new T{obj};
+        T* pointer = new T;
 #endif
+        memcpy((void*)pointer, static_cast<void*>(&obj), sizeof(T));
         return SharedPointer<T>(pointer);
     }
 

@@ -112,8 +112,8 @@ namespace generate
             
         scene::cornell_box(camera, sampleObjects, world, background, aspectR);
             
-        WeightedPdf pdf{stdSharedPointer::makeShared<CosinePdf>(),
-                stdSharedPointer::makeShared<HittablePdf>(sampleObjects), .5};
+        WeightedPdf pdf{SharedPointer::makeShared<CosinePdf>(),
+                SharedPointer::makeShared<HittablePdf>(sampleObjects), .5};
 
         float *h_img = nullptr;
         float *d_img = nullptr;
