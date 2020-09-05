@@ -2,7 +2,7 @@
 #include <Vec3.cuh>
 #include <WeightedPdf.cuh>
 
-DEV HOST Material::Material(const SharedPointer<Texture> albedo) : albedo{albedo} {}
+HOST Material::Material(const SharedPointer<Texture> albedo) : albedo{albedo} {}
 
 DEV bool Material::scatterRay(const Ray &ray, Hittable::HitRecord &record) const { return false; }
 

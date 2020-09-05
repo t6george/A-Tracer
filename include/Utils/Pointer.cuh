@@ -1,15 +1,16 @@
 #pragma once
 
+#include <Macro.cuh>
 #include <Util.cuh>
 
 template <typename T>
 class Pointer
 {
+protected:
     int* refcnt;
     T* ptr;
 
-protected:
-    explicit Pointer(T* ptr = nullptr) noexcept : refcnt{ptr ? 
+    HOST explicit Pointer(T* ptr = nullptr) noexcept : refcnt{ptr ? 
 #ifdef __CUDACC__
     nullptr
 #else
@@ -17,25 +18,25 @@ protected:
 #endif
     : nullptr},
     ptr{ptr} 
-{
-#ifdef __CUDACC__
-    if (ptr)
     {
-        T* pointer = nullptr;
-        cudaMallocManaged(static_cast<void**>(&pointer), sizeof(T));
-        memcpy(static_cast<void*>(pointer), static_cast<void*>(ptr), sizeof(T));
-        delete ptr;
-        ptr = pointer;
+#ifdef __CUDACC__
+        if (ptr)
+        {
+            T* pointer = nullptr;
+            cudaMallocManaged((void**)&pointer, sizeof(T));
+            memcpy((void*)pointer, static_cast<void*>(ptr), sizeof(T));
+            delete ptr;
+            ptr = pointer;
 
-	cudaMallocManaged(static_cast<void**>(&refcnt), sizeof(int));
+	    cudaMallocManaged((void**)&refcnt, sizeof(int));
         
-	cudaDeviceSynchronize();
-        *refcnt = 1;
-    }
+            cudaDeviceSynchronize();
+            *refcnt = 1;
+        }
 #endif
-}
+    }
 
-    void destroy() noexcept
+    HOST void destroy() noexcept
     {
 #ifdef __CUDACC__
         cudaDeviceSynchronize();
@@ -49,24 +50,24 @@ protected:
         refcnt = nullptr;
     }
 
-    void incRef() noexcept
+    HOST void incRef() noexcept
     {
         refcnt && ++(*refcnt);
     }
 
-    void decRef() noexcept
+    HOST void decRef() noexcept
     {
         refcnt && --(*refcnt);
     }
 
-    void swap(Pointer<T>& other)
+    HOST void swap(Pointer<T>& other)
     {
         utils::swap(ptr, other.ptr);
         utils::swap(refcnt, other.refcnt);
     }
     
 public:
-    virtual ~Pointer() noexcept
+    HOST virtual ~Pointer() noexcept
     {
         decRef();
         if (*refcnt == 0)
@@ -75,42 +76,42 @@ public:
         }
     }
 
-    T* get() const noexcept
+    DEV HOST T* get() const noexcept
     {
         return ptr;
     }
 
-    T& operator*() const noexcept
+    DEV HOST T& operator*() const noexcept
     {
         return *ptr;
     }
 
-    T* operator->() const noexcept
+    DEV HOST T* operator->() const noexcept
     {
         return ptr;
     }
 
-    bool operator==(const Pointer<T>& other) const noexcept
+    DEV HOST bool operator==(const Pointer<T>& other) const noexcept
     {
         return ptr == other.ptr;
     }
 
-    bool operator!=(const Pointer<T>& other) const noexcept
+    DEV HOST bool operator!=(const Pointer<T>& other) const noexcept
     {
         return ptr != other.ptr;
     }
 
-    explicit operator bool() const noexcept
+    DEV HOST explicit operator bool() const noexcept
     {
         return ptr != nullptr;
     }
 
-    Pointer(Pointer<T>&& other) noexcept : Pointer{nullptr}
+    HOST Pointer(Pointer<T>&& other) noexcept : Pointer{nullptr}
     {
         swap(other);
     }
 
-    Pointer<T>& operator=(Pointer<T>&& other) noexcept
+    HOST Pointer<T>& operator=(Pointer<T>&& other) noexcept
     {
         if (this != &other)
         {

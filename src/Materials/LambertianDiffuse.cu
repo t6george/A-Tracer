@@ -6,7 +6,7 @@
 #include <WeightedPdf.cuh>
 #include <AARect.cuh>
 
-DEV HOST LambertianDiffuse::LambertianDiffuse(const SharedPointer<Texture> albedo)
+HOST LambertianDiffuse::LambertianDiffuse(const SharedPointer<Texture> albedo)
     : Material::Material{albedo} {}
 
 DEV bool LambertianDiffuse::scatterRay(const Ray &ray, Hittable::HitRecord &record) const

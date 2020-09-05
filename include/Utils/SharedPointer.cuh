@@ -6,31 +6,33 @@ template <typename T>
 class SharedPointer : public Pointer<T>
 {
 public:
-    static SharedPointer<T> makeShared(T&& obj) noexcept
+    HOST static SharedPointer<T> makeShared(T&& obj) noexcept
     {
 #ifdef __CUDACC__
         T* pointer = nullptr;
-        cudaMallocManaged(static_cast<void**>(&pointer), sizeof(T));
-        memcpy(static_cast<void*>(pointer), static_cast<void*>(&obj), sizeof(T));
+        cudaMallocManaged((void**)&pointer, sizeof(T));
+        memcpy((void*)pointer, static_cast<void*>(&obj), sizeof(T));
 #else
         T* pointer = new T{obj};
 #endif
         return SharedPointer<T>(pointer);
     }
 
-    explicit SharedPointer(T* ptr = nullptr) : Pointer{ptr} {}
-    ~SharedPointer() noexcept = default;
+    HOST explicit SharedPointer(T* ptr = nullptr) : Pointer<T>{ptr} {}
+    HOST ~SharedPointer() noexcept = default;
 
-    SharedPointer(const SharedPointer<T>& other) noexcept : ptr{other.ptr}, refcnt{other.refcnt}
+    DEV HOST SharedPointer(const SharedPointer<T>& other) noexcept
     {
-        incRef();
+	Pointer<T>::ptr = other.ptr;
+	Pointer<T>::refcnt = other.refcnt;
+        Pointer<T>::incRef();
     }
 
-    SharedPointer<T>& operator=(const SharedPointer<T>& other) noexcept
+    DEV HOST SharedPointer<T>& operator=(const SharedPointer<T>& other) noexcept
     {
-        ptr = other.ptr; 
-        refcnt = other.refcnt; 
-        incRef();
+        Pointer<T>::ptr = other.ptr; 
+        Pointer<T>::refcnt = other.refcnt; 
+        Pointer<T>::incRef();
         return *this;
     }
 };

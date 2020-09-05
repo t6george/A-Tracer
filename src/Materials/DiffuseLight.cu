@@ -2,7 +2,7 @@
 #include <Texture.cuh>
 #include <WeightedPdf.cuh>
 
-DEV HOST DiffuseLight::DiffuseLight(const SharedPointer<Texture> emitter) : Material::Material{emitter} {}
+HOST DiffuseLight::DiffuseLight(const SharedPointer<Texture> emitter) : Material::Material{emitter} {}
 
 DEV bool DiffuseLight::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {

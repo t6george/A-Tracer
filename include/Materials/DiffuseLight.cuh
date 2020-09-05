@@ -7,8 +7,8 @@ class DiffuseLight : public Material
         const Vec3 &point) const override;
 
 public:
-    DEV HOST DiffuseLight(const SharedPointer<Texture> emitter);
-    DEV HOST ~DiffuseLight() noexcept = default;
+    HOST DiffuseLight(const SharedPointer<Texture> emitter);
+    HOST ~DiffuseLight() noexcept = default;
 
     DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };
