@@ -11,9 +11,6 @@ public:
     explicit SharedPointer(T* ptr);
     ~SharedPointer() noexcept = default;
 
-    SharedPointer(SharedPointer<T>& other);
-    SharedPointer<T>& operator=(SharedPointer<T>& other);
-    
-    SharedPointer(SharedPointer<T>&& other);
-    SharedPointer<T>& operator=(SharedPointer<T>&& other);
+    SharedPointer(const SharedPointer<T>& other);
+    SharedPointer<T>& operator=(const SharedPointer<T>& other);
 };
