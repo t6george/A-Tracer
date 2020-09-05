@@ -34,8 +34,8 @@ DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double 
         size_t mid = start + span / 2;
         std::sort(world.hittables.begin() + start, world.hittables.begin() + end, cmp);
 
-        left = std::make_shared<BVHNode>(world, time0, time1, start, mid);
-        right = std::make_shared<BVHNode>(world, time0, time1, mid, end);
+        left = stdSharedPointer::makeShared<BVHNode>(world, time0, time1, start, mid);
+        right = stdSharedPointer::makeShared<BVHNode>(world, time0, time1, mid, end);
         break;
     }
 

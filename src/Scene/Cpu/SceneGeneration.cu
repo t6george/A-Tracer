@@ -76,8 +76,8 @@ namespace generate
 	
 	scene::cornell_box(camera, sampleObjects, world, background, aspectR);
 
-        WeightedPdf pdf{std::make_shared<CosinePdf>(), 
-            std::make_shared<HittablePdf>(sampleObjects), .5};
+        WeightedPdf pdf{stdSharedPointer::makeShared<CosinePdf>(), 
+            stdSharedPointer::makeShared<HittablePdf>(sampleObjects), .5};
 
         for (int i = static_cast<int>(height) - 1; i >= 0; --i)
         {
