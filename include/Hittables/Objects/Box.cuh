@@ -8,10 +8,10 @@ class Box : public Shape
     HittableList sides;
 
 public:
-    DEV HOST Box(const Vec3 &p0, const Vec3 &p1,
+    HOST Box(const Vec3 &p0, const Vec3 &p1,
         const std::shared_ptr<Material> material);
 
-    DEV HOST ~Box() noexcept = default;
+    HOST ~Box() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

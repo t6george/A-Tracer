@@ -15,8 +15,8 @@ class WeightedPdf;
 class Hittable
 {
 protected:
-    DEV HOST Hittable() = default;
-    DEV HOST virtual ~Hittable() noexcept = default;
+    HOST Hittable() = default;
+    HOST virtual ~Hittable() noexcept = default;
 
 public:
     struct HitRecord

@@ -8,7 +8,7 @@ protected:
     const std::shared_ptr<Material> material;
     AABB boundingBox;
 
-    DEV HOST Shape(const std::shared_ptr<Material> material, const AABB &boundingBox);
+    HOST Shape(const std::shared_ptr<Material> material, const AABB &boundingBox);
     DEV HOST virtual ~Shape() noexcept = default;
 
 public:
