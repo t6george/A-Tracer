@@ -1,14 +1,17 @@
 #pragma once
-#include <array>
+
 #include <Vec3.cuh>
 
 class Perlin
 {
     static constexpr int pointCount = 256;
 
-    std::array<double, Perlin::pointCount> randomDoubles;
-    std::array<Vec3, Perlin::pointCount> randomVectors;
-    std::array<int, Perlin::pointCount> permX, permY, permZ;
+    double randomDoubles[Perlin::pointCount];
+    Vec3 randomVectors[Perlin::pointCount];
+
+    int permX[Perlin::pointCount];
+    int permY[Perlin::pointCount];
+    int permZ[Perlin::pointCount];
 
     DEV HOST void init();
 
@@ -23,11 +26,10 @@ class Perlin
                                double w) const;
 
 public:
-    template <typename T, size_t N>
-    static DEV void permuteArray(std::array<T, N> &arr);
+    DEV HOST static void permuteArray(int* arr, int N);
 
-    DEV HOST Perlin();
-    DEV HOST ~Perlin() noexcept = default;
+    HOST Perlin();
+    HOST ~Perlin() noexcept = default;
 
     DEV double getScalarNoise(const Vec3 &point) const;
     DEV double getLaticeVectorNoise(const Vec3 &point) const;

@@ -27,7 +27,7 @@ DEV HOST BVHNode::BVHNode(HittableList &world, const double time0, const double 
         right = world.hittables[start + 1];
         if (!cmp(world.hittables[start], world.hittables[start + 1]))
         {
-            std::swap(left, right);
+            utils::swap(left, right);
         }
         break;
     default:

@@ -1,7 +1,7 @@
 #include <OrthonormalBasis.cuh>
 #include <cmath>
 
-DEV Vec3 OrthonormalBasis::operator[](int i) const { return axes.at(i); } 
+DEV Vec3 OrthonormalBasis::operator[](int i) const { return axes[i]; } 
 
 DEV HOST OrthonormalBasis::OrthonormalBasis(const Vec3& sample) : axes{Vec3{}, Vec3{}, sample.getUnitVector()}
 {
@@ -10,9 +10,9 @@ DEV HOST OrthonormalBasis::OrthonormalBasis(const Vec3& sample) : axes{Vec3{}, V
     axes[0] = getW().x(getV());
 }
 
-DEV Vec3 OrthonormalBasis::getU() const { return axes[0]; }
-DEV Vec3 OrthonormalBasis::getV() const { return axes[1]; }
-DEV Vec3 OrthonormalBasis::getW() const { return axes[2]; }
+DEV HOST Vec3 OrthonormalBasis::getU() const { return axes[0]; }
+DEV HOST Vec3 OrthonormalBasis::getV() const { return axes[1]; }
+DEV HOST Vec3 OrthonormalBasis::getW() const { return axes[2]; }
 
 DEV Vec3 OrthonormalBasis::getVec(Vec3 v) const { return getVec(v.x(), v.y(), v.z()); }
 

@@ -63,31 +63,30 @@ DEV double Perlin::perlinInterpolation(const Vec3 c[2][2][2],
     return a;
 }
 
-template <typename T, size_t N>
-DEV void Perlin::permuteArray(std::array<T, N> &arr)
+DEV HOST void Perlin::permuteArray(int* arr, int N)
 {
     int tgt;
     for (size_t i = N - 1; i > 0; --i)
     {
         tgt = utils::random_int(0, i + 1);
-        std::swap(arr[i], arr[tgt]);
+        utils::swap(arr[i], arr[tgt]);
     }
 }
 
-DEV HOST Perlin::Perlin() { init(); }
+HOST Perlin::Perlin() { init(); }
 
-DEV HOST void Perlin::init()
+HOST void Perlin::init()
 {
     for (int i = 0; i < Perlin::pointCount; ++i)
     {
         randomVectors[i] = Vec3{utils::random_double(-1., 1.), utils::random_double(-1., 1.), utils::random_double(-1., 1.)}.getUnitVector();
-        // randomDoubles[i] = random_double();
+        randomDoubles[i] = utils::random_double();
         permX[i] = permY[i] = permZ[i] = i;
     }
 
-    Perlin::permuteArray(permX);
-    Perlin::permuteArray(permY);
-    Perlin::permuteArray(permZ);
+    Perlin::permuteArray(permX, Perlin::pointCount);
+    Perlin::permuteArray(permY, Perlin::pointCount);
+    Perlin::permuteArray(permZ, Perlin::pointCount);
 }
 
 DEV double Perlin::getScalarNoise(const Vec3 &point) const

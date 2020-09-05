@@ -5345,6 +5345,8 @@ static stbi_uc *stbi__bmp_load(stbi__context *s, int *x, int *y, int *comp, int 
 {
     stbi_uc *out;
     unsigned int mr = 0, mg = 0, mb = 0, ma = 0, fake_a = 0;
+    ++fake_a;
+    --fake_a;
     stbi_uc pal[256][4];
     int psize = 0, i, j, compress = 0, width;
     int bpp, flip_vertically, pad, target, offset, hsz;
@@ -6362,7 +6364,7 @@ typedef struct
     int line_size;
 } stbi__gif;
 
-static DEV int stbi__gif_test_raw(stbi__context *s)
+static int stbi__gif_test_raw(stbi__context *s)
 {
     int sz;
     if (stbi__get8(s) != 'G' || stbi__get8(s) != 'I' || stbi__get8(s) != 'F' || stbi__get8(s) != '8')

@@ -2,11 +2,11 @@
 
 #include <CheckerTexture.cuh>
 
-DEV HOST CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
+HOST CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
                                const std::shared_ptr<Texture> tex2, const Vec3 &scale)
     : tex1{tex1}, tex2{tex2}, scale{scale} {}
 
-DEV HOST CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
+HOST CheckerTexture::CheckerTexture(const std::shared_ptr<Texture> tex1,
                                const std::shared_ptr<Texture> tex2,
                                const double x, const double y, const double z)
     : CheckerTexture::CheckerTexture{tex1, tex2, Vec3{x, y, z}} {}

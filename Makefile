@@ -5,13 +5,12 @@ CPPFLAGS :=
 NOINCFLAG := 
 LINKFLAG :=
 
-SOURCES := $(shell find src -name "*.cpp")
+SOURCES := $(shell find src -name "*.cu")
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
 
 ifeq ($(target), gpu)
 	CPPC := nvcc
-	CPPFLAGS := -g $(INCLUDES) -D GPU=1
-	SOURCES += $(shell find src -name "*.cu")
+	CPPFLAGS := -g $(INCLUDES) -D GPU=1 --expt-relaxed-constexpr
 	LINKFLAG := -dc
 else
 	CPPC := clang++

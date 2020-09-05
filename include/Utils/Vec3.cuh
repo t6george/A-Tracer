@@ -9,54 +9,54 @@ class Vec3
     std::array<double, 3> c;
 
 public:
-    static DEV Vec3 randomVector(const Vec3 &min = Vec3{0., 0., 0.}, const Vec3 &max = Vec3{1., 1., 1.});
-    static DEV Vec3 clamp(const Vec3 &v, const double min, const double max);
-    static DEV Vec3 randomUnitSphereVec();
-    static DEV Vec3 randomUnitHemisphereVec(const Vec3& normal);
-    static DEV Vec3 randomUnitCircleVec();
-    static DEV Vec3 randomCosineVec();
-    static DEV Vec3 randomVecToSphere(const double R, const double distSq);
+    DEV HOST static Vec3 randomVector(const Vec3 &min = Vec3{0., 0., 0.}, const Vec3 &max = Vec3{1., 1., 1.});
+    DEV HOST static Vec3 clamp(const Vec3 &v, const double min, const double max);
+    DEV HOST static Vec3 randomUnitSphereVec();
+    DEV HOST static Vec3 randomUnitHemisphereVec(const Vec3& normal);
+    DEV HOST static Vec3 randomUnitCircleVec();
+    DEV HOST static Vec3 randomCosineVec();
+    DEV HOST static Vec3 randomVecToSphere(const double R, const double distSq);
 
     DEV HOST Vec3();
     DEV HOST Vec3(double c1, double c2, double c3);
     DEV HOST ~Vec3() noexcept = default;
 
-    DEV double x() const;
-    DEV double y() const;
-    DEV double z() const;
+    DEV HOST double x() const;
+    DEV HOST double y() const;
+    DEV HOST double z() const;
 
-    DEV double operator[](int i) const;
-    DEV double &operator[](int i);
+    DEV HOST double operator[](int i) const;
+    DEV HOST double &operator[](int i);
 
-    DEV Vec3 &operator+=(const Vec3 &otherV);
-    DEV Vec3 &operator*=(double s);
-    DEV Vec3 &operator/=(double s);
-    DEV Vec3 operator-() const;
+    DEV HOST Vec3 &operator+=(const Vec3 &otherV);
+    DEV HOST Vec3 &operator*=(double s);
+    DEV HOST Vec3 &operator/=(double s);
+    DEV HOST Vec3 operator-() const;
 
-    DEV double len() const;
-    DEV double sqLen() const;
+    DEV HOST double len() const;
+    DEV HOST double sqLen() const;
 
     HOST void formatRaw(std::ostream &out) const;
     HOST void formatColor(std::ostream &out, int samplesPerPixel = 1);
 
-    DEV Vec3 operator+(const Vec3 &otherV) const;
-    DEV Vec3 operator-(const Vec3 &otherV) const;
-    DEV Vec3 operator*(const Vec3 &otherV) const;
-    DEV Vec3 operator*(double s) const;
-    DEV Vec3 operator/(double s) const;
+    DEV HOST Vec3 operator+(const Vec3 &otherV) const;
+    DEV HOST Vec3 operator-(const Vec3 &otherV) const;
+    DEV HOST Vec3 operator*(const Vec3 &otherV) const;
+    DEV HOST Vec3 operator*(double s) const;
+    DEV HOST Vec3 operator/(double s) const;
 
-    DEV bool operator==(const Vec3 &otherV) const;
-    DEV bool operator!=(const Vec3 &otherV) const;
+    DEV HOST bool operator==(const Vec3 &otherV) const;
+    DEV HOST bool operator!=(const Vec3 &otherV) const;
 
-    DEV Vec3 getUnitVector() const;
+    DEV HOST Vec3 getUnitVector() const;
 
-    DEV double o(const Vec3 &otherV) const;
-    DEV Vec3 x(const Vec3 &otherV) const;
-    DEV Vec3 &operator*=(const Vec3 &otherV);
-    DEV void zero();
+    DEV HOST double o(const Vec3 &otherV) const;
+    DEV HOST Vec3 x(const Vec3 &otherV) const;
+    DEV HOST Vec3 &operator*=(const Vec3 &otherV);
+    DEV HOST void zero();
 
-    DEV Vec3 reflect(const Vec3 &normal) const;
-    DEV Vec3 refract(const Vec3 &normal, double n_over_nprime) const;
+    DEV HOST Vec3 reflect(const Vec3 &normal) const;
+    DEV HOST Vec3 refract(const Vec3 &normal, double n_over_nprime) const;
 };
 
 inline DEV Vec3 operator*(double s, const Vec3 &v) { return v * s; }

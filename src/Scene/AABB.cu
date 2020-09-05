@@ -41,7 +41,7 @@ DEV bool AABB::passesThrough(const Ray &ray, double tmin, double tmax) const
 
         if (invD < 0.)
         {
-            std::swap(t0, t1);
+            utils::swap(t0, t1);
         }
 
         tmin = t0 > tmin ? t0 : tmin;
