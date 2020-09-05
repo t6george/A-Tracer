@@ -1,12 +1,12 @@
 #pragma once
 
-#include <array>
+#include <iostream>
 
 #include <Macro.cuh>
 
 class Vec3
 {
-    std::array<double, 3> c;
+    double c[3];
 
 public:
     DEV HOST static Vec3 randomVector(const Vec3 &min = Vec3{0., 0., 0.}, const Vec3 &max = Vec3{1., 1., 1.});

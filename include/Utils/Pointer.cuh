@@ -1,16 +1,17 @@
 #pragma once
 
-#include <Util.h>
+#include <Util.cuh>
 
 template <typename T>
 class Pointer
 {
     int* refcnt;
     T* ptr;
+
 protected:
-    Pointer(T* ptr) noexcept : refcnt{ptr ? 
+    explicit Pointer(T* ptr = nullptr) noexcept : refcnt{ptr ? 
 #ifdef __CUDACC__
-    cudaMallocManaged(static_cast<void**>(&refcnt), sizeof(int))
+    nullptr
 #else
     new int{1}
 #endif
@@ -25,7 +26,10 @@ protected:
         memcpy(static_cast<void*>(pointer), static_cast<void*>(ptr), sizeof(T));
         delete ptr;
         ptr = pointer;
-        cudaDeviceSynchronize();
+
+	cudaMallocManaged(static_cast<void**>(&refcnt), sizeof(int));
+        
+	cudaDeviceSynchronize();
         *refcnt = 1;
     }
 #endif
@@ -86,17 +90,17 @@ public:
         return ptr;
     }
 
-    bool operator==(const SharedPointer<T>& other) const noexcept
+    bool operator==(const Pointer<T>& other) const noexcept
     {
         return ptr == other.ptr;
     }
 
-    bool operator!=(const SharedPointer<T>& other) const noexcept
+    bool operator!=(const Pointer<T>& other) const noexcept
     {
         return ptr != other.ptr;
     }
 
-    explicit bool operator bool() const noexcept
+    explicit operator bool() const noexcept
     {
         return ptr != nullptr;
     }

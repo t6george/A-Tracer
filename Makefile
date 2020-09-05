@@ -7,15 +7,14 @@ LINKFLAG :=
 
 SOURCES := $(shell find src -name "*.cu")
 INCLUDES := $(shell find include -type d | sed s/^/-I/)
+CPPC := nvcc
+CPPFLAGS := -g $(INCLUDES) --expt-relaxed-constexpr
 
 ifeq ($(target), gpu)
-	CPPC := nvcc
-	CPPFLAGS := -g $(INCLUDES) -D GPU=1 --expt-relaxed-constexpr
+	CPPFLAGS += -D GPU=1
 	LINKFLAG := -dc
 else
-	CPPC := clang++
-	CPPFLAGS := -g -std=c++17 -Wall -Werror $(INCLUDES) -D GPU=0
-	NOINCFLAG := -nocudainc -nocudalib
+	CPPFLAGS += -D GPU=0
 	LINKFLAG := -c
 endif
 

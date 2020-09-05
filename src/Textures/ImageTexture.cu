@@ -6,7 +6,7 @@
 
 HOST ImageTexture::ImageTexture(const std::string &filename)
     : width{0}, height{0}, componentsPerPicture{bytesPerPixel},
-      rgbData{stbi_load(filename.c_str(), &width, &height, &componentsPerPicture, componentsPerPicture)},
+      //rgbData{stbi_load(filename.c_str(), &width, &height, &componentsPerPicture, componentsPerPicture)},
       bytesPerScanline{width * bytesPerPixel}
 {
     if (!rgbData)

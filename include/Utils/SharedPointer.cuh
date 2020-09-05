@@ -18,7 +18,7 @@ public:
         return SharedPointer<T>(pointer);
     }
 
-    explicit SharedPointer(T* ptr) : Pointer{ptr} {}
+    explicit SharedPointer(T* ptr = nullptr) : Pointer{ptr} {}
     ~SharedPointer() noexcept = default;
 
     SharedPointer(const SharedPointer<T>& other) noexcept : ptr{other.ptr}, refcnt{other.refcnt}

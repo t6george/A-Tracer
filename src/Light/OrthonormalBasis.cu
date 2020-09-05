@@ -1,5 +1,5 @@
-#include <OrthonormalBasis.cuh>
 #include <cmath>
+#include <OrthonormalBasis.cuh>
 
 DEV Vec3 OrthonormalBasis::operator[](int i) const { return axes[i]; } 
 
