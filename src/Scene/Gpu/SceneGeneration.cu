@@ -61,8 +61,7 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    GLBL
-    void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
+    GLBL void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
 		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world)
     {
         /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
@@ -98,7 +97,7 @@ namespace generate
         }
     }
 
-    void scene(const unsigned width, const unsigned height, const unsigned maxReflections, const double aspectR)
+    HOST void scene(const unsigned width, const unsigned height, const unsigned maxReflections, const double aspectR)
     {
         std::cout << "P3\n"
             << width << ' ' << height << "\n255\n";
@@ -111,8 +110,8 @@ namespace generate
             
         scene::cornell_box(camera, sampleObjects, world, background, aspectR);
             
-        WeightedPdf pdf{mem::MakeShared<CosinePdf>(),
-                mem::MakeShared<HittablePdf>(sampleObjects), .5};
+        WeightedPdf pdf{SharedPointer<Pdf>(new CosinePdf),
+                SharedPointer<Pdf>(new HittablePdf(mem::dynamic_pointer_cast<Hittable>(sampleObjects))), .5};
 
         float *h_img = nullptr;
         float *d_img = nullptr;

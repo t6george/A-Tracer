@@ -16,9 +16,11 @@ class Hittable
 {
 protected:
     HOST Hittable() = default;
-    HOST virtual ~Hittable() noexcept = default;
 
 public:
+
+    HOST virtual ~Hittable() noexcept = default;
+
     struct HitRecord
     {
         double t, u, v;

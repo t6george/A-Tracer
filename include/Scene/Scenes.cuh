@@ -3,7 +3,7 @@
 #include <Macro.cuh>
 #include <SceneRepresentation.cuh>
 
-#define SCENE(name) DEV void name(SharedPointer<Camera> &camera, SharedPointer<HittableList> &sampleObjects, SharedPointer<HittableList> &objects, Vec3 &bg, const double aspectR)
+#define SCENE(name) HOST void name(SharedPointer<Camera> &camera, SharedPointer<HittableList> &sampleObjects, SharedPointer<HittableList> &objects, Vec3 &bg, const double aspectR)
 
 namespace scene
 {
