@@ -9,8 +9,8 @@ class WeightedPdf : public Pdf
     const double pdf1Weight;
 
 public:
-    DEV HOST WeightedPdf(SharedPointer<Pdf> pdf1, SharedPointer<Pdf> pdf2, double pdf1Weight);
-    DEV HOST ~WeightedPdf() noexcept = default;
+    HOST WeightedPdf(SharedPointer<Pdf> pdf1, SharedPointer<Pdf> pdf2, double pdf1Weight);
+    HOST ~WeightedPdf() noexcept = default;
 
     DEV SharedPointer<Pdf> getPdf1() const;
     DEV SharedPointer<Pdf> getPdf2() const;

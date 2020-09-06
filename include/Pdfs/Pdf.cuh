@@ -6,8 +6,8 @@
 class Pdf
 {
 public:
-    DEV HOST Pdf() = default;
-    DEV HOST virtual ~Pdf() noexcept = default;
+    HOST Pdf() = default;
+    HOST virtual ~Pdf() noexcept = default;
 
     DEV virtual void construct(const Vec3& v) {}
     DEV virtual double eval(const Vec3& v) const = 0;

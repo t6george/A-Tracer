@@ -44,19 +44,19 @@ namespace mem
     }
  
     template<typename T, typename U>
-    DEV HOST inline SharedPointer<T> static_pointer_cast(const SharedPointer<U>& sp) noexcept
+    HOST inline SharedPointer<T> static_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         return SharedPointer<T>(static_cast<typename SharedPointer<T>::PtrType*>(sp.get()), sp.getRef());
     }
 
     template<typename T, typename U>
-    DEV HOST inline SharedPointer<T> const_pointer_cast(const SharedPointer<U>& sp) noexcept
+    HOST inline SharedPointer<T> const_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         return SharedPointer<T>(const_cast<typename SharedPointer<T>::PtrType*>(sp.get()), sp.getRef());
     }
 
     template<typename T, typename U>
-    DEV HOST inline SharedPointer<T> dynamic_pointer_cast(const SharedPointer<U>& sp) noexcept
+    HOST inline SharedPointer<T> dynamic_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         if (auto* _p = dynamic_cast<typename SharedPointer<T>::PtrType*>(sp.get()))
             return SharedPointer<T>(_p, sp.getRef());

@@ -1,7 +1,78 @@
 #include <cassert>
+#include <cstring>
 
 #include <HittableList.cuh>
 #include <AABB.cuh>
+
+#if GPU == 1
+HittableList::HittableNode::HittableNode(const SharedPointer<Hittable>& data) : next{nullptr}, data{data} {}
+
+HittableList::HittableNode::~HittableNode()
+{
+    HittableNode* tmp = next;
+    cudaFree(this);
+    cudaFree(next);
+}
+
+HittableList::HittableLinkedList::HittableLinkedList() : head{nullptr}, tail{nullptr}, size{0} {}
+
+HittableList::HittableLinkedList::~HittableLinkedList()
+{
+    clear();
+}
+
+void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable>& data)
+{
+    HittableNode* newNode = nullptr;
+    HittableNode node(data);
+
+    cudaMallocManaged((void**) &newNode, sizeof(HittableNode));
+    memmove((void*) newNode, (void*) &node, sizeof(HittableNode));
+    
+    if (head)
+    {
+        tail->next = newNode;
+	tail = tail->next;
+    }
+    else
+    {
+        head = tail = newNode;
+    }
+
+    ++size;
+}
+
+void HittableList::HittableLinkedList::clear()
+{
+    cudaFree(head);
+    head = tail = nullptr;
+    size = 0;
+}
+
+bool empty() const
+{
+    return size == 0;
+}
+
+SharedPointer<Hittable> HittableList::HittableLinkedList::at(unsigned i) const
+{
+    SharedPointer<Hittable> hittable;
+    HittableNode itr = head;
+
+    for (unsigned j = 0; j < i && itr; ++j)
+    {
+        itr = itr->next;
+    }
+    
+    if (itr)
+    {
+        hittable = itr->data;
+    }
+
+    return hittable;
+}
+
+#endif
 
 DEV Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const
@@ -11,7 +82,7 @@ DEV Hittable::HitType HittableList::getCollisionData(const Ray &ray, HitRecord &
 
     for (const auto &obj : hittables)
     {
-        if (static_cast<bool>(tmpCollisionType = obj->getCollisionData(ray, tmpRecord, tMin, tMax, flip)))
+        if (static_cast<bool>(tmpCollisionType = obj.get()->getCollisionData(ray, tmpRecord, tMin, tMax, flip)))
         {
             collisionType = tmpCollisionType;
             record = tmpRecord;

@@ -2,8 +2,6 @@
 
 #if GPU == 0
 #include <vector>
-#else
-#include <thrust/device_vector.h>
 #endif
 
 #include <Memory.cuh>
@@ -17,7 +15,33 @@ class HittableList : public Hittable
 #if GPU == 0
     std::vector<SharedPointer<Hittable>> hittables;
 #else
-    thrust::device_vector<SharedPointer<Hittable>> hittables;
+    typedef struct _HittableNode
+    {
+	_HittableNode* next;
+        SharedPointer<Hittable> data;
+
+	HOST HittableNode(const SharedPointer<Hittable>& data = SharedPointer<Hittable>());
+	HOST ~HittableNode() noexcept;
+    } HittableNode;
+
+    class HittableLinkedList
+    {
+        HittableNode* head;
+        HittableNode* tail;
+	unsigned len;
+    
+        public:
+	HittableLinkedList();
+	~HittableLinkedList() noexcept;
+
+	void emplace_back(const SharedPointer<Hittable>& data);
+	void clear();
+	bool empty() const;
+	SharedPointer<Hittable> at(unsigned i) const;
+	unsigned size() const;
+    };
+
+    HittableList hittables;
 #endif
 
 public:
