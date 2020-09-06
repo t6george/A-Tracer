@@ -16,7 +16,7 @@ public:
     HOST BVHNode(HittableList &world, const double time0, const double time1);
     HOST BVHNode(HittableList &world, const double time0, const double time1, const size_t start, const size_t end);
 
-    DEV HOST ~BVHNode() noexcept = default;
+    HOST ~BVHNode() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity,

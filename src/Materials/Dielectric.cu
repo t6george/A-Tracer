@@ -3,7 +3,7 @@
 #include <WeightedPdf.cuh>
 
 HOST Dielectric::Dielectric(const double reflectiveIndex)
-    : Material::Material{mem::MakeShared<SolidColor>(Vec3{1., 1., 1.})},
+    : Material::Material{SharedPointer<Texture>(new SolidColor(Vec3{1., 1., 1.}))},
       reflectiveIndex{reflectiveIndex} {}
 
 DEV bool Dielectric::scatterRay(const Ray &ray, Hittable::HitRecord &record) const

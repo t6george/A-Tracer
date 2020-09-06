@@ -17,9 +17,9 @@ public:
     DEV HOST static Vec3 randomCosineVec();
     DEV HOST static Vec3 randomVecToSphere(const double R, const double distSq);
 
-    DEV HOST Vec3();
-    DEV HOST Vec3(double c1, double c2, double c3);
-    DEV HOST ~Vec3() noexcept = default;
+    HOST DEV Vec3();
+    HOST DEV Vec3(double c1, double c2, double c3);
+    HOST DEV ~Vec3() noexcept = default;
 
     DEV HOST double x() const;
     DEV HOST double y() const;
@@ -55,8 +55,8 @@ public:
     DEV HOST Vec3 &operator*=(const Vec3 &otherV);
     DEV HOST void zero();
 
-    DEV HOST Vec3 reflect(const Vec3 &normal) const;
-    DEV HOST Vec3 refract(const Vec3 &normal, double n_over_nprime) const;
+    DEV Vec3 reflect(const Vec3 &normal) const;
+    DEV Vec3 refract(const Vec3 &normal, double n_over_nprime) const;
 };
 
 inline DEV Vec3 operator*(double s, const Vec3 &v) { return v * s; }

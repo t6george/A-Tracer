@@ -3,9 +3,9 @@
 #include <iostream>
 #include <Util.cuh>
 
-DEV HOST Vec3::Vec3() : c{0., 0., 0.} {}
+HOST DEV Vec3::Vec3() : c{0., 0., 0.} {}
 
-DEV HOST Vec3::Vec3(double c1, double c2, double c3) : c{c1, c2, c3} {}
+HOST DEV Vec3::Vec3(double c1, double c2, double c3) : c{c1, c2, c3} {}
 
 DEV HOST double Vec3::x() const { return c[0]; }
 
@@ -13,9 +13,9 @@ DEV HOST double Vec3::y() const { return c[1]; }
 
 DEV HOST double Vec3::z() const { return c[2]; }
 
-DEV HOST double Vec3::operator[](int i) const { return c.at(i); }
+DEV HOST double Vec3::operator[](int i) const { return c[i]; }
 
-DEV HOST double &Vec3::operator[](int i) { return c.at(i); }
+DEV HOST double& Vec3::operator[](int i) { return c[i]; }
 
 DEV HOST Vec3 &Vec3::operator+=(const Vec3 &otherV)
 {
@@ -129,9 +129,9 @@ DEV HOST Vec3 &Vec3::operator*=(const Vec3 &otherV)
 
 DEV HOST void Vec3::zero() { c[0] = c[1] = c[2] = 0.; }
 
-DEV HOST Vec3 Vec3::reflect(const Vec3 &normal) const { return *this - 2 * o(normal) * normal; }
+DEV Vec3 Vec3::reflect(const Vec3 &normal) const { return *this - 2 * o(normal) * normal; }
 
-DEV HOST Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
+DEV Vec3 Vec3::refract(const Vec3 &normal, double n_over_nprime) const
 {
     Vec3 parallel = n_over_nprime * (*this + normal * normal.o(-*this));
     return parallel - normal * sqrt(1. - parallel.sqLen());

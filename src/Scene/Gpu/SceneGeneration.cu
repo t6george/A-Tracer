@@ -61,7 +61,7 @@ namespace generate
         finalColor =  active ? Vec3{} : color;
     }
 
-    GLBL_
+    GLBL
     void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
 		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world)
     {
@@ -104,9 +104,9 @@ namespace generate
             << width << ' ' << height << "\n255\n";
 
         Vec3 pixelColor;
-        SharedPointer<Camera> camera = nullptr;
-        SharedPointer<HittableList> sampleObjects = nullptr;
-        SharedPointer<HittableList> world = nullptr;
+        SharedPointer<Camera> camera;
+        SharedPointer<HittableList> sampleObjects;
+        SharedPointer<HittableList> world;
         Vec3 background;
             
         scene::cornell_box(camera, sampleObjects, world, background, aspectR);
