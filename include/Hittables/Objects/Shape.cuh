@@ -1,4 +1,5 @@
 #pragma once
+
 #include <Hittable.cuh>
 #include <AABB.cuh>
 

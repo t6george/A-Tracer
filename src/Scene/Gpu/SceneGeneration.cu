@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <Memory.cuh>
-#include <vector>
 
 #include <SceneGeneration.cuh>
 #include <Scenes.cuh>

@@ -1,21 +1,21 @@
 #pragma once
 
+#include <Macro.cuh>
+#include <UniquePointer.cuh>
+#include <SharedPointer.cuh>
+
+/*#include <Objects.cuh>
+#include <Transformations.cuh>
+#include <Light.cuh>
+#include <Materials.cuh>
+#include <Pdfs.cuh>
+#include <SceneGeneration.cuh>
+#include <Textures.cuh>
+#include <Vec3.cuh>*/
+
 namespace mem
 {
-    #include <Macro.cuh>
-    #include <Memory.cuh>
-    #include <UniquePointer.cuh>
-
-    #include <Objects.cuh>
-    #include <Transformations.cuh>
-    #include <Light.cuh>
-    #include <Materials.cuh>
-    #include <Pdfs.cuh>
-    #include <SceneGeneration.cuh>
-    #include <Textures.cuh>
-    #include <Vec3.cuh>
-
-    template<template T, template ... Args>
+    template<typename T, typename ... Args>
     HOST SharedPointer<T> MakeShared(Args&& ... args)
     {
         T obj(Args&& ... args);
@@ -29,7 +29,7 @@ namespace mem
         return SharedPointer<T>(pointer);
     }
 
-    template<template T, template ... Args>
+    template<typename T, typename ... Args>
     HOST UniquePointer<T> MakeUnique(Args&& ... args)
     {
         T obj(Args&& ... args);

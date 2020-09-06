@@ -38,9 +38,15 @@ DEV bool HittableList::getBoundingBox(double time0, double time1, AABB &box) con
     return !hittables.empty();
 }
 
-DEV void HittableList::add(SharedPointer<Hittable> hittable) { hittables.emplace_back(hittable); }
+HOST void HittableList::add(SharedPointer<Hittable> hittable)
+{
+    hittables.emplace_back(hittable);
+}
 
-DEV void HittableList::clear() { hittables.clear(); }
+HOST void HittableList::clear()
+{
+    hittables.clear(); 
+}
 
 DEV Vec3 HittableList::genRandomVector(const Vec3& origin) const
 {

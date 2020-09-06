@@ -1,6 +1,7 @@
 #include <Material.cuh>
 #include <Vec3.cuh>
 #include <WeightedPdf.cuh>
+#include <Texture.cuh>
 
 HOST Material::Material(const SharedPointer<Texture> albedo) : albedo{albedo} {}
 

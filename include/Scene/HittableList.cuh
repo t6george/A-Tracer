@@ -1,7 +1,12 @@
 #pragma once
-#include <vector>
-#include <Memory.cuh>
 
+#if GPU == 0
+#include <vector>
+#else
+#include <thrust/device_vector.h>
+#endif
+
+#include <Memory.cuh>
 #include <Hittable.cuh>
 #include <AABB.cuh>
 
@@ -9,7 +14,11 @@ class Ray;
 
 class HittableList : public Hittable
 {
+#if GPU == 0
     std::vector<SharedPointer<Hittable>> hittables;
+#else
+    thrust::device_vector<SharedPointer<Hittable>> hittables;
+#endif
 
 public:
     HOST HittableList() = default;
@@ -21,8 +30,8 @@ public:
 
     DEV bool getBoundingBox(double time0, double time1, AABB &box) const override;
 
-    DEV void add(SharedPointer<Hittable> hittable);
-    DEV void clear();
+    HOST void add(SharedPointer<Hittable> hittable);
+    HOST void clear();
 
     DEV Vec3 genRandomVector(const Vec3& origin) const override;
     DEV double eval(const Vec3& origin, const Vec3& v, bool flip = false) const override;

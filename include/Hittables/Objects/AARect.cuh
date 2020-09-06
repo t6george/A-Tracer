@@ -1,4 +1,5 @@
 #pragma once
+
 #include <Shape.cuh>
 
 template <utils::Axis A>
