@@ -1,7 +1,7 @@
 #if GPU == 1
 
 #include <iostream>
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 #include <vector>
 
 #include <SceneGeneration.cuh>
@@ -112,8 +112,8 @@ namespace generate
             
         scene::cornell_box(camera, sampleObjects, world, background, aspectR);
             
-        WeightedPdf pdf{SharedPointer::makeShared<CosinePdf>(),
-                SharedPointer::makeShared<HittablePdf>(sampleObjects), .5};
+        WeightedPdf pdf{mem::MakeShared<CosinePdf>(),
+                mem::MakeShared<HittablePdf>(sampleObjects), .5};
 
         float *h_img = nullptr;
         float *d_img = nullptr;

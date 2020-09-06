@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 
 #include <HittableList.cuh>
 #include <Camera.cuh>

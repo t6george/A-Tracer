@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 #include <Texture.cuh>
 #include <Vec3.cuh>
 

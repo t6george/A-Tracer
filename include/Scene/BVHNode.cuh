@@ -1,5 +1,5 @@
 #pragma once
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 
 #include <Hittable.cuh>
 #include <AABB.cuh>

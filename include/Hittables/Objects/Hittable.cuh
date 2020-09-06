@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 #include <Macro.cuh>
 #include <Vec3.cuh>
 #include <Ray.cuh>

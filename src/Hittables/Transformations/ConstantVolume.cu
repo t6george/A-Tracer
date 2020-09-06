@@ -5,7 +5,7 @@
 HOST ConstantVolume::ConstantVolume(const SharedPointer<Hittable> boundary,
                                const SharedPointer<Texture> phaseFunction,
                                const double density)
-    : boundary{boundary}, phaseFunction{SharedPointer::makeShared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
+    : boundary{boundary}, phaseFunction{mem::MakeShared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}
 
 DEV Hittable::HitType ConstantVolume::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const

@@ -1,6 +1,6 @@
 #pragma once
 #include <Pdf.cuh>
-#include <SharedPointer.cuh>
+#include <Memory.cuh>
 
 class WeightedPdf : public Pdf
 {

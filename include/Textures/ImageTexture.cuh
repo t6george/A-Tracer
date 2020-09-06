@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include <UniquePointer.cuh>
+#include <Memory.cuh>
 #include <Texture.cuh>
 
 class ImageTexture : public Texture
