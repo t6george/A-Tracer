@@ -28,8 +28,8 @@ class Perlin
 public:
     DEV HOST static void permuteArray(int* arr, int N);
 
-    HOST Perlin();
-    HOST ~Perlin() noexcept = default;
+    DEV HOST Perlin();
+    DEV HOST ~Perlin() noexcept = default;
 
     DEV double getScalarNoise(const Vec3 &point) const;
     DEV double getLaticeVectorNoise(const Vec3 &point) const;

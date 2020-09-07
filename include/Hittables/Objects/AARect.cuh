@@ -14,10 +14,10 @@ class AARect : public Shape
                             const double j1, const double k) const;
 
 public:
-    HOST AARect(const double i0, const double i1, const double j0,
+    DEV HOST AARect(const double i0, const double i1, const double j0,
            const double j1, const double k,
            const SharedPointer<Material> material);
-    HOST ~AARect() noexcept = default;
+    DEV HOST ~AARect() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

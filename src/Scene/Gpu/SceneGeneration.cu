@@ -64,36 +64,40 @@ namespace generate
     GLBL void sample_pixel(float * image, const unsigned width, const unsigned height, const unsigned maxReflections, 
 		    SharedPointer<Camera> camera, WeightedPdf &pdf, const Vec3 &background, SharedPointer<HittableList> world)
     {
-        /*extern*/__shared__ float samples[SAMPLES_PER_PIXEL * 3];
+        extern__shared__ float samples[SAMPLES_PER_PIXEL * 3];
 
         Vec3 finalColor;
-	
-	//unsigned x = blockIdx.x * blockDim.x + threadIdx.x;
-	//unsigned y = blockIdx.y * blockDim.y + threadIdx.y;
-	
-        //ray_color(camera->updateLineOfSight((x + utils::random_double()) / width, (y + utils::random_double()) / height),
-        //          background, world, pdf, maxReflections, finalColor);
 
-        samples[blockIdx.x * 3] = finalColor.x();
-        samples[blockIdx.x * 3 + 1] = finalColor.y();
-        samples[blockIdx.x * 3 + 2] = finalColor.z();
+        unsigned idx = threadIdx.x * 3;
+	
+        ray_color(camera->updateLineOfSight((blockIdx.x + utils::random_double()) / width, (blockIdx.y + utils::random_double()) / height),
+                 background, world, pdf, maxReflections, finalColor);
+
+        samples[idx] = finalColor.x();
+        samples[idx + 1] = finalColor.y();
+        samples[idx + 2] = finalColor.z();
+
+        for (unsigned i = 2; i < blockDim.x; i <<= 1)
+        {
+            __syncthreads();
+
+            if ((threadIdx.x & (i - 1)) == 0)
+            {
+                samples[idx] += samples[idx + i * 3];
+                samples[idx + 1] += samples[idx + i * 3 + 1];
+                samples[idx + 2] += samples[idx + i * 3 + 2];
+            }
+        }
+
+        idx = blockIdx.x * width + blockIdx.y;
 
         __syncthreads();
 
         if (threadIdx.x == 0)
-        {
-            for (int i = 3; i < blockDim.x; i+=3)
-            {
-                samples[0] += samples[i];
-                samples[1] += samples[i + 1];
-                samples[2] += samples[i + 2];
-            }
-
-            unsigned idx = blockDim.y * blockIdx.y + blockIdx.x;
-            
+        {            
             image[idx] = samples[0] / blockDim.x;
-            image[idx] = samples[1] / blockDim.x;
-            image[idx] = samples[2] / blockDim.x;
+            image[idx + 1] = samples[1] / blockDim.x;
+            image[idx + 2] = samples[2] / blockDim.x;
         }
     }
 

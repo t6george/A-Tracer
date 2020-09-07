@@ -16,7 +16,7 @@
 namespace mem
 {
     template<typename T, typename ... Args>
-    HOST SharedPointer<T> MakeShared(Args&& ... args)
+    DEV HOST SharedPointer<T> MakeShared(Args&& ... args)
     {
         T obj(Args&& ... args);
     #ifdef __CUDACC__
@@ -30,7 +30,7 @@ namespace mem
     }
 
     template<typename T, typename ... Args>
-    HOST UniquePointer<T> MakeUnique(Args&& ... args)
+    DEV HOST UniquePointer<T> MakeUnique(Args&& ... args)
     {
         T obj(Args&& ... args);
     #ifdef __CUDACC__
@@ -44,19 +44,19 @@ namespace mem
     }
  
     template<typename T, typename U>
-    HOST inline SharedPointer<T> static_pointer_cast(const SharedPointer<U>& sp) noexcept
+    DEV HOST inline SharedPointer<T> static_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         return SharedPointer<T>(static_cast<typename SharedPointer<T>::PtrType*>(sp.get()), sp.getRef());
     }
 
     template<typename T, typename U>
-    HOST inline SharedPointer<T> const_pointer_cast(const SharedPointer<U>& sp) noexcept
+    DEV HOST inline SharedPointer<T> const_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         return SharedPointer<T>(const_cast<typename SharedPointer<T>::PtrType*>(sp.get()), sp.getRef());
     }
 
     template<typename T, typename U>
-    HOST inline SharedPointer<T> dynamic_pointer_cast(const SharedPointer<U>& sp) noexcept
+    DEV HOST inline SharedPointer<T> dynamic_pointer_cast(const SharedPointer<U>& sp) noexcept
     {
         if (auto* _p = dynamic_cast<typename SharedPointer<T>::PtrType*>(sp.get()))
             return SharedPointer<T>(_p, sp.getRef());

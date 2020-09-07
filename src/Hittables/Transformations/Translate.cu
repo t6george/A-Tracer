@@ -1,7 +1,7 @@
 #include <Translate.cuh>
 #include <AABB.cuh>
 
-HOST Translate::Translate(const SharedPointer<Hittable> shape, const Vec3 &displacement)
+DEV HOST Translate::Translate(const SharedPointer<Hittable> shape, const Vec3 &displacement)
     : shape{shape}, displacement{displacement} {}
 
 DEV Hittable::HitType Translate::getCollisionData(const Ray &ray, HitRecord &record,

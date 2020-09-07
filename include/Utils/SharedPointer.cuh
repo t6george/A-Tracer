@@ -8,8 +8,8 @@ class SharedPointer : public Pointer<T>
 public:
     using PtrType = T;
 
-    HOST explicit SharedPointer(T* ptr = nullptr) : Pointer<T>{ptr} {}
-    HOST ~SharedPointer() noexcept = default;
+    DEV HOST explicit SharedPointer(T* ptr = nullptr) : Pointer<T>{ptr} {}
+    DEV HOST ~SharedPointer() noexcept = default;
 
     HOST int* getRef() const noexcept
     {

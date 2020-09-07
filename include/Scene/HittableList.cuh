@@ -18,54 +18,54 @@ class HittableList : public Hittable
     struct HittableNode;
     struct HittableNode
     {
-	HittableNode* next;
+        HittableNode* next;
         SharedPointer<Hittable> data;
 
-	HOST HittableNode(const SharedPointer<Hittable>& data = SharedPointer<Hittable>());
-	HOST ~HittableNode() noexcept;
+        DEV HOST HittableNode(const SharedPointer<Hittable>& data = SharedPointer<Hittable>());
+        DEV HOST ~HittableNode() noexcept;
     };
 
     class HittableLinkedList
     {
         HittableNode* head;
         HittableNode* tail;
-	unsigned len;
+	    unsigned len;
     
+    public:
+        DEV HOST HittableLinkedList();
+        DEV HOST ~HittableLinkedList() noexcept;
+
+        HOST void emplace_back(const SharedPointer<Hittable>& data);
+        HOST void clear();
+        DEV HOST bool empty() const;
+        DEV HOST SharedPointer<Hittable> at(unsigned i) const;
+        DEV HOST unsigned size() const;
+
+        class Iterator;
+
+        DEV HOST Iterator begin() const;
+        DEV HOST Iterator end() const;
+
+        class Iterator
+        {
+            HittableNode* curr;
         public:
-	HOST HittableLinkedList();
-	HOST ~HittableLinkedList() noexcept;
+            DEV HOST Iterator(HittableNode* n = nullptr);
+            DEV HOST ~Iterator() = default;
 
-	HOST void emplace_back(const SharedPointer<Hittable>& data);
-	HOST void clear();
-	DEV HOST bool empty() const;
-	DEV HOST SharedPointer<Hittable> at(unsigned i) const;
-	DEV HOST unsigned size() const;
-
-	class Iterator;
-
-	DEV HOST Iterator begin() const;
-	DEV HOST Iterator end() const;
-
-	class Iterator
-	{
-	    HittableNode* curr;
-	public:
-	    DEV HOST Iterator(HittableNode* n = nullptr);
-	    DEV HOST ~Iterator() = default;
-
-	    DEV HOST Iterator& operator++();
-	    DEV HOST Iterator& operator=(HittableNode* n);
-	    DEV HOST bool operator!=(const Iterator& it);
-	    DEV HOST SharedPointer<Hittable> operator*();
-	};
+            DEV HOST Iterator& operator++();
+            DEV HOST Iterator& operator=(HittableNode* n);
+            DEV HOST bool operator!=(const Iterator& it);
+            DEV HOST SharedPointer<Hittable> operator*();
+        };
     };
 
     HittableLinkedList hittables;
 #endif
 
 public:
-    HOST HittableList() = default;
-    HOST ~HittableList() noexcept = default;
+    DEV HOST HittableList() = default;
+    DEV HOST ~HittableList() noexcept = default;
 
     DEV Hittable::HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

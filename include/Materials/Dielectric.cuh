@@ -6,8 +6,8 @@ class Dielectric : public Material
     const double reflectiveIndex;
 
 public:
-    HOST Dielectric(const double reflectiveIndex);
-    HOST ~Dielectric() noexcept = default;
+    DEV HOST Dielectric(const double reflectiveIndex);
+    DEV HOST ~Dielectric() noexcept = default;
     
     DEV bool scatterRay(const Ray &ray, Hittable::HitRecord &record) const override;
 };

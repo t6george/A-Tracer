@@ -5,23 +5,23 @@
 #include <AABB.cuh>
 
 #if GPU == 1
-HOST HittableList::HittableNode::HittableNode(const SharedPointer<Hittable>& data) : next{nullptr}, data{data} {}
+DEV HOST HittableList::HittableNode::HittableNode(const SharedPointer<Hittable>& data) : next{nullptr}, data{data} {}
 
-HOST HittableList::HittableNode::~HittableNode()
+DEV HOST HittableList::HittableNode::~HittableNode()
 {
     HittableNode* tmp = next;
     cudaFree(this);
     cudaFree(tmp);
 }
 
-HOST HittableList::HittableLinkedList::HittableLinkedList() : head{nullptr}, tail{nullptr}, len{0} {}
+DEV HOST HittableList::HittableLinkedList::HittableLinkedList() : head{nullptr}, tail{nullptr}, len{0} {}
 
-HOST HittableList::HittableLinkedList::~HittableLinkedList()
+DEV HOST HittableList::HittableLinkedList::~HittableLinkedList()
 {
     clear();
 }
 
-HOST void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable>& data)
+DEV HOST void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable>& data)
 {
     HittableNode* newNode = nullptr;
     HittableNode node(data);
@@ -42,7 +42,7 @@ HOST void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hit
     ++len;
 }
 
-HOST void HittableList::HittableLinkedList::clear()
+DEV HOST void HittableList::HittableLinkedList::clear()
 {
     cudaFree(head);
     head = tail = nullptr;

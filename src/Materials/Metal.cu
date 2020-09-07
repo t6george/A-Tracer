@@ -3,7 +3,7 @@
 #include <Texture.cuh>
 #include <WeightedPdf.cuh>
 
-HOST Metal::Metal(const SharedPointer<Texture> albedo, const double fuzz)
+DEV HOST Metal::Metal(const SharedPointer<Texture> albedo, const double fuzz)
     : Material::Material{albedo}, fuzz{utils::clamp(fuzz, 0., 1.)} {}
 
 DEV bool Metal::scatterRay(const Ray &ray, Hittable::HitRecord &record) const

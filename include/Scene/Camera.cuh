@@ -32,11 +32,11 @@ class Camera
     double time1, time2;
 
 public:
-    HOST Camera(const double aspR, double fov, const double aperture, const double focusD,
+    DEV HOST Camera(const double aspR, double fov, const double aperture, const double focusD,
            const Vec3 &lookfrom = Vec3{}, const Vec3 &lookat = Vec3{0., 0., -1.},
            double t0 = 0., double t1 = 0.);
 
-    HOST ~Camera() noexcept = default;
+    DEV HOST ~Camera() noexcept = default;
     
     DEV Ray &updateLineOfSight(double u, double v);
     DEV const Ray &getLineOfSight() const;

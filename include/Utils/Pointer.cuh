@@ -10,7 +10,7 @@ protected:
     int* refcnt;
     T* ptr;
 
-    HOST explicit Pointer(T* ptr = nullptr) noexcept : refcnt{ptr ? 
+    DEV HOST explicit Pointer(T* ptr = nullptr) noexcept : refcnt{ptr ? 
 #if GPU == 1
     nullptr
 #else
@@ -37,7 +37,7 @@ protected:
 #endif
     }
 
-    HOST void destroy() noexcept
+    DEV HOST void destroy() noexcept
     {
 #if GPU == 1
         cudaDeviceSynchronize();
@@ -68,7 +68,7 @@ protected:
     }
     
 public:
-    HOST virtual ~Pointer() noexcept
+    DEV HOST virtual ~Pointer() noexcept
     {
         decRef();
         if (refcnt && *refcnt == 0)

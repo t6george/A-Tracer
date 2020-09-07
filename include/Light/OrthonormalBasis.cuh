@@ -7,8 +7,8 @@ class OrthonormalBasis
 {
     Vec3 axes[3];
 public:
-    HOST OrthonormalBasis(const Vec3& sample);
-    HOST ~OrthonormalBasis() noexcept = default;
+    DEV HOST OrthonormalBasis(const Vec3& sample);
+    DEV HOST ~OrthonormalBasis() noexcept = default;
 
     DEV Vec3 operator[](int i) const;
 

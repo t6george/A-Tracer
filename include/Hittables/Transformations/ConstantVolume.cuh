@@ -10,10 +10,10 @@ class ConstantVolume : public Hittable
     const double densityReciprocal;
 
 public:
-    HOST ConstantVolume(const SharedPointer<Hittable> boundary,
+    DEV HOST ConstantVolume(const SharedPointer<Hittable> boundary,
                    const SharedPointer<Texture> phaseFunction,
                    const double density);
-    HOST ~ConstantVolume() noexcept = default;
+    DEV HOST ~ConstantVolume() noexcept = default;
 
     DEV HitType getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin = -utils::infinity, double tMax = utils::infinity, 

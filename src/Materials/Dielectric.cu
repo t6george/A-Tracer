@@ -2,7 +2,7 @@
 #include <SolidColor.cuh>
 #include <WeightedPdf.cuh>
 
-HOST Dielectric::Dielectric(const double reflectiveIndex)
+DEV HOST Dielectric::Dielectric(const double reflectiveIndex)
     : Material::Material{SharedPointer<Texture>(new SolidColor(Vec3{1., 1., 1.}))},
       reflectiveIndex{reflectiveIndex} {}
 

@@ -2,7 +2,7 @@
 #include <Texture.cuh>
 #include <WeightedPdf.cuh>
 
-HOST IsotropicMaterial::IsotropicMaterial(const SharedPointer<Texture> albedo) : Material::Material(albedo) {}
+DEV HOST IsotropicMaterial::IsotropicMaterial(const SharedPointer<Texture> albedo) : Material::Material(albedo) {}
 
 DEV bool IsotropicMaterial::scatterRay(const Ray &ray, Hittable::HitRecord &record) const
 {

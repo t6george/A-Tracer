@@ -2,7 +2,7 @@
 #include <IsotropicMaterial.cuh>
 #include <Texture.cuh>
 
-HOST ConstantVolume::ConstantVolume(const SharedPointer<Hittable> boundary,
+DEV HOST ConstantVolume::ConstantVolume(const SharedPointer<Hittable> boundary,
                                const SharedPointer<Texture> phaseFunction,
                                const double density)
     : boundary{boundary}, phaseFunction{mem::MakeShared<IsotropicMaterial>(phaseFunction)}, densityReciprocal{-1. / density} {}

@@ -73,9 +73,9 @@ DEV HOST void Perlin::permuteArray(int* arr, int N)
     }
 }
 
-HOST Perlin::Perlin() { init(); }
+DEV HOST Perlin::Perlin() { init(); }
 
-HOST void Perlin::init()
+DEV HOST void Perlin::init()
 {
     for (int i = 0; i < Perlin::pointCount; ++i)
     {

@@ -1,6 +1,6 @@
 #include <FlipFace.cuh>
 
-HOST FlipFace::FlipFace(const SharedPointer<Hittable> hittable) : hittable{hittable} {}
+DEV HOST FlipFace::FlipFace(const SharedPointer<Hittable> hittable) : hittable{hittable} {}
 
 DEV Hittable::HitType FlipFace::getCollisionData(const Ray &ray, HitRecord &record,
                              double tMin, double tMax, bool flip) const

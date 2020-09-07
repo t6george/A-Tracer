@@ -13,12 +13,12 @@ DEV void Sphere::getSphereUV(const Vec3 &p, double &u, double &v)
     v = (theta + utils::pi / 2.) / utils::pi;
 }
 
-HOST Sphere::Sphere(const Vec3 &center0, const double R, const SharedPointer<Material> material,
+DEV HOST Sphere::Sphere(const Vec3 &center0, const double R, const SharedPointer<Material> material,
                const double t0, const double t1)
     : Shape::Shape{material, AABB{center0 - Vec3{R, R, R}, center0 + Vec3{R, R, R}}},
       center0{center0}, center1{center0}, R{R}, time0{t0}, time1{t1} {}
 
-HOST Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
+DEV HOST Sphere::Sphere(const Vec3 &center0, const Vec3 &center1, const double R,
                const SharedPointer<Material> material, const double t0, const double t1)
     : Shape::Shape{material,
                    AABB::combineAABBs(
