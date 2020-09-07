@@ -15,14 +15,15 @@ class HittableList : public Hittable
 #if GPU == 0
     std::vector<SharedPointer<Hittable>> hittables;
 #else
-    typedef struct _HittableNode
+    struct HittableNode;
+    struct HittableNode
     {
-	_HittableNode* next;
+	HittableNode* next;
         SharedPointer<Hittable> data;
 
 	HOST HittableNode(const SharedPointer<Hittable>& data = SharedPointer<Hittable>());
 	HOST ~HittableNode() noexcept;
-    } HittableNode;
+    };
 
     class HittableLinkedList
     {
@@ -31,17 +32,35 @@ class HittableList : public Hittable
 	unsigned len;
     
         public:
-	HittableLinkedList();
-	~HittableLinkedList() noexcept;
+	HOST HittableLinkedList();
+	HOST ~HittableLinkedList() noexcept;
 
-	void emplace_back(const SharedPointer<Hittable>& data);
-	void clear();
-	bool empty() const;
-	SharedPointer<Hittable> at(unsigned i) const;
-	unsigned size() const;
+	HOST void emplace_back(const SharedPointer<Hittable>& data);
+	HOST void clear();
+	HOST DEV bool empty() const;
+	HOST DEV SharedPointer<Hittable> at(unsigned i) const;
+	HOST DEV unsigned size() const;
+
+	class Iterator;
+
+	Iterator begin() const;
+	Iterator end() const;
+
+	class Iterator
+	{
+	    HittableNode* curr;
+	public:
+	    Iterator(HittableNode* n = nullptr);
+	    ~Iterator() = default;
+
+	    Iterator& operator++();
+	    Iterator& operator=(HittableNode* n);
+	    bool operator!=(const Iterator& it);
+	    SharedPointer<Hittable> operator*();
+	};
     };
 
-    HittableList hittables;
+    HittableLinkedList hittables;
 #endif
 
 public:

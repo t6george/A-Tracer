@@ -5,23 +5,23 @@
 #include <AABB.cuh>
 
 #if GPU == 1
-HittableList::HittableNode::HittableNode(const SharedPointer<Hittable>& data) : next{nullptr}, data{data} {}
+HOST HittableList::HittableNode::HittableNode(const SharedPointer<Hittable>& data) : next{nullptr}, data{data} {}
 
-HittableList::HittableNode::~HittableNode()
+HOST HittableList::HittableNode::~HittableNode()
 {
     HittableNode* tmp = next;
     cudaFree(this);
-    cudaFree(next);
+    cudaFree(tmp);
 }
 
-HittableList::HittableLinkedList::HittableLinkedList() : head{nullptr}, tail{nullptr}, size{0} {}
+HOST HittableList::HittableLinkedList::HittableLinkedList() : head{nullptr}, tail{nullptr}, len{0} {}
 
-HittableList::HittableLinkedList::~HittableLinkedList()
+HOST HittableList::HittableLinkedList::~HittableLinkedList()
 {
     clear();
 }
 
-void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable>& data)
+HOST void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable>& data)
 {
     HittableNode* newNode = nullptr;
     HittableNode node(data);
@@ -39,25 +39,25 @@ void HittableList::HittableLinkedList::emplace_back(const SharedPointer<Hittable
         head = tail = newNode;
     }
 
-    ++size;
+    ++len;
 }
 
-void HittableList::HittableLinkedList::clear()
+HOST void HittableList::HittableLinkedList::clear()
 {
     cudaFree(head);
     head = tail = nullptr;
-    size = 0;
+    len = 0;
 }
 
-bool empty() const
+DEV HOST bool HittableList::HittableLinkedList::empty() const
 {
-    return size == 0;
+    return len == 0;
 }
 
-SharedPointer<Hittable> HittableList::HittableLinkedList::at(unsigned i) const
+DEV HOST SharedPointer<Hittable> HittableList::HittableLinkedList::at(unsigned i) const
 {
     SharedPointer<Hittable> hittable;
-    HittableNode itr = head;
+    HittableNode* itr = head;
 
     for (unsigned j = 0; j < i && itr; ++j)
     {
@@ -70,6 +70,44 @@ SharedPointer<Hittable> HittableList::HittableLinkedList::at(unsigned i) const
     }
 
     return hittable;
+}
+
+HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::begin() const
+{
+    return HittableLinkedList::Iterator(head);
+}
+
+HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::end() const
+{
+    return HittableLinkedList::Iterator(nullptr);
+}
+
+HittableList::HittableLinkedList::Iterator::Iterator(HittableNode* n) : curr{n} {}
+
+HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator++()
+{
+    if (curr)
+    {
+        curr = curr->next;
+    }
+
+    return *this;
+}
+
+HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator=(HittableNode* n)
+{
+    curr = n;
+    return *this;
+}
+
+bool HittableList::HittableLinkedList::Iterator::operator!=(const Iterator& it)
+{
+    return it.curr != curr;
+}
+
+SharedPointer<Hittable> HittableList::HittableLinkedList::Iterator::operator*()
+{
+    return curr->data;
 }
 
 #endif
