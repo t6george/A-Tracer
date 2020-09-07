@@ -37,26 +37,26 @@ class HittableList : public Hittable
 
 	HOST void emplace_back(const SharedPointer<Hittable>& data);
 	HOST void clear();
-	HOST DEV bool empty() const;
-	HOST DEV SharedPointer<Hittable> at(unsigned i) const;
-	HOST DEV unsigned size() const;
+	DEV HOST bool empty() const;
+	DEV HOST SharedPointer<Hittable> at(unsigned i) const;
+	DEV HOST unsigned size() const;
 
 	class Iterator;
 
-	Iterator begin() const;
-	Iterator end() const;
+	DEV HOST Iterator begin() const;
+	DEV HOST Iterator end() const;
 
 	class Iterator
 	{
 	    HittableNode* curr;
 	public:
-	    Iterator(HittableNode* n = nullptr);
-	    ~Iterator() = default;
+	    DEV HOST Iterator(HittableNode* n = nullptr);
+	    DEV HOST ~Iterator() = default;
 
-	    Iterator& operator++();
-	    Iterator& operator=(HittableNode* n);
-	    bool operator!=(const Iterator& it);
-	    SharedPointer<Hittable> operator*();
+	    DEV HOST Iterator& operator++();
+	    DEV HOST Iterator& operator=(HittableNode* n);
+	    DEV HOST bool operator!=(const Iterator& it);
+	    DEV HOST SharedPointer<Hittable> operator*();
 	};
     };
 

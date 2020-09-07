@@ -72,19 +72,19 @@ DEV HOST SharedPointer<Hittable> HittableList::HittableLinkedList::at(unsigned i
     return hittable;
 }
 
-HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::begin() const
+DEV HOST HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::begin() const
 {
     return HittableLinkedList::Iterator(head);
 }
 
-HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::end() const
+DEV HOST HittableList::HittableLinkedList::Iterator HittableList::HittableLinkedList::end() const
 {
     return HittableLinkedList::Iterator(nullptr);
 }
 
-HittableList::HittableLinkedList::Iterator::Iterator(HittableNode* n) : curr{n} {}
+DEV HOST HittableList::HittableLinkedList::Iterator::Iterator(HittableNode* n) : curr{n} {}
 
-HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator++()
+DEV HOST HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator++()
 {
     if (curr)
     {
@@ -94,18 +94,18 @@ HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::It
     return *this;
 }
 
-HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator=(HittableNode* n)
+DEV HOST HittableList::HittableLinkedList::Iterator& HittableList::HittableLinkedList::Iterator::operator=(HittableNode* n)
 {
     curr = n;
     return *this;
 }
 
-bool HittableList::HittableLinkedList::Iterator::operator!=(const Iterator& it)
+DEV HOST bool HittableList::HittableLinkedList::Iterator::operator!=(const Iterator& it)
 {
     return it.curr != curr;
 }
 
-SharedPointer<Hittable> HittableList::HittableLinkedList::Iterator::operator*()
+DEV HOST SharedPointer<Hittable> HittableList::HittableLinkedList::Iterator::operator*()
 {
     return curr->data;
 }
